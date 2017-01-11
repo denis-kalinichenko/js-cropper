@@ -13,8 +13,4 @@ describe("Image Crop component", () => {
     afterEach(function() {
         this.jsdom();
     });
-
-    it("initialises", () => {
-        expect(ImageCrop).to.not.equal(undefined);
-    });
 });

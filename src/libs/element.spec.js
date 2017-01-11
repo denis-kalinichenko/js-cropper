@@ -7,8 +7,4 @@ describe("Base element component",() => {
     beforeEach(() => {
         element = new Element();
     });
-
-    it("initialises", () => {
-        expect(element).to.not.equal(undefined);
-    });
 });
