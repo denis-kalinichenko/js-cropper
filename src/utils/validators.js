@@ -24,3 +24,18 @@ export function validateNode(node) {
 
     return node;
 }
+
+export function validateConfig(config) {
+    if (!config) {
+        throw Error("Config is not passed.");
+    }
+
+    if (config.constructor !== Object) {
+        throw Error("Invalid config.");
+    }
+
+    return {
+        width: config.width || 300,
+        height: config.height || 300
+    };
+}
