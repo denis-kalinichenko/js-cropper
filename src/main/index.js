@@ -7,14 +7,18 @@ import Canvas from "./../components/canvas";
  */
 
 export default class ImageCrop {
+    /**
+     * Create an ImageCrop.
+     * @param {Object} config - The config for Image Crop
+     */
     constructor(config = {}) {
         this._config = validateConfig(config);
     }
 
     /**
-     * Create Image Crop <canvas> element at the end of the list of children of a specified parent node
-     * @param {object} node - The DOM Element object, parent node
-     * @return {Element} An ImageCrop object.
+     * Create Image Crop container at the end of the list of children of a specified parent node
+     * @param {Object} node - The DOM Element object, parent node
+     * @return {ImageCrop} An ImageCrop object.
      */
     render(node) {
         this._node = validateNode(node);
@@ -27,6 +31,11 @@ export default class ImageCrop {
         return this;
     }
 
+    /**
+     * Change width of ImageCrop container
+     * @param {Number} width - The number of pixels.
+     * @return {ImageCrop} A ImageCrop object.
+     */
     setWidth(width) {
         if (!width) {
             throw Error("Width is not passed.");
@@ -41,6 +50,11 @@ export default class ImageCrop {
         return this;
     }
 
+    /**
+     * Change height of ImageCrop container
+     * @param {Number} height - The number of pixels.
+     * @return {ImageCrop} A ImageCrop object.
+     */
     setHeight(height) {
         if (!height) {
             throw Error("Height is not passed.");

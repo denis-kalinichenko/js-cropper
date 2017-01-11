@@ -6,7 +6,7 @@
 export default class Element {
     /**
      * Create an element.
-     * @param {string} tagName - The name of element tag.
+     * @param {String} tagName - The name of element tag.
      */
     constructor(tagName) {
         this.tagName = tagName || "div";
@@ -15,7 +15,7 @@ export default class Element {
 
     /**
      * Add an Element's node to the end of the list of children of a specified parent node
-     * @param {object} parent - The DOM Element object, parent node
+     * @param {Object} parent - The DOM Element object, parent node
      * @return {Element} An Element object.
      */
     render(parent) {

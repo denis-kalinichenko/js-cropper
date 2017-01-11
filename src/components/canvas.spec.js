@@ -22,7 +22,7 @@ describe("Canvas component", function() {
         expect(canvas).to.not.equal(undefined);
     });
 
-    it("has setSize method, which sets width and height style properties to canvas element", () => {
+    it("has setWidth and setHeight methods, which sets width and height style properties to canvas element", () => {
         let width = 100;
         let height = 150;
 
