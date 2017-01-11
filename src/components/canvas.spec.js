@@ -3,11 +3,15 @@ import jsdom from "jsdom-global";
 import Canvas from "./canvas";
 
 describe("Canvas component", function() {
-    let canvas;
+    let canvas, wrapper;
 
     beforeEach(() => {
         jsdom();
         canvas = new Canvas();
+
+        wrapper = document.createElement("div");
+        wrapper.className = "wrapper";
+        document.body.appendChild(wrapper);
     });
 
     afterEach(() => {
@@ -18,5 +22,38 @@ describe("Canvas component", function() {
         expect(canvas).to.not.equal(undefined);
     });
 
-    it("properly");
+    it("has setSize method, which sets width and height style properties to canvas element", () => {
+        let width = 100;
+        let height = 150;
+
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        canvas.render(wrapper);
+
+        const canvasNode = wrapper.querySelector("canvas");
+        expect(canvasNode.style.width).to.equal(width);
+        expect(canvasNode.style.height).to.equal(height);
+    });
+
+    it("throws Error if width property is invalid or not passed", () => {
+        expect(() => {canvas.setWidth()}).to.throw("Width is not passed.");
+        expect(() => {canvas.setWidth("string")}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth({})}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth([])}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth(1)}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth(Infinity)}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth(true)}).to.throw("Invalid width.");
+        expect(() => {canvas.setWidth(() => {}) }).to.throw("Invalid width.");
+    });
+
+    it("throws Error if height property is invalid or not passed", () => {
+        expect(() => {canvas.setHeight()}).to.throw("Height is not passed.");
+        expect(() => {canvas.setHeight("string")}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight({})}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight([])}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight(1)}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight(Infinity)}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight(true)}).to.throw("Invalid height.");
+        expect(() => {canvas.setHeight(() => {}) }).to.throw("Invalid height.");
+    });
 });

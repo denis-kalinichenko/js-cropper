@@ -3,12 +3,13 @@ import jsdom from "jsdom-global";
 import Element from "./element";
 
 describe("Base element component",() => {
-    let element;
+    let element, wrapper;
 
     beforeEach(() => {
         jsdom();
         element = new Element();
-        const wrapper = document.createElement("div");
+
+        wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
     });
@@ -23,7 +24,6 @@ describe("Base element component",() => {
     });
 
     it("has render method, which renders element and returns this", () => {
-        const wrapper = document.querySelector(".wrapper");
         expect(element.render).to.be.a("function");
 
         element = new Element();
