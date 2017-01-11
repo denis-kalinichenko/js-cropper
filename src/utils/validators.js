@@ -3,7 +3,7 @@
  *
  * @param {String} node - query selector
  * @param {Object} node - node object
- * @return {Object} node = valid node object
+ * @return {Object} node - valid node object
  */
 export function validateNode(node) {
     if (!node) {
