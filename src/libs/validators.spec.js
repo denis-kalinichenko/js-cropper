@@ -3,14 +3,14 @@ import jsdom from "jsdom-global";
 import { validateNode } from "./validators";
 
 describe("Validators",() => {
-    beforeEach(() => {
+    beforeEach(function() {
         this.jsdom = jsdom();
         const wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
     });
 
-    afterEach(() => {
+    afterEach(function() {
         this.jsdom();
     });
 

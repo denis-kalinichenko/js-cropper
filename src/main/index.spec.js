@@ -2,8 +2,6 @@ import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import ImageCrop from "./index";
 
-import { validateNode } from "../libs/validators";
-
 describe("Image Crop component", () => {
     beforeEach(function() {
         this.jsdom = jsdom();
@@ -14,5 +12,9 @@ describe("Image Crop component", () => {
 
     afterEach(function() {
         this.jsdom();
+    });
+
+    it("initialises", () => {
+        expect(ImageCrop).to.not.equal(undefined);
     });
 });
