@@ -1,4 +1,4 @@
-import { expect, spy } from "chai";
+import { expect } from "chai";
 import jsdom from "jsdom-global";
 import { validateNode } from "./validators";
 
@@ -10,7 +10,7 @@ describe("Validators",() => {
         document.body.appendChild(wrapper);
     });
 
-    afterEach(function() {
+    afterEach(() => {
         this.jsdom();
     });
 
