@@ -59,7 +59,7 @@ describe("Validators",() => {
             expect(validateConfig(config)).to.deep.equal(expectedConfig);
         });
 
-        it("throws Error if config is invalid", () => {
+        it("throws Error if config is invalid or not passed", () => {
             expect(() => {validateConfig()}).to.throw("Config is not passed.");
             expect(() => {validateConfig("string")}).to.throw("Invalid config.");
             expect(() => {validateConfig([])}).to.throw("Invalid config.");

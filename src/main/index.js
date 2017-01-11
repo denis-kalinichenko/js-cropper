@@ -26,4 +26,32 @@ export default class ImageCrop {
         this._canvas.render(this._node);
         return this;
     }
+
+    setWidth(width) {
+        if (!width) {
+            throw Error("Width is not passed.");
+        }
+
+        this._config.width = width;
+
+        if (this._canvas) {
+            this._canvas.setWidth(width);
+        }
+
+        return this;
+    }
+
+    setHeight(height) {
+        if (!height) {
+            throw Error("Height is not passed.");
+        }
+
+        this._config.height = height;
+
+        if (this._canvas) {
+            this._canvas.setHeight(height);
+        }
+
+        return this;
+    }
 }
