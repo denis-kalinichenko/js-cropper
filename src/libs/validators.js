@@ -19,7 +19,7 @@ export function validateNode(node) {
     }
 
     if (!(node instanceof window.HTMLElement)) {
-        throw Error("Node should be instance of window.HTMLElement.");
+        throw Error("Node should be instance of window.HTMLElement or valid selector string.");
     }
 
     return node;
