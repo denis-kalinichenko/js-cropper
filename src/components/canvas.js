@@ -6,6 +6,9 @@ import Element from "./element";
  */
 
 export default class Canvas extends Element {
+    /**
+     * Create a canvas.
+     */
     constructor() {
         super("canvas");
     }

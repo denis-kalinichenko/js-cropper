@@ -17,4 +17,6 @@ describe("Canvas component", function() {
     it("initialises", () => {
         expect(canvas).to.not.equal(undefined);
     });
+
+    it("properly");
 });
