@@ -1,0 +1,26 @@
+{
+  "name": "g2a-image-crop",
+  "authors": [
+    "Maksym Dudynskyi <it105@g2a.com>",
+    "Denys Kalinichenko <it51@g2a.com>"
+  ],
+  "description": "G2A UI framework image crop module",
+  "main": "dist/g2a-image-crop.min.js",
+  "license": "UNLICENSED",
+  "homepage": "",
+  "keywords": [
+    "css",
+    "image",
+    "crop",
+    "g2a",
+    "ui",
+    "component"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
