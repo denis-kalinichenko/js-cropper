@@ -31,8 +31,8 @@ describe("Canvas component", function() {
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal(width);
-        expect(canvasNode.style.height).to.equal(height);
+        expect(canvasNode.style.width).to.equal(`${width}px`);
+        expect(canvasNode.style.height).to.equal(`${height}px`);
     });
 
     it("throws Error if width property is invalid or not passed", () => {
@@ -40,7 +40,6 @@ describe("Canvas component", function() {
         expect(() => {canvas.setWidth("string")}).to.throw("Invalid width.");
         expect(() => {canvas.setWidth({})}).to.throw("Invalid width.");
         expect(() => {canvas.setWidth([])}).to.throw("Invalid width.");
-        expect(() => {canvas.setWidth(1)}).to.throw("Invalid width.");
         expect(() => {canvas.setWidth(Infinity)}).to.throw("Invalid width.");
         expect(() => {canvas.setWidth(true)}).to.throw("Invalid width.");
         expect(() => {canvas.setWidth(() => {}) }).to.throw("Invalid width.");
@@ -51,7 +50,6 @@ describe("Canvas component", function() {
         expect(() => {canvas.setHeight("string")}).to.throw("Invalid height.");
         expect(() => {canvas.setHeight({})}).to.throw("Invalid height.");
         expect(() => {canvas.setHeight([])}).to.throw("Invalid height.");
-        expect(() => {canvas.setHeight(1)}).to.throw("Invalid height.");
         expect(() => {canvas.setHeight(Infinity)}).to.throw("Invalid height.");
         expect(() => {canvas.setHeight(true)}).to.throw("Invalid height.");
         expect(() => {canvas.setHeight(() => {}) }).to.throw("Invalid height.");

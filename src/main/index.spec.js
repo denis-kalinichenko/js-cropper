@@ -38,7 +38,7 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal(config.width);
-        expect(canvasNode.style.height).to.equal(config.height);
+        expect(canvasNode.style.width).to.equal(`${config.width}px`);
+        expect(canvasNode.style.height).to.equal(`${config.height}px`);
     });
 });
