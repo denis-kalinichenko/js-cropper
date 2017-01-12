@@ -22,6 +22,8 @@ describe("Validators",() => {
 
         it("throws Error if selector is invalid or not passed", () => {
             expect(() => {validateNode()}).to.throw("Node is not passed.");
+            expect(() => {validateNode(null)}).to.throw("Node is not passed.");
+            expect(() => {validateNode(NaN)}).to.throw("Node is not passed.");
             expect(() => {validateNode(".fake")}).to.throw("Invalid selector.");
             expect(() => {validateNode({})}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
             expect(() => {validateNode([])}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
@@ -79,6 +81,8 @@ describe("Validators",() => {
 
         it("throws Error if config is invalid or not passed", () => {
             expect(() => {validateConfig()}).to.throw("Config is not passed.");
+            expect(() => {validateConfig(null)}).to.throw("Config is not passed.");
+            expect(() => {validateConfig(NaN)}).to.throw("Config is not passed.");
             expect(() => {validateConfig("string")}).to.throw("Invalid config.");
             expect(() => {validateConfig([])}).to.throw("Invalid config.");
             expect(() => {validateConfig(1)}).to.throw("Invalid config.");

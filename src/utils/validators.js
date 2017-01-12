@@ -35,7 +35,7 @@ export function validateConfig(config) {
         throw Error("Config is not passed.");
     }
 
-    if (config.constructor !== Object) {
+    if (Object.prototype.toString.call(config) !== "[object Object]") {
         throw Error("Invalid config.");
     }
 
