@@ -16,6 +16,10 @@ describe("Image Crop component", () => {
         cleanJsdom();
     });
 
+    it("initialises", () => {
+        expect(() => { new ImageCrop() }).to.not.throw(Error);
+    });
+
     it("has render method, which renders Canvas element and returns this", () => {
         imageCrop = new ImageCrop();
         const wrapper = document.querySelector("#image-crop");

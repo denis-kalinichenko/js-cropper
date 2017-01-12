@@ -3,15 +3,17 @@ import jsdom from "jsdom-global";
 import { validateNode, validateConfig, validateDimension } from "./validators";
 
 describe("Validators",() => {
+    let cleanJsdom;
+
     beforeEach(() => {
-         jsdom();
+        cleanJsdom = jsdom();
         const wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
     });
 
     afterEach(() => {
-        jsdom();
+        cleanJsdom();
     });
 
     describe("Node validator", () => {

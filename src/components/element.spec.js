@@ -16,6 +16,10 @@ describe("Base element component",() => {
         cleanJsdom();
     });
 
+    it("initialises", () => {
+        expect(() => { new Element() }).to.not.throw(Error);
+    });
+
     it("properly transforms tag argument and creates element", () => {
         element = new Element();
         expect(element.element.nodeType).to.equal(Node.ELEMENT_NODE);

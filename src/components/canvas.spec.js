@@ -17,8 +17,7 @@ describe("Canvas component", function() {
     });
 
     it("initialises", () => {
-        canvas = new Canvas();
-        expect(canvas).to.not.equal(undefined);
+        expect(() => { new Canvas() }).to.not.throw(Error);
     });
 
     it("has setWidth method, which set width style property to canvas element", () => {
