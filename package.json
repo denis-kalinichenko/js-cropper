@@ -5,7 +5,7 @@
   "main": "lib/main/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register src/**/*.spec.js || exit 0",
-    "test:custom": "mocha --compilers js:babel-core/register ",
+    "test:custom": "mocha --compilers js:babel-core/register || exit 0",
     "compile": "babel -d lib src",
     "dist": "rollup ./src/main/index.js --config rollup.config.js && rollup ./src/main/index.js --config rollup.config.min.js",
     "prepublish": "npm run compile && npm run dist"

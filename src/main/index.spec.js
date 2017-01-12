@@ -5,16 +5,17 @@ import ImageCrop from "./index";
 describe("Image Crop component", () => {
     let imageCrop, wrapper;
 
-    beforeEach(() => {
-        jsdom();
+    beforeEach(function() {
+        this.jsdom = jsdom();
+
         imageCrop = new ImageCrop();
         wrapper = document.createElement("div");
         wrapper.id = "image-crop";
         document.body.appendChild(wrapper);
     });
 
-    afterEach(() => {
-        jsdom();
+    afterEach(function() {
+        this.jsdom();
     });
 
     it("has render method, which renders Canvas element and returns this", () => {

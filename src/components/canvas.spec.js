@@ -1,21 +1,21 @@
 import { expect } from "chai";
-import jsdom from "jsdom-global";
+import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 
 describe("Canvas component", function() {
     let canvas, wrapper;
 
-    beforeEach(() => {
-        jsdom();
-        canvas = new Canvas();
+    beforeEach(function() {
+        this.jsdom = jsdom();
 
+        canvas = new Canvas();
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
     });
 
-    afterEach(() => {
-        jsdom();
+    afterEach(function() {
+        this.jsdom();
     });
 
     it("initialises", () => {

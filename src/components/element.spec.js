@@ -5,17 +5,17 @@ import Element from "./element";
 describe("Base element component",() => {
     let element, wrapper;
 
-    beforeEach(() => {
-        jsdom();
-        element = new Element();
+    beforeEach(function() {
+        this.jsdom = jsdom();
 
+        element = new Element();
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
     });
 
-    afterEach(() => {
-        jsdom();
+    afterEach(function() {
+        this.jsdom();
     });
 
     it("properly transforms tag argument and creates element", () => {
@@ -50,10 +50,13 @@ describe("Base element component",() => {
         expect(renderedElement).to.equal(element);
 
         element = new Element("input");
-        expect(wrapper.querySelectorAll("input")).to.have.length(0);
         renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("input")).to.have.length(1);
         expect(renderedElement).to.equal(element);
+    });
+
+    it("bla", () => {
+        console.log(document.body.innerHTML);
     });
 
     it("has render method, which throws Error if parent node are not passed", () => {
