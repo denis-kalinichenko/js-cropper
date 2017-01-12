@@ -30,7 +30,6 @@ export function validateNode(node) {
  * Validates provided Image Crop config
  *
  * @param {Object} config - config object
- * @return {Object} node - valid config object
  */
 export function validateConfig(config) {
     if (!config) {
@@ -40,14 +39,6 @@ export function validateConfig(config) {
     if (Object.prototype.toString.call(config) !== "[object Object]") {
         throw Error("Invalid config.");
     }
-
-    const width = config.width || 300;
-    const height = config.height || 300;
-
-    return {
-        width: validateDimension(width),
-        height: validateDimension(height)
-    };
 }
 
 /**

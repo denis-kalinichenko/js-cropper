@@ -55,30 +55,8 @@ describe("Validators",() => {
     });
 
     describe("Config validator", () => {
-        it("processes passed config and returns valid full config as object", () => {
-            expect(validateConfig).to.be.a("function");
-
-            let expectedConfig = {
-                width: 300,
-                height: 300,
-            };
-
-            let config = {
-                foo: "bar"
-            };
-            expect(validateConfig(config)).to.deep.equal(expectedConfig);
-
-            config = {};
-            expect(validateConfig(config)).to.deep.equal(expectedConfig);
-
-            config = {
-                width: 600,
-            };
-            expectedConfig = {
-                width: 600,
-                height: 300,
-            };
-            expect(validateConfig(config)).to.deep.equal(expectedConfig);
+        it("not throws Error if config is object", () => {
+            expect(() => {validateConfig({})}).to.not.throw(Error);
         });
 
         it("throws Error if config is invalid or not passed", () => {

@@ -12,8 +12,12 @@ export default class ImageCrop {
      * @param {Object} config - The config for Image Crop
      */
     constructor(config = {}) {
-        this._config = validateConfig(config);
+        validateConfig(config);
+
         this._canvas = new Canvas();
+
+        this.setWidth(config.width || 300);
+        this.setHeight(config.height || 300);
     }
 
     /**
@@ -23,11 +27,7 @@ export default class ImageCrop {
      */
     render(node) {
         this._node = validateNode(node);
-
-        this._canvas.setWidth(this._config.width);
-        this._canvas.setHeight(this._config.height);
         this._canvas.render(this._node);
-
         return this;
     }
 
@@ -38,7 +38,6 @@ export default class ImageCrop {
      */
     setWidth(width) {
         const value = validateDimension(width);
-        this._config.width = value;
         this._canvas.setWidth(value);
         return this;
     }
@@ -50,7 +49,6 @@ export default class ImageCrop {
      */
     setHeight(height) {
         const value = validateDimension(height);
-        this._config.height = value;
         this._canvas.setHeight(value);
         return this;
     }
