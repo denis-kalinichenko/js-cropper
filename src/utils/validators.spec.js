@@ -35,11 +35,11 @@ describe("Validators",() => {
     describe("Dimension validator", () => {
         it("throws Error if dimension is invalid or not passed", () => {
             expect(() => {validateDimension()}).to.throw("Dimension is not passed.");
+            expect(() => {validateDimension(NaN)}).to.throw("Dimension is not passed.");
+            expect(() => {validateDimension(null)}).to.throw("Dimension is not passed.");
             expect(() => {validateDimension("string")}).to.throw("Invalid dimension.");
             expect(() => {validateDimension({})}).to.throw("Invalid dimension.");
             expect(() => {validateDimension([])}).to.throw("Invalid dimension.");
-            expect(() => {validateDimension(NaN)}).to.throw("Invalid dimension.");
-            expect(() => {validateDimension(null)}).to.throw("Invalid dimension.");
             expect(() => {validateDimension(Infinity)}).to.throw("Invalid dimension.");
             expect(() => {validateDimension(true)}).to.throw("Invalid dimension.");
             expect(() => {validateDimension(() => {}) }).to.throw("Invalid dimension.");
