@@ -28,15 +28,15 @@ describe("Image component",() => {
 
     it("has load method, which loads an image by provided URL or path and returns this", () => {
         image = new Image();
-        return image.load("http://i.imgur.com/4rfBhA4.jpg").then((loadedImage) => {
-            expect(loadedImage.element.width).to.equal(624);
-            expect(loadedImage.element.height).to.equal(929);
+        const url = "http://i.imgur.com/4rfBhA4.jpg";
+        return image.load(url).then((loadedImage) => {
+            expect(loadedImage.element.src).to.equal(url);
             expect(loadedImage).to.equal(image);
         });
     });
 
-    it("", () => {
+    it("has load method, which should be rejected with Error, if can't load an image by provided URL or path", () => {
         image = new Image();
-        return expect(image.load("https://g2a.com/fakeimage.jpg")).to.eventually.be.rejectedWith("Can't load an image.").and.be.an.instanceOf(Error);
+        return expect(image.load("fakeimage.jpg")).to.eventually.be.rejectedWith("Can't load an image.").and.be.an.instanceOf(Error);
     });
 });
