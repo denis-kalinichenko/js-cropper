@@ -11,6 +11,7 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
+        this.ctx = this.element.getContext("2d");
     }
 
     /**

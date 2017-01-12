@@ -42,6 +42,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "chai-spies": "^0.7.1",
     "jsdom": "^9.6.0",
     "jsdom-global": "^2.1.0",
