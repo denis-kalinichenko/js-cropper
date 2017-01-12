@@ -37,7 +37,7 @@ export default class ImageCrop {
      * @return {ImageCrop} A ImageCrop object.
      */
     setWidth(width) {
-        let value = validateDimension(width);
+        const value = validateDimension(width);
         this._config.width = value;
         this._canvas.setWidth(value);
         return this;
@@ -49,7 +49,7 @@ export default class ImageCrop {
      * @return {ImageCrop} A ImageCrop object.
      */
     setHeight(height) {
-        let value = validateDimension(height);
+        const value = validateDimension(height);
         this._config.height = value;
         this._canvas.setHeight(value);
         return this;

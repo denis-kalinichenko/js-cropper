@@ -39,8 +39,8 @@ export function validateConfig(config) {
         throw Error("Invalid config.");
     }
 
-    let width = config.width || 300;
-    let height = config.height || 300;
+    const width = config.width || 300;
+    const height = config.height || 300;
 
     return {
         width: validateDimension(width),
