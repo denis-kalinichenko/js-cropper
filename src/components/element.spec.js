@@ -55,10 +55,6 @@ describe("Base element component",() => {
         expect(renderedElement).to.equal(element);
     });
 
-    it("bla", () => {
-        console.log(document.body.innerHTML);
-    });
-
     it("has render method, which throws Error if parent node are not passed", () => {
         expect(() => {new Element().render()}).to.throw("Parent node are not passed.");
     });

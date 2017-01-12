@@ -23,7 +23,7 @@ describe("Canvas component", function() {
     });
 
     it("has setWidth method, which set width style property to canvas element", () => {
-        let width = 100;
+        const width = 100;
 
         canvas.setWidth(width);
         canvas.render(wrapper);
@@ -33,7 +33,7 @@ describe("Canvas component", function() {
     });
 
     it("has setHeight method, which set height style property to canvas element", () => {
-        let height = 150;
+        const height = 150;
 
         canvas.setHeight(height);
         canvas.render(wrapper);
