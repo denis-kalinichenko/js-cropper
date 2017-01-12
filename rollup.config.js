@@ -13,10 +13,14 @@ export default {
         browser: true,
       }),
       commonjs(),
-      babel({
-        presets: ["es2015-rollup"],
-        babelrc: false
-      }),
+        babel({
+            presets: [
+                "es2015-rollup",
+                "es2016",
+                "es2017"
+            ],
+            babelrc: false
+        }),
     ],
     dest: "dist/g2a-image-crop.js",
     moduleName: "ImageCrop"
