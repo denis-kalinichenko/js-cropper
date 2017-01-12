@@ -37,8 +37,13 @@ export default class ImageCrop {
      * @return {ImageCrop} An ImageCrop object.
      */
     setWidth(width) {
-        const value = validateDimension(width);
-        this._canvas.setWidth(value);
+        try {
+            validateDimension(width);
+        }
+        catch (error) {
+            throw Error(`Width property: ${error.message}`);
+        }
+        this._canvas.setWidth(width);
         return this;
     }
 
@@ -48,8 +53,13 @@ export default class ImageCrop {
      * @return {ImageCrop} An ImageCrop object.
      */
     setHeight(height) {
-        const value = validateDimension(height);
-        this._canvas.setHeight(value);
+        try {
+            validateDimension(height)
+        }
+        catch (error) {
+            throw Error(`Height property: ${error.message}`);
+        }
+        this._canvas.setHeight(height);
         return this;
     }
 }
