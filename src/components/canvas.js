@@ -15,6 +15,7 @@ export default class Canvas extends Element {
 
     /**
      * Change width of Canvas
+     *
      * @param {Number} width - The number of pixels.
      * @return {Canvas} A Canvas object.
      */
@@ -25,6 +26,7 @@ export default class Canvas extends Element {
 
     /**
      * Change height of Canvas
+     *
      * @param {Number} height - The number of pixels.
      * @return {Canvas} A Canvas object.
      */

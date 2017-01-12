@@ -1,4 +1,5 @@
 import { validateNode, validateConfig, validateDimension } from "./../utils/validators";
+import { dimensions } from "./../configs/default";
 import Canvas from "./../components/canvas";
 
 /**
@@ -9,6 +10,7 @@ import Canvas from "./../components/canvas";
 export default class ImageCrop {
     /**
      * Create an ImageCrop.
+     * 
      * @param {Object} config - The config for Image Crop
      */
     constructor(config = {}) {
@@ -16,12 +18,13 @@ export default class ImageCrop {
 
         this._canvas = new Canvas();
 
-        this.setWidth(config.width || 300);
-        this.setHeight(config.height || 300);
+        this.setWidth(config.width || dimensions.width);
+        this.setHeight(config.height || dimensions.height);
     }
 
     /**
      * Create Image Crop container at the end of the list of children of a specified parent node
+     *
      * @param {Object} node - The DOM Element object, parent node
      * @return {ImageCrop} An ImageCrop object.
      */
@@ -33,6 +36,7 @@ export default class ImageCrop {
 
     /**
      * Change width of ImageCrop container
+     *
      * @param {Number} width - The number of pixels.
      * @return {ImageCrop} An ImageCrop object.
      */
@@ -49,6 +53,7 @@ export default class ImageCrop {
 
     /**
      * Change height of ImageCrop container
+     *
      * @param {Number} height - The number of pixels.
      * @return {ImageCrop} An ImageCrop object.
      */
