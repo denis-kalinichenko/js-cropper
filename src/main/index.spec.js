@@ -57,12 +57,6 @@ describe("Image Crop component", () => {
         expect(resizedImageCrop).to.equal(imageCrop);
     });
 
-    it("throws Error if value is not passed to setWidth method", () => {
-        expect(() => {
-            imageCrop.setWidth()
-        }).to.throw("Width is not passed.");
-    });
-
     it("has setHeight method, which changes height style property of Canvas container and returns this", () => {
         expect(imageCrop.setHeight).to.be.a("function");
 
@@ -76,11 +70,5 @@ describe("Image Crop component", () => {
         expect(canvasNode.style.height).to.equal("321px");
 
         expect(resizedImageCrop).to.equal(imageCrop);
-    });
-
-    it("throws Error if value is not passed to setHeight method", () => {
-        expect(() => {
-            imageCrop.setHeight()
-        }).to.throw("Height is not passed.");
     });
 });

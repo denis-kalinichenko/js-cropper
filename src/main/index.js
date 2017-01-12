@@ -1,4 +1,4 @@
-import { validateNode, validateConfig } from "./../utils/validators";
+import { validateNode, validateConfig, validateDimension } from "./../utils/validators";
 import Canvas from "./../components/canvas";
 
 /**
@@ -13,6 +13,7 @@ export default class ImageCrop {
      */
     constructor(config = {}) {
         this._config = validateConfig(config);
+        this._canvas = new Canvas();
     }
 
     /**
@@ -23,11 +24,10 @@ export default class ImageCrop {
     render(node) {
         this._node = validateNode(node);
 
-        this._canvas = new Canvas();
         this._canvas.setWidth(this._config.width);
         this._canvas.setHeight(this._config.height);
-
         this._canvas.render(this._node);
+
         return this;
     }
 
@@ -37,16 +37,9 @@ export default class ImageCrop {
      * @return {ImageCrop} A ImageCrop object.
      */
     setWidth(width) {
-        if (!width) {
-            throw Error("Width is not passed.");
-        }
-
-        this._config.width = width;
-
-        if (this._canvas) {
-            this._canvas.setWidth(width);
-        }
-
+        let value = validateDimension(width);
+        this._config.width = value;
+        this._canvas.setWidth(value);
         return this;
     }
 
@@ -56,16 +49,9 @@ export default class ImageCrop {
      * @return {ImageCrop} A ImageCrop object.
      */
     setHeight(height) {
-        if (!height) {
-            throw Error("Height is not passed.");
-        }
-
-        this._config.height = height;
-
-        if (this._canvas) {
-            this._canvas.setHeight(height);
-        }
-
+        let value = validateDimension(height);
+        this._config.height = value;
+        this._canvas.setHeight(value);
         return this;
     }
 }
