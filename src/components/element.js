@@ -9,8 +9,7 @@ export default class Element {
      * @param {String} tagName - The name of element tag.
      */
     constructor(tagName) {
-        this.tagName = tagName || "div";
-        this.element = document.createElement(this.tagName);
+        this.element = document.createElement(tagName || "div");
     }
 
     /**
