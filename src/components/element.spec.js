@@ -26,6 +26,7 @@ describe("Base element component",() => {
     it("has render method, which renders element and returns this", () => {
         expect(element.render).to.be.a("function");
 
+        expect(wrapper.querySelectorAll("div")).to.have.length(0);
         element = new Element();
         let renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("div")).to.have.length(1);
@@ -37,16 +38,19 @@ describe("Base element component",() => {
         expect(renderedElement).to.equal(element);
 
         element = new Element("span");
+        expect(wrapper.querySelectorAll("span")).to.have.length(0);
         renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("span")).to.have.length(1);
         expect(renderedElement).to.equal(element);
 
         element = new Element("a");
+        expect(wrapper.querySelectorAll("a")).to.have.length(0);
         renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("a")).to.have.length(1);
         expect(renderedElement).to.equal(element);
 
         element = new Element("input");
+        expect(wrapper.querySelectorAll("input")).to.have.length(0);
         renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("input")).to.have.length(1);
         expect(renderedElement).to.equal(element);
