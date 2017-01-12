@@ -61,6 +61,15 @@ describe("Image Crop component", () => {
         expect(resizedImageCrop).to.equal(imageCrop);
     });
 
+    it("has setWidth method, which changes width style property of Canvas container before render()", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.setWidth(400);
+        imageCrop.render(wrapper);
+
+        const canvasNode = wrapper.querySelector("canvas");
+        expect(canvasNode.style.width).to.equal("400px");
+    });
+
     it("has setHeight method, which changes height style property of Canvas container and returns this", () => {
         expect(imageCrop.setHeight).to.be.a("function");
 
@@ -74,5 +83,14 @@ describe("Image Crop component", () => {
         expect(canvasNode.style.height).to.equal("321px");
 
         expect(resizedImageCrop).to.equal(imageCrop);
+    });
+
+    it("has setHeight method, which changes width style property of Canvas container before render()", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.setHeight(400);
+        imageCrop.render(wrapper);
+
+        const canvasNode = wrapper.querySelector("canvas");
+        expect(canvasNode.style.height).to.equal("400px");
     });
 });
