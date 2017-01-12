@@ -54,6 +54,7 @@ describe("Base element component",() => {
         expect(renderedElement).to.equal(element);
 
         element = new Element("input");
+        expect(wrapper.querySelectorAll("input")).to.have.length(0);
         renderedElement = element.render(wrapper);
         expect(wrapper.querySelectorAll("input")).to.have.length(1);
         expect(renderedElement).to.equal(element);
