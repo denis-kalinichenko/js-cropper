@@ -3,10 +3,10 @@ import jsdom from "jsdom-global";
 import ImageCrop from "./index";
 
 describe("Image Crop component", () => {
-    let imageCrop, wrapper;
+    let imageCrop, wrapper, cleanJsdom;
 
     beforeEach(function() {
-        this.jsdom = jsdom();
+        cleanJsdom = jsdom();
 
         imageCrop = new ImageCrop();
         wrapper = document.createElement("div");
@@ -15,7 +15,7 @@ describe("Image Crop component", () => {
     });
 
     afterEach(function() {
-        this.jsdom();
+        cleanJsdom();
     });
 
     it("has render method, which renders Canvas element and returns this", () => {

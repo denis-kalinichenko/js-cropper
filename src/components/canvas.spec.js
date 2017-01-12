@@ -3,10 +3,10 @@ import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 
 describe("Canvas component", function() {
-    let canvas, wrapper;
+    let canvas, wrapper, cleanJsdom;
 
     beforeEach(function() {
-        this.jsdom = jsdom();
+        cleanJsdom = jsdom();
 
         canvas = new Canvas();
         wrapper = document.createElement("div");
@@ -15,7 +15,7 @@ describe("Canvas component", function() {
     });
 
     afterEach(function() {
-        this.jsdom();
+        cleanJsdom();
     });
 
     it("initialises", () => {

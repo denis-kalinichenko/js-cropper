@@ -3,10 +3,10 @@ import jsdom from "jsdom-global";
 import Element from "./element";
 
 describe("Base element component",() => {
-    let element, wrapper;
+    let element, wrapper, cleanJsdom;
 
     beforeEach(function() {
-        this.jsdom = jsdom();
+        cleanJsdom = jsdom();
 
         element = new Element();
         wrapper = document.createElement("div");
@@ -15,7 +15,7 @@ describe("Base element component",() => {
     });
 
     afterEach(function() {
-        this.jsdom();
+        cleanJsdom();
     });
 
     it("properly transforms tag argument and creates element", () => {
