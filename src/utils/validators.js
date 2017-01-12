@@ -10,18 +10,20 @@ export function validateNode(node) {
         throw Error("Node is not passed.");
     }
 
-    if (typeof node === "string") {
-        node = document.querySelector(node);
-        if (!node) {
+    let element = node;
+
+    if (typeof element === "string") {
+        element = document.querySelector(node);
+        if (!element) {
             throw Error("Invalid selector.");
         }
     }
 
-    if (!(node instanceof window.HTMLElement)) {
+    if (!(element instanceof window.HTMLElement)) {
         throw Error("Node should be instance of window.HTMLElement or valid selector string.");
     }
 
-    return node;
+    return element;
 }
 
 /**

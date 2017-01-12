@@ -34,7 +34,7 @@ export default class ImageCrop {
     /**
      * Change width of ImageCrop container
      * @param {Number} width - The number of pixels.
-     * @return {ImageCrop} A ImageCrop object.
+     * @return {ImageCrop} An ImageCrop object.
      */
     setWidth(width) {
         const value = validateDimension(width);
@@ -46,7 +46,7 @@ export default class ImageCrop {
     /**
      * Change height of ImageCrop container
      * @param {Number} height - The number of pixels.
-     * @return {ImageCrop} A ImageCrop object.
+     * @return {ImageCrop} An ImageCrop object.
      */
     setHeight(height) {
         const value = validateDimension(height);
