@@ -47,9 +47,8 @@ describe("Image Crop component", () => {
     });
 
     it("has setWidth method, which changes width style property of Canvas container and returns this", () => {
-        expect(imageCrop.setWidth).to.be.a("function");
-
         imageCrop = new ImageCrop({ width: 400 });
+        expect(imageCrop.setWidth).to.be.a("function");
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
@@ -71,9 +70,8 @@ describe("Image Crop component", () => {
     });
 
     it("has setHeight method, which changes height style property of Canvas container and returns this", () => {
-        expect(imageCrop.setHeight).to.be.a("function");
-
         imageCrop = new ImageCrop({ height: 123 });
+        expect(imageCrop.setHeight).to.be.a("function");
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
