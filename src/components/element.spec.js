@@ -7,8 +7,6 @@ describe("Base element component",() => {
 
     beforeEach(function() {
         cleanJsdom = jsdom();
-
-        element = new Element();
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
@@ -19,11 +17,13 @@ describe("Base element component",() => {
     });
 
     it("properly transforms tag argument and creates element", () => {
+        element = new Element();
         expect(element.element.nodeType).to.equal(Node.ELEMENT_NODE);
         expect(element.element).to.be.an.instanceof(window.HTMLElement);
     });
 
     it("has render method, which renders element and returns this", () => {
+        element = new Element();
         expect(element.render).to.be.a("function");
 
         expect(wrapper.querySelectorAll("div")).to.have.length(0);
@@ -56,6 +56,7 @@ describe("Base element component",() => {
     });
 
     it("has render method, which throws Error if parent node are not passed", () => {
+        element = new Element();
         expect(() => {new Element().render()}).to.throw("Parent node are not passed.");
     });
 });

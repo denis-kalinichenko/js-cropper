@@ -7,8 +7,6 @@ describe("Image Crop component", () => {
 
     beforeEach(function() {
         cleanJsdom = jsdom();
-
-        imageCrop = new ImageCrop();
         wrapper = document.createElement("div");
         wrapper.id = "image-crop";
         document.body.appendChild(wrapper);
@@ -19,6 +17,7 @@ describe("Image Crop component", () => {
     });
 
     it("has render method, which renders Canvas element and returns this", () => {
+        imageCrop = new ImageCrop();
         const wrapper = document.querySelector("#image-crop");
         expect(imageCrop.render).to.be.a("function");
 

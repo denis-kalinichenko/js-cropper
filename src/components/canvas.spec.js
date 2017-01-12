@@ -7,8 +7,6 @@ describe("Canvas component", function() {
 
     beforeEach(function() {
         cleanJsdom = jsdom();
-
-        canvas = new Canvas();
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
@@ -19,10 +17,12 @@ describe("Canvas component", function() {
     });
 
     it("initialises", () => {
+        canvas = new Canvas();
         expect(canvas).to.not.equal(undefined);
     });
 
     it("has setWidth method, which set width style property to canvas element", () => {
+        canvas = new Canvas();
         const width = 100;
 
         canvas.setWidth(width);
@@ -33,6 +33,7 @@ describe("Canvas component", function() {
     });
 
     it("has setHeight method, which set height style property to canvas element", () => {
+        canvas = new Canvas();
         const height = 150;
 
         canvas.setHeight(height);
