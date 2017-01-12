@@ -44,6 +44,10 @@ describe("Validators",() => {
             expect(() => {validateDimension(true)}).to.throw("Invalid dimension.");
             expect(() => {validateDimension(() => {}) }).to.throw("Invalid dimension.");
         });
+
+        it("returns valid dimension", () => {
+           expect(validateDimension(500)).to.equal(500);
+        });
     });
 
     describe("Config validator", () => {
