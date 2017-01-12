@@ -20,7 +20,7 @@ describe("Base element component",() => {
 
     it("properly transforms tag argument and creates element", () => {
         expect(element.element.nodeType).to.equal(Node.ELEMENT_NODE);
-        expect(element.element).be.an.instanceof(window.HTMLElement);
+        expect(element.element).to.be.an.instanceof(window.HTMLElement);
     });
 
     it("has render method, which renders element and returns this", () => {

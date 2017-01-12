@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import jsdom from "jsdom-global";
-import { validateNode, validateConfig } from "./validators";
+import { validateNode, validateConfig, validateDimension } from "./validators";
 
 describe("Validators",() => {
     beforeEach(() => {
@@ -29,6 +29,20 @@ describe("Validators",() => {
             expect(() => {validateNode(Infinity)}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
             expect(() => {validateNode(true)}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
             expect(() => {validateNode(() => {}) }).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
+        });
+    });
+
+    describe("Dimension validator", () => {
+        it("throws Error if dimension is invalid or not passed", () => {
+            expect(() => {validateDimension()}).to.throw("Dimension is not passed.");
+            expect(() => {validateDimension("string")}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension({})}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension([])}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension(NaN)}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension(null)}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension(Infinity)}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension(true)}).to.throw("Invalid dimension.");
+            expect(() => {validateDimension(() => {}) }).to.throw("Invalid dimension.");
         });
     });
 
