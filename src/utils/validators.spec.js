@@ -60,7 +60,7 @@ describe("Validators",() => {
 
             let expectedConfig = {
                 width: 300,
-                height: 300
+                height: 300,
             };
 
             let config = {
@@ -76,7 +76,7 @@ describe("Validators",() => {
             };
             expectedConfig = {
                 width: 600,
-                height: 300
+                height: 300,
             };
             expect(validateConfig(config)).to.deep.equal(expectedConfig);
         });
