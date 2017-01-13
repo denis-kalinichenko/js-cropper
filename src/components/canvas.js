@@ -12,7 +12,7 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
-        this.ctx = this.element.getContext("2d");
+        this._context = this.element.getContext("2d");
         this._image = new Image();
     }
 
@@ -46,6 +46,17 @@ export default class Canvas extends Element {
      */
     setImage(image) {
         this._image = image;
+        return this;
+    }
+
+    /**
+     * Draw the Image
+     *
+     * @return {Canvas} A Canvas object.
+     */
+    draw() {
+        this._context.clearRect(0, 0, this.element.width, this.element.height);
+        this._context.drawImage(this._image.element, 0, 0);
         return this;
     }
 }

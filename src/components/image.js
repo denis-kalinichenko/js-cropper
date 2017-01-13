@@ -29,6 +29,7 @@ export default class Image extends Element {
                 reject(Error("Can't load an image."));
             };
             this.element.src = src;
+            this.element.crossOrigin = "Anonymous";
         });
     }
 }
