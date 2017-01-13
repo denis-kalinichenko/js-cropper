@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import jsdom from "jsdom-global"
 import Canvas from "./canvas";
+import Image from "./image";
 
 describe("Canvas component", function() {
     let canvas, wrapper, cleanJsdom;
@@ -40,5 +41,19 @@ describe("Canvas component", function() {
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(height);
+    });
+
+    it("has setImage method, which pass the Image object into Canvas and returns this", () => {
+        canvas = new Canvas();
+        canvas.render(wrapper);
+
+        let image = new Image();
+        image = image.load("http://i.imgur.com/PJPXonr.jpg");
+        return image.then(() => {
+            expect(canvas.setImage).to.be.a("function");
+            canvas.setImage(image);
+            expect(canvas._image).to.be.an.instanceOf(Image());
+            expect(canvas._image).to.equal(image);
+        });
     });
 });
