@@ -63,12 +63,10 @@ describe("Canvas component", function () {
             width: 1000,
             height: 1000
         };
-
         canvas = new Canvas();
         canvas.setWidth(dimensions.width);
         canvas.setHeight(dimensions.height);
         canvas.render(wrapper);
-        const canvasNode = wrapper.querySelector("canvas");
         let image = new Image();
         image = image.load("http://i.imgur.com/PJPXonr.jpg");
         return image.then(() => {
@@ -83,6 +81,7 @@ describe("Canvas component", function () {
 
             canvas.setImage(image);
             canvas.draw();
+
             expect(clearRectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
             expect(drawImageSpy).to.have.been.called.once.with.exactly(image.element, 0, 0);
 
