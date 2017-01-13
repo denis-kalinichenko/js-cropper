@@ -52,7 +52,6 @@ describe("Canvas component", function() {
         return image.then(() => {
             expect(canvas.setImage).to.be.a("function");
             canvas.setImage(image);
-            expect(canvas._image).to.be.an.instanceOf(Image());
             expect(canvas._image).to.equal(image);
         });
     });

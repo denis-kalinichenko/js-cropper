@@ -1,4 +1,5 @@
 import Element from "./element";
+import Image from "./image";
 
 /**
  * Class representing a canvas element
@@ -12,6 +13,7 @@ export default class Canvas extends Element {
     constructor() {
         super("canvas");
         this.ctx = this.element.getContext("2d");
+        this._image = new Image();
     }
 
     /**
@@ -33,6 +35,17 @@ export default class Canvas extends Element {
      */
     setHeight(height) {
         this.element.height = height;
+        return this;
+    }
+
+    /**
+     * Pass the Image object into Canvas
+     *
+     * @param {Image} image - An Image object
+     * @return {Canvas} A Canvas object.
+     */
+    setImage(image) {
+        this._image = image;
         return this;
     }
 }
