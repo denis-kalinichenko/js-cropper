@@ -42,8 +42,8 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal(`${config.width}px`);
-        expect(canvasNode.style.height).to.equal(`${config.height}px`);
+        expect(canvasNode.width).to.equal(config.width);
+        expect(canvasNode.height).to.equal(config.height);
     });
 
     it("has setWidth method, which changes width style property of Canvas container and returns this", () => {
@@ -52,10 +52,10 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal("400px");
+        expect(canvasNode.width).to.equal(400);
 
         const resizedImageCrop = imageCrop.setWidth(600);
-        expect(canvasNode.style.width).to.equal("600px");
+        expect(canvasNode.width).to.equal(600);
 
         expect(resizedImageCrop).to.equal(imageCrop);
     });
@@ -66,29 +66,29 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal("400px");
+        expect(canvasNode.width).to.equal(400);
     });
 
-    it("has setHeight method, which changes height style property of Canvas container and returns this", () => {
+    it("has setHeight method, which changes height attribute of Canvas container and returns this", () => {
         imageCrop = new ImageCrop({ height: 123 });
         expect(imageCrop.setHeight).to.be.a("function");
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.height).to.equal("123px");
+        expect(canvasNode.height).to.equal(123);
 
         const resizedImageCrop = imageCrop.setHeight(321);
-        expect(canvasNode.style.height).to.equal("321px");
+        expect(canvasNode.height).to.equal(321);
 
         expect(resizedImageCrop).to.equal(imageCrop);
     });
 
-    it("has setHeight method, which changes width style property of Canvas container before render()", () => {
+    it("has setHeight method, which changes width attribute of Canvas container before render()", () => {
         imageCrop = new ImageCrop();
         imageCrop.setHeight(400);
         imageCrop.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.height).to.equal("400px");
+        expect(canvasNode.height).to.equal(400);
     });
 });

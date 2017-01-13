@@ -21,7 +21,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     setWidth(width) {
-        this.element.style.width = `${width}px`;
+        this.element.width = width;
         return this;
     }
 
@@ -32,7 +32,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     setHeight(height) {
-        this.element.style.height = `${height}px`;
+        this.element.height = height;
         return this;
     }
 }

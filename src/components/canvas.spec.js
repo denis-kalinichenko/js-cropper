@@ -20,7 +20,7 @@ describe("Canvas component", function() {
         expect(() => { new Canvas() }).to.not.throw(Error);
     });
 
-    it("has setWidth method, which set width style property to canvas element", () => {
+    it("has setWidth method, which set width attribute of canvas element", () => {
         canvas = new Canvas();
         const width = 100;
 
@@ -28,10 +28,10 @@ describe("Canvas component", function() {
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.width).to.equal(`${width}px`);
+        expect(canvasNode.width).to.equal(width);
     });
 
-    it("has setHeight method, which set height style property to canvas element", () => {
+    it("has setHeight method, which set height attribute of canvas element", () => {
         canvas = new Canvas();
         const height = 150;
 
@@ -39,6 +39,6 @@ describe("Canvas component", function() {
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.style.height).to.equal(`${height}px`);
+        expect(canvasNode.height).to.equal(height);
     });
 });
