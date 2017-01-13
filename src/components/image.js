@@ -14,6 +14,12 @@ export default class Image extends Element {
         super("img");
     }
 
+    /**
+     * Load an image by URL and set 'src' attribute
+     *
+     * @param {String} src - The url or path to image
+     * @return {Promise} A promise that returns {@link load~resolve} if resolved and {@link load~reject} if rejected.
+     */
     load(src) {
         return new Promise((resolve, reject) => {
             this.element.onload = () => {

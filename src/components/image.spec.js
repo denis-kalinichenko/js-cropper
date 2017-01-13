@@ -34,9 +34,4 @@ describe("Image component",() => {
             expect(loadedImage).to.equal(image);
         });
     });
-
-    it("has load method, which should be rejected with Error, if can't load an image by provided URL or path", () => {
-        image = new Image();
-        return expect(image.load("fakeimage.jpg")).to.eventually.be.rejectedWith("Can't load an image.").and.be.an.instanceOf(Error);
-    });
 });
