@@ -72,7 +72,7 @@ export default class ImageCrop {
 
     loadImage(url) {
         if (!url) {
-            throw Erorr("Image url or path is not passed.");
+            throw Error("Image url or path is not passed.");
         }
 
         if (typeof url != "string") {

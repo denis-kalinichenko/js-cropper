@@ -110,4 +110,20 @@ describe("Image Crop component", () => {
             expect(drawSpy).to.have.been.called.once();
         });
     });
+
+    it("has loadImage method, which throw Error if url or path is invalid or not passed", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.render(wrapper);
+
+        expect(() => {imageCrop.loadImage()}).to.throw("Image url or path is not passed.");
+        expect(() => {imageCrop.loadImage(NaN)}).to.throw("Image url or path is not passed.");
+        expect(() => {imageCrop.loadImage(null)}).to.throw("Image url or path is not passed.");
+        expect(() => {imageCrop.loadImage(12)}).to.throw("Invalid url or path.");
+        expect(() => {imageCrop.loadImage({})}).to.throw("Invalid url or path.");
+        expect(() => {imageCrop.loadImage([])}).to.throw("Invalid url or path.");
+        expect(() => {imageCrop.loadImage(Infinity)}).to.throw("Invalid url or path.");
+        expect(() => {imageCrop.loadImage(true)}).to.throw("Invalid url or path.");
+        expect(() => {imageCrop.loadImage(() => {}) }).to.throw("Invalid url or path.");
+    });
+
 });
