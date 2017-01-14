@@ -20,7 +20,7 @@ export default class Image extends Element {
      * @param {String} src - The url or path to image
      * @return {Promise} A promise that returns {@link load~resolve} if resolved and {@link load~reject} if rejected.
      */
-    load(src) {
+    load(url) {
         return new Promise((resolve, reject) => {
             this.element.onload = () => {
                 resolve(this);
@@ -28,7 +28,7 @@ export default class Image extends Element {
             this.element.onerror = () => {
                 reject(Error("Can't load an image."));
             };
-            this.element.src = src;
+            this.element.src = url;
             this.element.crossOrigin = "Anonymous";
         });
     }

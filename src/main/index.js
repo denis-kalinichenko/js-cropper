@@ -1,6 +1,7 @@
 import { validateNode, validateConfig, validateDimension } from "./../utils/validators";
 import { dimensions } from "./../configs/default";
 import Canvas from "./../components/canvas";
+import Image from "./../components/image";
 
 /**
  * Class representing Image Crop
@@ -17,6 +18,7 @@ export default class ImageCrop {
         validateConfig(config);
 
         this._canvas = new Canvas();
+        this._image = new Image();
 
         this.setWidth(config.width || dimensions.width);
         this.setHeight(config.height || dimensions.height);
@@ -66,5 +68,21 @@ export default class ImageCrop {
         }
         this._canvas.setHeight(height);
         return this;
+    }
+
+    loadImage(url) {
+        if (!url) {
+            throw Erorr("Image url or path is not passed.");
+        }
+
+        if (typeof url != "string") {
+            throw Error("Invalid url or path.");
+        }
+
+        return this._image.load(url).then((image) => {
+            this._canvas.setImage(image);
+            this._canvas.draw();
+            return this;
+        })
     }
 }

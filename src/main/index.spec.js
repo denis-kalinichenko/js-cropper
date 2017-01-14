@@ -91,4 +91,23 @@ describe("Image Crop component", () => {
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(400);
     });
+
+    it("has loadImage method, which pass Image into Canvas and call draw() method", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.setHeight(400);
+        imageCrop.render(wrapper);
+
+        const setImageSpy = spy();
+        const drawSpy = spy();
+
+        imageCrop._canvas = {
+            setImage: setImageSpy,
+            draw: drawSpy,
+        };
+
+        return imageCrop.loadImage("http://i.imgur.com/PJPXonr.jpg").then(() => {
+            expect(setImageSpy).to.have.been.called.once.with.exactly(imageCrop._image);
+            expect(drawSpy).to.have.been.called.once();
+        });
+    });
 });
