@@ -70,6 +70,12 @@ export default class ImageCrop {
         return this;
     }
 
+    /**
+     * Load an image and draw canvas
+     *
+     * @param {String} url - Url or path to image
+     * @return {Promise} A promise that returns {@link loadImage~resolve} if resolved and {@link loadImage~reject} if rejected.
+     */
     loadImage(url) {
         if (!url) {
             throw Error("Image url or path is not passed.");

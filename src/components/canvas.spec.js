@@ -84,7 +84,6 @@ describe("Canvas component", function () {
 
             expect(clearRectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
             expect(drawImageSpy).to.have.been.called.once.with.exactly(image.element, 0, 0);
-
         });
     });
 });
