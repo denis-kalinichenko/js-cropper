@@ -1,6 +1,7 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import ImageCrop from "./index";
+import { getContextMock } from "./../../test/mock";
 
 describe("Image Crop component", () => {
     let imageCrop, wrapper, cleanJsdom;
@@ -10,6 +11,7 @@ describe("Image Crop component", () => {
         wrapper = document.createElement("div");
         wrapper.id = "image-crop";
         document.body.appendChild(wrapper);
+        getContextMock();
     });
 
     afterEach(function() {

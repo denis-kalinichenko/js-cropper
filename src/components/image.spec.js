@@ -34,4 +34,81 @@ describe("Image component",() => {
             expect(loadedImage).to.equal(image);
         });
     });
+
+    it("has checkFormat method, which check an image format (landscape, portrait or square) and return format", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+        expect(image._checkFormat()).to.equal("portrait");
+
+        image = new Image();
+        image.element.width = 330;
+        image.element.height = 330;
+        expect(image._checkFormat()).to.equal("square");
+
+        image = new Image();
+        image.element.width = 690;
+        image.element.height = 330;
+        expect(image._checkFormat()).to.equal("landscape");
+    });
+
+    it("has isPortrait method, which return true if image format is portrait and return false if not", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isPortrait()).to.equal(true);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 300;
+        image._checkFormat();
+        expect(image.isPortrait()).to.equal(false);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isPortrait()).to.equal(false);
+    });
+
+    it("has isLandscape method, which return true if image format is landscape and return false if not", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isLandscape()).to.equal(false);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 300;
+        image._checkFormat();
+        expect(image.isLandscape()).to.equal(true);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isLandscape()).to.equal(false);
+    });
+
+    it("has isSquare method, which return true if image format is square and return false if not", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isSquare()).to.equal(false);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 300;
+        image._checkFormat();
+        expect(image.isSquare()).to.equal(false);
+
+        image = new Image();
+        image.element.width = 600;
+        image.element.height = 600;
+        image._checkFormat();
+        expect(image.isSquare()).to.equal(true);
+    });
 });
