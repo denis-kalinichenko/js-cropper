@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Element from "./element";
 
@@ -110,5 +110,15 @@ describe("Base element component",() => {
         const elementNode = wrapper.querySelector("span");
         expect(elementNode.height).to.equal(height);
         expect(resizedElement).to.equal(element);
+    });
+
+    it("has getContext2d() method, which return a drawing 2в context on the canvas", () => {
+        element = new Element("canvas");
+        expect(element.getContext2d).to.be.a("function");
+
+        const getContextSpy = spy();
+        HTMLCanvasElement.prototype.getContext = getContextSpy;
+        const context = element.getContext2d();
+        expect(getContextSpy).to.have.been.called.once.with.exactly("2d");
     });
 });

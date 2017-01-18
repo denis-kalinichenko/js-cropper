@@ -47,4 +47,13 @@ export default class Element {
         this.element.height = height;
         return this;
     }
+
+    /**
+     *  Get a drawing 2в context on the canvas
+     *
+     * @return {Object} - RenderingContext
+     */
+    getContext2d() {
+        return this.element.getContext("2d");
+    }
 }
