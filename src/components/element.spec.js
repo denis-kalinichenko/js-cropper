@@ -64,4 +64,52 @@ describe("Base element component",() => {
         element = new Element();
         expect(() => {new Element().render()}).to.throw("Parent node are not passed.");
     });
+
+    it("has setWidth method, which set width attribute of canvas element before render and return this", () => {
+        element = new Element("span");
+        const width = 100;
+
+        const resizedElement = element.setWidth(width);
+        resizedElement.render(wrapper);
+
+        const elementNode = wrapper.querySelector("span");
+        expect(elementNode.width).to.equal(width);
+        expect(resizedElement).to.equal(element);
+    });
+
+    it("has setWidth method, which set width attribute of canvas element after render and return this", () => {
+        element = new Element("span");
+        const width = 69;
+
+        element.render(wrapper);
+        const resizedElement = element.setWidth(width);
+
+        const elementNode = wrapper.querySelector("span");
+        expect(elementNode.width).to.equal(width);
+        expect(resizedElement).to.equal(element);
+    });
+
+    it("has setHeight method, which set height attribute of canvas element before render and return this", () => {
+        element = new Element("span");
+        const height = 69;
+
+        const resizedElement = element.setHeight(height);
+        resizedElement.render(wrapper);
+
+        const elementNode = wrapper.querySelector("span");
+        expect(elementNode.height).to.equal(height);
+        expect(resizedElement).to.equal(element);
+    });
+
+    it("has setHeight method, which set height attribute of canvas element after render and return this", () => {
+        element = new Element("span");
+        const height = 69;
+
+        element.render(wrapper);
+        const resizedElement = element.setHeight(height);
+
+        const elementNode = wrapper.querySelector("span");
+        expect(elementNode.height).to.equal(height);
+        expect(resizedElement).to.equal(element);
+    });
 });

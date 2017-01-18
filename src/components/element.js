@@ -27,4 +27,26 @@ export default class Element {
         parent.appendChild(this.element);
         return this;
     }
+
+    /**
+     * Change width of Element
+     *
+     * @param {Number} width - The number of pixels.
+     * @return {Canvas} A Canvas object.
+     */
+    setWidth(width) {
+        this.element.width = width;
+        return this;
+    }
+
+    /**
+     * Change width of Element
+     *
+     * @param {Number} height - The number of pixels.
+     * @return {Canvas} A Canvas object.
+     */
+    setHeight(height) {
+        this.element.height = height;
+        return this;
+    }
 }
