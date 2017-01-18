@@ -1,4 +1,6 @@
-import { validateNode, validateConfig, validateDimension } from "./../utils/validators";
+import validateNode from "../validators/node";
+import validateConfig from "../validators/config";
+import validateDimension from "../validators/dimension";
 import { dimensions } from "./../configs/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";

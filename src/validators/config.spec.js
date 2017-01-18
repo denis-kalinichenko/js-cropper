@@ -1,0 +1,20 @@
+import { expect } from "chai";
+import validateConfig from "./config";
+
+describe("Config validator", () => {
+    it("not throws Error if config is object", () => {
+        expect(() => {validateConfig({})}).to.not.throw(Error);
+    });
+
+    it("throws Error if config is invalid or not passed", () => {
+        expect(() => {validateConfig()}).to.throw("Config is not passed.");
+        expect(() => {validateConfig(null)}).to.throw("Config is not passed.");
+        expect(() => {validateConfig(NaN)}).to.throw("Config is not passed.");
+        expect(() => {validateConfig("string")}).to.throw("Invalid config.");
+        expect(() => {validateConfig([])}).to.throw("Invalid config.");
+        expect(() => {validateConfig(1)}).to.throw("Invalid config.");
+        expect(() => {validateConfig(Infinity)}).to.throw("Invalid config.");
+        expect(() => {validateConfig(true)}).to.throw("Invalid config.");
+        expect(() => {validateConfig(() => {}) }).to.throw("Invalid config.");
+    });
+});
