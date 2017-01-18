@@ -1,5 +1,6 @@
 import Element from "./element";
 import Image from "./image";
+import Pattern from "./pattern";
 import {styles} from "./../configs/default";
 
 /**
@@ -11,8 +12,9 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
-        this._context = this.element.getContext("2d");
+        this._context = this.getContext2d();
         this._image = new Image();
+        this._pattern = new Pattern();
 
         this._lastPointX = 0;
         this._lastPointY = 0;
@@ -26,7 +28,7 @@ export default class Canvas extends Element {
     }
 
     /**
-     * Call render() method from Element class, set styles, draw background pattern
+     * Call render() method from Element class, set styles, draw background
      *
      * @param {Object} parent - The DOM Element object, parent node
      * @return {Canvas} An Canvas object.
@@ -34,7 +36,6 @@ export default class Canvas extends Element {
     render(parent) {
         super.render(parent);
         this.element.style.borderRadius = "3px";
-        this._createBackgroundPattern();
         this._drawBackground();
         return this;
     }
@@ -183,26 +184,6 @@ export default class Canvas extends Element {
         this._context.lineTo(this._cutoutWidth, this._cutoutHeight);
         this._context.closePath();
         this._context.fill();
-        return this;
-    }
-
-    /**
-     * Create a canvas element for background pattern and draw pattern
-     *
-     * @return {Canvas} A Canvas object.
-     */
-    _createBackgroundPattern() {
-        this._pattern = new Element("canvas");
-        this._pattern.element.width = styles.pattern.size;
-        this._pattern.element.height = styles.pattern.size;
-        const context = this._pattern.element.getContext("2d");
-        context.fillStyle = styles.pattern.fill1;
-        context.fillRect(0, 0, 8, 8);
-        context.fillStyle = styles.pattern.fill2;
-        context.fillRect(8, 0, 8, 8);
-        context.fillRect(0, 8, 8, 8);
-        context.fillStyle = styles.pattern.fill1;
-        context.fillRect(8, 8, 8, 8);
         return this;
     }
 

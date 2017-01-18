@@ -30,15 +30,12 @@ describe("Canvas component", function () {
         canvas = new Canvas();
         expect(canvas.render).to.be.a("function");
 
-        const createBackgroundPatternSpy = spy();
         const drawBackgroundSpy = spy();
-        canvas._createBackgroundPattern = createBackgroundPatternSpy;
         canvas._drawBackground = drawBackgroundSpy;
 
         let renderedCanvas = canvas.render(wrapper);
         expect(wrapper.querySelectorAll("canvas")).to.have.length(1);
         expect(wrapper.querySelectorAll("canvas")[0].style.borderRadius).to.equal("3px");
-        expect(createBackgroundPatternSpy).to.have.been.called.once();
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(renderedCanvas).to.equal(canvas);
     });
@@ -164,9 +161,10 @@ describe("Canvas component", function () {
 
     it("has clear method, which clear canvas 2d context and return this", () => {
         const clearRectSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext(contextId) {
+        HTMLCanvasElement.prototype.getContext = function getContext() {
             return {
-                clearRect: clearRectSpy
+                clearRect: clearRectSpy,
+                fillRect: () => {}
             };
         };
 
@@ -198,6 +196,7 @@ describe("Canvas component", function () {
                 lineTo: lineToSpy,
                 closePath: closePathSpy,
                 fill: fillSpy,
+                fillRect: () => {}
             };
         };
 
@@ -223,31 +222,6 @@ describe("Canvas component", function () {
         expect(fillSpy).to.have.been.called.once();
     });
 
-    it("has _createBackgroundPattern method, which create canvas with pattern and return this", () => {
-        const fillRectSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                fillRect: fillRectSpy
-            };
-        };
-
-        canvas = new Canvas();
-        const dimensions = {
-            width: 500,
-            height: 300,
-        };
-        canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-
-        const drawerCanvas = canvas._createBackgroundPattern();
-        expect(drawerCanvas).to.equal(canvas);
-        expect(canvas._pattern).to.be.an.instanceof(Element);
-        expect(fillRectSpy).to.have.been.called.with.exactly(0, 0, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(8, 0, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(0, 8, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(8, 8, 8, 8);
-    });
-
     it("has _drawBackground method, which draw background and return this", () => {
         const createPatternSpy = spy();
         const rectSpy = spy();
@@ -268,8 +242,7 @@ describe("Canvas component", function () {
             height: 300,
         };
         canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-        canvas._createBackgroundPattern();
+        canvas.setHeight(dimensions.height);;
         const drawedCanvas = canvas._drawBackground();
         expect(drawedCanvas).to.equal(canvas);
         expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern.element, "repeat");
@@ -393,6 +366,7 @@ describe("Canvas component", function () {
 
         HTMLCanvasElement.prototype.getContext = function getContext() {
             return {
+                fillRect: () => {},
                 canvas: {
                     getBoundingClientRect: getBoundingClientRectSpy
                 }
