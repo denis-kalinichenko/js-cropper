@@ -7,9 +7,7 @@ import Image from "./../components/image";
 
 /**
  * Class representing Image Crop
- *
  */
-
 export default class ImageCrop {
     /**
      * Create an ImageCrop.
@@ -83,7 +81,7 @@ export default class ImageCrop {
             throw Error("Image url or path is not passed.");
         }
 
-        if (typeof url != "string") {
+        if (typeof url !== "string") {
             throw Error("Invalid url or path.");
         }
 
@@ -91,7 +89,7 @@ export default class ImageCrop {
             this._canvas.setImage(image);
             this._canvas.draw();
             return this;
-        })
+        });
     }
 
     /**

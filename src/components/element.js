@@ -1,8 +1,6 @@
 /**
  * Class representing a base element
- *
  */
-
 export default class Element {
     /**
      * Create an element

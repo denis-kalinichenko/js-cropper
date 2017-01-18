@@ -3,9 +3,7 @@ import Promise from "es6-promise";
 
 /**
  * Class representing an Image element
- *
  */
-
 export default class Image extends Element {
     /**
      * Create an element
@@ -46,10 +44,10 @@ export default class Image extends Element {
         if (this.element.width > this.element.height) {
             this._format = "landscape";
         }
-        if (this.element.width < this.element.height) {
+        else if (this.element.width < this.element.height) {
             this._format = "portrait";
         }
-        if (this.element.width === this.element.height) {
+        else {
             this._format = "square";
         }
         return this._format;

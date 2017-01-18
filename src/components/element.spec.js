@@ -64,7 +64,7 @@ describe("Base element component",() => {
         expect(() => {new Element().render()}).to.throw("Parent node are not passed.");
     });
 
-    it("has setWidth method, which set width attribute of canvas element before render and return this", () => {
+    it("has setWidth method, which set width attribute of Element before render and return this", () => {
         element = new Element("span");
         const width = 100;
 
@@ -76,7 +76,7 @@ describe("Base element component",() => {
         expect(resizedElement).to.equal(element);
     });
 
-    it("has setWidth method, which set width attribute of canvas element after render and return this", () => {
+    it("has setWidth method, which set width attribute of Element after render and return this", () => {
         element = new Element("span");
         const width = 69;
 
@@ -88,7 +88,7 @@ describe("Base element component",() => {
         expect(resizedElement).to.equal(element);
     });
 
-    it("has setHeight method, which set height attribute of canvas element before render and return this", () => {
+    it("has setHeight method, which set height attribute of Element before render and return this", () => {
         element = new Element("span");
         const height = 69;
 
@@ -100,7 +100,7 @@ describe("Base element component",() => {
         expect(resizedElement).to.equal(element);
     });
 
-    it("has setHeight method, which set height attribute of canvas element after render and return this", () => {
+    it("has setHeight method, which set height attribute of Element after render and return this", () => {
         element = new Element("span");
         const height = 69;
 

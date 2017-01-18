@@ -4,9 +4,7 @@ import {styles} from "./../configs/default";
 
 /**
  * Class representing a canvas element
- *
  */
-
 export default class Canvas extends Element {
     /**
      * Create a canvas element.
