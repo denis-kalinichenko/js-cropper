@@ -233,7 +233,7 @@ export default class Canvas extends Element {
          * @param {Canvas} event - Event object
          */
         const _onMouseMove = (event) => {
-            const location = this._windowToCanvas(event.clientX, event.clientY);
+            const location = this._windowToCanvas(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY);
             this._drawImage(location.x, location.y);
         };
 
@@ -243,6 +243,7 @@ export default class Canvas extends Element {
          */
         const _onMouseUp = () => {
             document.removeEventListener('mousemove', _onMouseMove, false);
+            document.removeEventListener('touchmove', _onMouseMove, false);
             document.body.style.cursor = "";
         };
 
@@ -253,14 +254,17 @@ export default class Canvas extends Element {
          */
         const _onMouseDown = (event) => {
             document.addEventListener('mousemove', _onMouseMove, false);
-            const location = this._windowToCanvas(event.clientX, event.clientY);
+            document.addEventListener('touchmove', _onMouseMove, false);
+            const location = this._windowToCanvas(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY);
             this._lastPointX = location.x;
             this._lastPointY = location.y;
             document.body.style.cursor = "move";
         };
 
         this.element.addEventListener("mousedown", _onMouseDown, false);
+        this.element.addEventListener("touchstart", _onMouseDown, false);
         document.addEventListener("mouseup", _onMouseUp, false);
+        document.addEventListener("touchend", _onMouseUp, false);
         return this;
     }
 

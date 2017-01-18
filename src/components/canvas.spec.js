@@ -3,7 +3,7 @@ import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
 import Element from "./element";
-import { getContextMock } from "./../../test/mock";
+import {getContextMock} from "./../../test/mock";
 
 describe("Canvas component", function () {
     let canvas, wrapper, cleanJsdom;
@@ -257,7 +257,8 @@ describe("Canvas component", function () {
                 createPattern: createPatternSpy,
                 rect: rectSpy,
                 fill: fillSpy,
-                fillRect: () => {}
+                fillRect: () => {
+                }
             };
         };
 
@@ -288,7 +289,7 @@ describe("Canvas component", function () {
             canvas.setWidth(dimensions.width);
             canvas.setHeight(dimensions.height);
             canvas._initEventListeners();
-            expect(addEventListenerSpy).to.have.been.called.once();
+            expect(addEventListenerSpy).to.have.been.called();
         });
 
         it("adds event listener for mouseup", () => {
@@ -302,8 +303,80 @@ describe("Canvas component", function () {
             canvas.setWidth(dimensions.width);
             canvas.setHeight(dimensions.height);
             canvas._initEventListeners();
-            expect(addEventListenerSpy).to.have.been.called.once();
+            expect(addEventListenerSpy).to.have.been.called.with("mouseup");
         });
+    });
+
+    it("has mousedown/touchstart event listener", () => {
+        canvas = new Canvas();
+        const dimensions = {
+            width: 500,
+            height: 300,
+        };
+        canvas.setWidth(dimensions.width);
+        canvas.setHeight(dimensions.height);
+
+        const windowToCanvasSpy = spy();
+        canvas._windowToCanvas = windowToCanvasSpy;
+        canvas._initEventListeners();
+        const event = new MouseEvent("mousedown", {
+            clientX: 50,
+            clientY: 100,
+        });
+        canvas.element.dispatchEvent(event);
+        expect(windowToCanvasSpy).to.have.been.called.with.exactly(50, 100);
+    });
+
+    it("has mousemove/touchmove event listener", () => {
+        canvas = new Canvas();
+        const dimensions = {
+            width: 500,
+            height: 300,
+        };
+        canvas.setWidth(dimensions.width);
+        canvas.setHeight(dimensions.height);
+
+        const windowToCanvasSpy = spy();
+        const drawImageSpy = spy();
+        canvas._initEventListeners();
+        canvas._windowToCanvas = windowToCanvasSpy;
+        canvas._drawImage = drawImageSpy;
+
+        let event = new MouseEvent("mousedown", {
+            clientX: 10,
+            clientY: 10,
+        });
+        canvas.element.dispatchEvent(event);
+
+        event = new MouseEvent("mousemove", {
+            clientX: 50,
+            clientY: 100,
+        });
+        document.dispatchEvent(event);
+
+        expect(windowToCanvasSpy).to.have.been.called.with.exactly(50, 100);
+    });
+
+    it("has mouseup/touchend event listener", () => {
+        const removeEventListenerSpy = spy();
+        document.removeEventListener = removeEventListenerSpy;
+
+        canvas = new Canvas();
+        const dimensions = {
+            width: 500,
+            height: 300,
+        };
+        canvas.setWidth(dimensions.width);
+        canvas.setHeight(dimensions.height);
+
+        canvas._initEventListeners();
+        const event = new MouseEvent("mouseup", {
+            clientX: 50,
+            clientY: 100,
+        });
+        document.dispatchEvent(event);
+        expect(removeEventListenerSpy).to.have.been.called.with("mousemove");
+        expect(removeEventListenerSpy).to.have.been.called.with("touchmove");
     });
 
     it("has _windowToCanvas method, which translate HTML coordinates to Canvas coordinates.", () => {
@@ -335,8 +408,8 @@ describe("Canvas component", function () {
         canvas.setWidth(dimensions.width);
         canvas.setHeight(dimensions.height);
 
-        expect(canvas._windowToCanvas(10, 10)).to.deep.equal({ x: 2, y: 2 });
-        expect(canvas._windowToCanvas(0, 5)).to.deep.equal({ x: -8, y: -3 });
+        expect(canvas._windowToCanvas(10, 10)).to.deep.equal({x: 2, y: 2});
+        expect(canvas._windowToCanvas(0, 5)).to.deep.equal({x: -8, y: -3});
         expect(getBoundingClientRectSpy).to.have.been.called();
     });
 
@@ -387,7 +460,7 @@ describe("Canvas component", function () {
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(drawCutoutSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(image.element,
-            canvas._baseX,  
+            canvas._baseX,
             canvas._baseY,
             Math.floor(image.element.width * canvas._scale),
             Math.floor(image.element.height * canvas._scale));
