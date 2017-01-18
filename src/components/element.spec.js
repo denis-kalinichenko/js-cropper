@@ -61,7 +61,6 @@ describe("Base element component",() => {
     });
 
     it("has render method, which throws Error if parent node are not passed", () => {
-        element = new Element();
         expect(() => {new Element().render()}).to.throw("Parent node are not passed.");
     });
 

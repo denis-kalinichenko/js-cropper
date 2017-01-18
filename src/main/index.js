@@ -63,7 +63,7 @@ export default class ImageCrop {
      */
     setHeight(height) {
         try {
-            validateDimension(height)
+            validateDimension(height);
         }
         catch (error) {
             throw Error(`Height property: ${error.message}`);
