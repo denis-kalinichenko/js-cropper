@@ -465,4 +465,39 @@ describe("Canvas component", function () {
             Math.floor(image.element.width * canvas._scale),
             Math.floor(image.element.height * canvas._scale));
     });
+
+    it("has toDataURL method, which return image as DataURL", () => {
+        canvas = new Canvas();
+        canvas.setHeight(400);
+        canvas.setWidth(560);
+        canvas.render(wrapper);
+
+        const setWidthSpy = spy();
+        const setHeightSpy = spy();
+        const drawImageSpy = spy();
+        const toDataURLSpy = spy();
+
+        Element.prototype.setWidth = setWidthSpy;
+        Element.prototype.setHeight = setHeightSpy;
+        HTMLCanvasElement.prototype.toDataURL = toDataURLSpy;
+
+        HTMLCanvasElement.prototype.getContext = function getContext() {
+            return {
+                drawImage: drawImageSpy
+            };
+        };
+
+        const dataURL = canvas.toDataURL();
+
+        expect(setWidthSpy).to.have.been.called.once.with.exactly(canvas._frameSize);
+        expect(toDataURLSpy).to.have.been.called.once();
+        expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas.element,
+            canvas._cutoutWidth,
+            canvas._cutoutHeight,
+            canvas._frameSize,
+            canvas._frameSize,
+            0, 0,
+            canvas._frameSize,
+            canvas._frameSize);
+    });
 });

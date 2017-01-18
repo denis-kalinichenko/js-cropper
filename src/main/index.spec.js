@@ -128,4 +128,16 @@ describe("Image Crop component", () => {
         expect(() => {imageCrop.loadImage(() => {}) }).to.throw("Invalid url or path.");
     });
 
+    it("has getCroppedImage method, which return image as DataURL", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.setHeight(400);
+        imageCrop.setWidth(560);
+        imageCrop.render(wrapper);
+
+        const toDataURLSpy = spy();
+        imageCrop._canvas.toDataURL = toDataURLSpy;
+
+        const cropedImage = imageCrop.getCroppedImage();
+        expect(toDataURLSpy).to.have.been.called.once();
+    });
 });

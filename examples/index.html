@@ -7,12 +7,19 @@
 </head>
 <body>
     <div id="crop"></div>
+    <button onclick="showResult()">Crop</button>
+    <br>
+    <img src="" alt="" id="result">
     <script>
         var imageCrop = new ImageCrop();
         imageCrop.render("#crop");
-        imageCrop.loadImage("http://i.imgur.com/PJPXonr.jpg").then(function () {
-            console.log(imageCrop);
+        imageCrop.loadImage("img/4rfBhA4.jpg").then(function () {
+            console.info("ImageCrop is ready");
         });
+
+        function showResult() {
+            document.getElementById("result").src = imageCrop.getCroppedImage();
+        }
     </script>
 </body>
 </html>

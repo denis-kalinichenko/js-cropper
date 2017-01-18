@@ -2,6 +2,7 @@ import { validateNode, validateConfig, validateDimension } from "./../utils/vali
 import { dimensions } from "./../configs/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
+import Element from "./../components/element";
 
 /**
  * Class representing Image Crop
@@ -90,5 +91,15 @@ export default class ImageCrop {
             this._canvas.draw();
             return this;
         })
+    }
+
+    /**
+     * Generates and returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
+     * The returned image is in a resolution of 96 dpi.
+     *
+     * @return {String} - A data URI.
+     */
+    getCroppedImage() {
+        return this._canvas.toDataURL();
     }
 }

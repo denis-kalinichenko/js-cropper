@@ -1,6 +1,6 @@
 import Element from "./element";
 import Image from "./image";
-import { styles } from "./../configs/default";
+import {styles} from "./../configs/default";
 
 /**
  * Class representing a canvas element
@@ -48,7 +48,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     setWidth(width) {
-        this.element.width = width;
+        super.setWidth(width);
         this._calcFrameSize();
         return this;
     }
@@ -60,7 +60,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     setHeight(height) {
-        this.element.height = height;
+        super.setHeight(height);
         this._calcFrameSize();
         return this;
     }
@@ -299,5 +299,27 @@ export default class Canvas extends Element {
      */
     _imageAbsoluteHeight() {
         return this._image.element.height * this._scale;
+    }
+
+    /**
+     * Generates and returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
+     * The returned image is in a resolution of 96 dpi.
+     *
+     * @return {String} - A data URI.
+     */
+    toDataURL() {
+        const temp_canvas = new Element("canvas");
+        const temp_context = temp_canvas.element.getContext("2d");
+        temp_canvas.setWidth(this._frameSize);
+        temp_canvas.setHeight(this._frameSize);
+        temp_context.drawImage(this.element,
+            this._cutoutWidth,
+            this._cutoutHeight,
+            this._frameSize,
+            this._frameSize,
+            0, 0,
+            this._frameSize,
+            this._frameSize);
+        return temp_canvas.element.toDataURL();
     }
 }
