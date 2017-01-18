@@ -1,4 +1,5 @@
 --compilers js:babel-core/register
-—require test/bootstrap.js
-—recursive
-—colors
+--require test/bootstrap.js
+--reporter spec
+--recursive
+--growl

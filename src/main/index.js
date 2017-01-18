@@ -2,7 +2,6 @@ import { validateNode, validateConfig, validateDimension } from "./../utils/vali
 import { dimensions } from "./../configs/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
-import Element from "./../components/element";
 
 /**
  * Class representing Image Crop

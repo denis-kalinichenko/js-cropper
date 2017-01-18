@@ -472,15 +472,10 @@ describe("Canvas component", function () {
         canvas.setWidth(560);
         canvas.render(wrapper);
 
-        const setWidthSpy = spy();
-        const setHeightSpy = spy();
         const drawImageSpy = spy();
         const toDataURLSpy = spy();
 
-        Element.prototype.setWidth = setWidthSpy;
-        Element.prototype.setHeight = setHeightSpy;
         HTMLCanvasElement.prototype.toDataURL = toDataURLSpy;
-
         HTMLCanvasElement.prototype.getContext = function getContext() {
             return {
                 drawImage: drawImageSpy
@@ -489,7 +484,6 @@ describe("Canvas component", function () {
 
         const dataURL = canvas.toDataURL();
 
-        expect(setWidthSpy).to.have.been.called.once.with.exactly(canvas._frameSize);
         expect(toDataURLSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas.element,
             canvas._cutoutWidth,
