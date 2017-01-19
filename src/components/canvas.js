@@ -1,6 +1,7 @@
 import Element from "./element";
 import Image from "./image";
 import Pattern from "./pattern";
+import Frame from "../objects/frame";
 import {styles} from "./../configs/default";
 
 /**
@@ -15,6 +16,7 @@ export default class Canvas extends Element {
         this._context = this.getContext2d();
         this._image = new Image();
         this._pattern = new Pattern();
+        this._frame = new Frame();
 
         this._lastPointX = 0;
         this._lastPointY = 0;

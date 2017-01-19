@@ -6,7 +6,7 @@ import {styles} from "./../configs/default";
  */
 export default class Pattern extends Element {
     /**
-     * Create an pattern, set size
+     * Create a pattern, set size
      */
     constructor() {
         super("canvas");
