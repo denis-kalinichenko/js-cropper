@@ -2,7 +2,8 @@ import {expect, spy} from "chai";
 import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
-import Element from "./element";
+import Point from "../objects/point";
+import Size from "../objects/size";
 import {getContextMock} from "./../../test/mock";
 
 describe("Canvas component", function () {
@@ -40,37 +41,37 @@ describe("Canvas component", function () {
         expect(renderedCanvas).to.equal(canvas);
     });
 
-    it("has setWidth method, which set width attribute of canvas element and call _calcFrameSize()", () => {
+    it("has setWidth method, which set width attribute of canvas element and call update() frame", () => {
         canvas = new Canvas();
         const width = 100;
 
-        const calcFrameSizeSpy = spy();
-        canvas._calcFrameSize = calcFrameSizeSpy;
+        const updateFrameSpy = spy();
+        canvas._frame.update = updateFrameSpy;
 
         canvas.setWidth(width);
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.width).to.equal(width);
-        expect(calcFrameSizeSpy).to.have.been.called.once();
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.element);
     });
 
-    it("has setHeight method, which set height attribute of canvas element and call _calcFrameSize()", () => {
+    it("has setHeight method, which set height attribute of canvas element and call update() frame", () => {
         canvas = new Canvas();
         const height = 150;
 
-        const calcFrameSizeSpy = spy();
-        canvas._calcFrameSize = calcFrameSizeSpy;
+        const updateFrameSpy = spy();
+        canvas._frame.update = updateFrameSpy;
 
         canvas.setHeight(height);
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(height);
-        expect(calcFrameSizeSpy).to.have.been.called.once();
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.element);
     });
 
-    it("has setImage method, which pass the Image object into Canvas and returns this", () => {
+    it("has setImage method, which pass the Image object into Canvas, reset points, call scaleToFit() and returns this", () => {
         canvas = new Canvas();
         canvas.render(wrapper);
 
@@ -78,62 +79,40 @@ describe("Canvas component", function () {
         image.element.width = 300;
         image.element.height = 300;
         expect(canvas.setImage).to.be.a("function");
+
+        const resetPointSpy = spy();
+        canvas._resetPoints = resetPointSpy;
+
+        const scaleToFitSpy = spy();
+        image.scaleToFit = scaleToFitSpy;
+
         canvas.setImage(image);
         expect(canvas._image).to.equal(image);
+        expect(resetPointSpy).to.have.been.called.once();
+        expect(scaleToFitSpy).to.have.been.called.once.with.exactly(canvas._frame);
     });
 
-    it("has setImage method, which set to zero last points", () => {
+    it("has _resetPoints method, which set to zero points", () => {
         canvas = new Canvas();
         canvas.render(wrapper);
 
-        const image = new Image();
-        canvas._lastPointX = 69;
-        canvas._lastPointY = 69;
-        canvas._baseX = 69;
-        canvas._baseY = 69;
+        canvas._lastPoint = new Point(69, 69);
+        canvas._basePoint = new Point(69, 69);
 
-        canvas.setImage(image);
-        expect(canvas._lastPointX).to.equal(0);
-        expect(canvas._lastPointY).to.equal(0);
-        expect(canvas._baseX).to.equal(0);
-        expect(canvas._baseY).to.equal(0);
+        canvas._resetPoints();
+        expect(canvas._lastPoint.x).to.equal(0);
+        expect(canvas._lastPoint.y).to.equal(0);
+        expect(canvas._basePoint.x).to.equal(0);
+        expect(canvas._basePoint.y).to.equal(0);
     });
 
-    it("has setImage method, which calculate and set scale", () => {
-        canvas = new Canvas();
-        canvas.render(wrapper);
-
-        canvas._frameSize = 130;
-        let image = new Image();
-        image.element.width = 600;
-        image.element.height = 300;
-        canvas.setImage(image);
-        expect(canvas._scale).to.equal(canvas._frameSize / image.element.height);
-
-        canvas._frameSize = 130;
-        image = new Image();
-        image.element.width = 300;
-        image.element.height = 600;
-        canvas.setImage(image);
-        expect(canvas._scale).to.equal(canvas._frameSize / image.element.width);
-
-        canvas._frameSize = 150;
-        image = new Image();
-        image.element.width = 50;
-        image.element.height = 50;
-        canvas.setImage(image);
-        expect(canvas._scale).to.equal(1);
-    });
-
-    it("has draw method, which call drawImage and initEventListeners methods returns this", () => {
+    it("has draw method, which call drawImage and returns this", () => {
         canvas = new Canvas();
         canvas.setWidth(300);
         canvas.setHeight(300);
 
         const drawImageSpy = spy();
         canvas._drawImage = drawImageSpy;
-        const initEventListenersSpy = spy();
-        canvas._initEventListeners = initEventListenersSpy;
 
         canvas.render(wrapper);
 
@@ -144,19 +123,8 @@ describe("Canvas component", function () {
         canvas.setImage(image);
         const drawedCanvas = canvas.draw();
 
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas._cutoutWidth - ((canvas._imageAbsoluteWidth() - canvas._frameSize) / 2), canvas._cutoutHeight);
-        expect(initEventListenersSpy).to.have.been.called.once();
+        expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas._centerImagePoint());
         expect(drawedCanvas).to.equal(canvas);
-
-        image = new Image();
-        image.element.width = 500;
-        image.element.height = 1000;
-        image._checkFormat();
-        canvas.setImage(image);
-        canvas.draw();
-
-        expect(drawImageSpy).to.have.been.called.with.exactly(canvas._cutoutWidth, canvas._cutoutHeight - ((canvas._imageAbsoluteHeight() - canvas._frameSize) / 2));
-        expect(initEventListenersSpy).to.have.been.called();
     });
 
     it("has clear method, which clear canvas 2d context and return this", () => {
@@ -179,47 +147,6 @@ describe("Canvas component", function () {
         const clearedCanvas = canvas.clear();
         expect(clearedCanvas).to.equal(canvas);
         expect(clearRectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
-    });
-
-    it("has _drawCutout method, which draw the cutout over canvas and return this", () => {
-        const beginPathSpy = spy();
-        const rectSpy = spy();
-        const moveToSpy = spy();
-        const lineToSpy = spy();
-        const closePathSpy = spy();
-        const fillSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                beginPath: beginPathSpy,
-                rect: rectSpy,
-                moveTo: moveToSpy,
-                lineTo: lineToSpy,
-                closePath: closePathSpy,
-                fill: fillSpy,
-                fillRect: () => {}
-            };
-        };
-
-        canvas = new Canvas();
-        const dimensions = {
-            width: 500,
-            height: 300,
-        };
-        canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-
-        const drawerCanvas = canvas._drawCutout();
-        expect(drawerCanvas).to.equal(canvas);
-
-        expect(beginPathSpy).to.have.been.called.once();
-        expect(rectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
-        expect(moveToSpy).to.have.been.called.once.with.exactly(canvas._cutoutWidth, canvas._cutoutHeight);
-        expect(lineToSpy).to.have.been.called.with.exactly(canvas._cutoutWidth, dimensions.height - canvas._cutoutHeight);
-        expect(lineToSpy).to.have.been.called.with.exactly(dimensions.width - canvas._cutoutWidth, dimensions.height - canvas._cutoutHeight);
-        expect(lineToSpy).to.have.been.called.with.exactly(dimensions.width - canvas._cutoutWidth, canvas._cutoutHeight);
-        expect(lineToSpy).to.have.been.called.with.exactly(canvas._cutoutWidth, canvas._cutoutHeight);
-        expect(closePathSpy).to.have.been.called.once();
-        expect(fillSpy).to.have.been.called.once();
     });
 
     it("has _drawBackground method, which draw background and return this", () => {
@@ -297,7 +224,7 @@ describe("Canvas component", function () {
             clientY: 100,
         });
         canvas.element.dispatchEvent(event);
-        expect(windowToCanvasSpy).to.have.been.called.with.exactly(50, 100);
+        expect(windowToCanvasSpy).to.have.been.called.with.exactly(new Point(50, 100));
     });
 
     it("has mousemove/touchmove event listener", () => {
@@ -327,7 +254,7 @@ describe("Canvas component", function () {
         });
         document.dispatchEvent(event);
 
-        expect(windowToCanvasSpy).to.have.been.called.with.exactly(50, 100);
+        expect(windowToCanvasSpy).to.have.been.called.with.exactly(new Point(50, 100));
     });
 
     it("has mouseup/touchend event listener", () => {
@@ -382,26 +309,12 @@ describe("Canvas component", function () {
         canvas.setWidth(dimensions.width);
         canvas.setHeight(dimensions.height);
 
-        expect(canvas._windowToCanvas(10, 10)).to.deep.equal({x: 2, y: 2});
-        expect(canvas._windowToCanvas(0, 5)).to.deep.equal({x: -8, y: -3});
+        expect(canvas._windowToCanvas(new Point(10, 10))).to.deep.equal(new Point(2, 2));
+        expect(canvas._windowToCanvas(new Point(0, 5))).to.deep.equal(new Point(-8, -3));
         expect(getBoundingClientRectSpy).to.have.been.called();
     });
 
-    it("has _imageAbsoluteWidth method, which return absolute width of scaled image", () => {
-        canvas = new Canvas();
-        canvas._scale = 0.5;
-        canvas._image.element.width = 300;
-        expect(canvas._imageAbsoluteWidth()).to.equal(canvas._image.element.width * canvas._scale);
-    });
-
-    it("has _imageAbsoluteHeight method, which return absolute height of scaled image", () => {
-        canvas = new Canvas();
-        canvas._scale = 0.5;
-        canvas._image.element.height = 69;
-        expect(canvas._imageAbsoluteHeight()).to.equal(canvas._image.element.height * canvas._scale);
-    });
-
-    it("has drawImage method, which draw an Image and returns this", () => {
+    it("has _drawImage method, which draw an Image and returns this", () => {
         const dimensions = {
             width: 1000,
             height: 1000
@@ -425,19 +338,19 @@ describe("Canvas component", function () {
         };
         canvas.clear = clearSpy;
         canvas._drawBackground = drawBackgroundSpy;
-        canvas._drawCutout = drawCutoutSpy;
+        canvas._cutout.draw = drawCutoutSpy;
 
         canvas.setImage(image);
-        canvas._drawImage(10, 10);
+        canvas._drawImage(new Point(10, 10));
 
         expect(clearSpy).to.have.been.called.once();
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(drawCutoutSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(image.element,
-            canvas._baseX,
-            canvas._baseY,
-            Math.floor(image.element.width * canvas._scale),
-            Math.floor(image.element.height * canvas._scale));
+            canvas._basePoint.x,
+            canvas._basePoint.y,
+            Math.floor(image.element.width * canvas._image._scale),
+            Math.floor(image.element.height * canvas._image._scale));
     });
 
     it("has toDataURL method, which return image as DataURL", () => {
@@ -445,6 +358,13 @@ describe("Canvas component", function () {
         canvas.setHeight(400);
         canvas.setWidth(560);
         canvas.render(wrapper);
+
+        const image = new Image();
+        image.element.width = 600;
+        image.element.height = 300;
+        image._checkFormat();
+
+        canvas.setImage(image);
 
         const drawImageSpy = spy();
         const toDataURLSpy = spy();
@@ -460,12 +380,55 @@ describe("Canvas component", function () {
 
         expect(toDataURLSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas.element,
-            canvas._cutoutWidth,
-            canvas._cutoutHeight,
-            canvas._frameSize,
-            canvas._frameSize,
+            canvas._frame.getMinX(),
+            canvas._frame.getMinY(),
+            canvas._frame.getRect().size.w,
+            canvas._frame.getRect().size.h,
             0, 0,
-            canvas._frameSize,
-            canvas._frameSize);
+            canvas._frame.getRect().size.w,
+            canvas._frame.getRect().size.h);
+    });
+
+    it("has _centerImagePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {
+        canvas = new Canvas();
+        canvas.setHeight(400);
+        canvas.setWidth(560);
+        canvas.render(wrapper);
+
+        const image = new Image();
+        image.element.width = 600;
+        image.element.height = 300;
+        image._checkFormat();
+
+        canvas.setImage(image);
+
+        const expectedX = canvas._frame.getMidX() - (canvas._image.getSize().w / 2);
+        const expectedY = canvas._frame.getMidY() - (canvas._image.getSize().h / 2);
+        expect(canvas._centerImagePoint()).to.deep.equal(new Point(expectedX, expectedY));
+    });
+
+    it("has _validatePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {
+        canvas = new Canvas();
+        canvas.setHeight(340);
+        canvas.setWidth(560);
+        canvas.render(wrapper);
+
+        const image = new Image();
+        image.element.width = 500;
+        image.element.height = 400;
+        image._checkFormat();
+        image.scaleToFit(canvas._frame.update(canvas.element));
+
+        canvas.setImage(image);
+
+        console.log(canvas._frame.getRect());
+
+        let x = canvas._frame.getMinX() - 10;
+        let y = canvas._frame.getMinY();
+        expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(x, y));
+
+        x = canvas._frame.getMinX() + 50;
+        y = canvas._frame.getMinY();
+        expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(canvas._frame.getMinX(), y));
     });
 });

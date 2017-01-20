@@ -2,7 +2,8 @@ import Element from "./element";
 import Image from "./image";
 import Pattern from "./pattern";
 import Frame from "../objects/frame";
-import {styles} from "./../configs/default";
+import Point from "../objects/point";
+import Cutout from "./cutout";
 
 /**
  * Class representing a canvas element
@@ -17,16 +18,10 @@ export default class Canvas extends Element {
         this._image = new Image();
         this._pattern = new Pattern();
         this._frame = new Frame();
+        this._cutout = new Cutout(this._frame, this);
 
-        this._lastPointX = 0;
-        this._lastPointY = 0;
-        this._baseX = 0;
-        this._baseY = 0;
-        this._scale = 1;
-        this._frameSizePerc = 0.85;
-        this._frameSize = 0;
-        this._cutoutWidth = 0;
-        this._cutoutHeight = 0;
+        this._lastPoint = new Point(0, 0);
+        this._basePoint = new Point(0, 0);
     }
 
     /**
@@ -39,6 +34,7 @@ export default class Canvas extends Element {
         super.render(parent);
         this.element.style.borderRadius = "3px";
         this._drawBackground();
+        this._initEventListeners();
         return this;
     }
 
@@ -50,7 +46,7 @@ export default class Canvas extends Element {
      */
     setWidth(width) {
         super.setWidth(width);
-        this._calcFrameSize();
+        this._frame.update(this.element);
         return this;
     }
 
@@ -62,19 +58,7 @@ export default class Canvas extends Element {
      */
     setHeight(height) {
         super.setHeight(height);
-        this._calcFrameSize();
-        return this;
-    }
-
-    /**
-     * Calculate Frame dimensions (in pixels), set size of cutout over canvas (top, left)
-     *
-     * @return {Canvas} A Canvas object.
-     */
-    _calcFrameSize() {
-        this._frameSize = (this.element.width > this.element.height) ? this.element.height * this._frameSizePerc : this.element.width * this._frameSizePerc;
-        this._cutoutHeight = (this.element.height - this._frameSize) / 2;
-        this._cutoutWidth = (this.element.width - this._frameSize) / 2;
+        this._frame.update(this.element);
         return this;
     }
 
@@ -86,18 +70,9 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     setImage(image) {
-        this._lastPointX = 0;
-        this._lastPointY = 0;
-        this._baseX = 0;
-        this._baseY = 0;
+        this._resetPoints();
         this._image = image;
-
-        let widthScale, heightScale;
-
-        widthScale = (this._frameSize > this._image.element.width) ? 1 : this._frameSize / this._image.element.width;
-        heightScale = (this._frameSize > this._image.element.height) ? 1 : this._frameSize / this._image.element.height;
-
-        this._scale = (widthScale > heightScale) ? widthScale : heightScale;
+        this._image.scaleToFit(this._frame);
         return this;
     }
 
@@ -107,56 +82,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     draw() {
-        let x = this._cutoutWidth,
-            y = this._cutoutHeight;
-
-        if (this._image.isLandscape()) {
-            y = this._cutoutHeight;
-            x = this._cutoutWidth - ((this._imageAbsoluteWidth() - this._frameSize) / 2);
-        }
-        if (this._image.isPortrait()) {
-            x = this._cutoutWidth;
-            y = this._cutoutHeight - ((this._imageAbsoluteHeight() - this._frameSize) / 2);
-        }
-
-        this._drawImage(x, y);
-        this._initEventListeners();
-        return this;
-    }
-
-    /**
-     * Draw an Image on canvas, clear canvas context before, draw a background pattern and frame
-     *
-     * @param {Number} x - coordinates
-     * @param {Number} y - coordinates
-     * @return {Canvas} A Canvas object.
-     */
-    _drawImage(x = 0, y = 0) {
-        this.clear();
-        this._drawBackground();
-
-        let baseX = this._baseX + (x - this._lastPointX);
-        let baseY = this._baseY + (y - this._lastPointY);
-
-        if (this._image.isLandscape()) {
-            baseY = (this._cutoutHeight > baseY || this._cutoutHeight + this._frameSize < baseY + this._frameSize) ? this._cutoutHeight : baseY;
-        }
-
-        if (this._image.isPortrait()) {
-            baseX = (this._cutoutWidth > baseX || this._cutoutWidth + this._frameSize < baseX + this._frameSize) ? this._cutoutWidth : baseX;
-        }
-
-        this._baseX = baseX;
-        this._baseY = baseY;
-        this._lastPointX = x;
-        this._lastPointY = y;
-
-        this._context.drawImage(this._image.element,
-            this._baseX,
-            this._baseY,
-            Math.floor(this._image.element.width * this._scale),
-            Math.floor(this._image.element.height * this._scale));
-        this._drawCutout();
+        this._drawImage(this._centerImagePoint());
         return this;
     }
 
@@ -171,21 +97,86 @@ export default class Canvas extends Element {
     }
 
     /**
-     * Draw the cutout over canvas, clockwise rectangle and anti-clock wise rectangle
+     * Generates and returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
+     * The returned image is in a resolution of 96 dpi.
+     *
+     * @return {String} - A data URI.
+     */
+    toDataURL() {
+        const temp_canvas = new Element("canvas");
+        temp_canvas.setWidth(this._frame.getRect().size.w);
+        temp_canvas.setHeight(this._frame.getRect().size.h);
+        temp_canvas.getContext2d().drawImage(this.element,
+            this._frame.getMinX(),
+            this._frame.getMinY(),
+            this._frame.getRect().size.w,
+            this._frame.getRect().size.h,
+            0, 0,
+            this._frame.getRect().size.w,
+            this._frame.getRect().size.h);
+        return temp_canvas.element.toDataURL();
+    }
+
+    /**
+     * Set points to zero
      *
      * @return {Canvas} A Canvas object.
      */
-    _drawCutout() {
-        this._context.fillStyle = styles.cutout.fill;
-        this._context.beginPath();
-        this._context.rect(0, 0, this.element.width, this.element.height);
-        this._context.moveTo(this._cutoutWidth, this._cutoutHeight);
-        this._context.lineTo(this._cutoutWidth, this.element.height - this._cutoutHeight);
-        this._context.lineTo(this.element.width - this._cutoutWidth, this.element.height - this._cutoutHeight);
-        this._context.lineTo(this.element.width - this._cutoutWidth, this._cutoutHeight);
-        this._context.lineTo(this._cutoutWidth, this._cutoutHeight);
-        this._context.closePath();
-        this._context.fill();
+    _resetPoints() {
+        this._lastPoint = new Point(0, 0);
+        this._basePoint = new Point(0, 0);
+        return this;
+    }
+
+    /**
+     * Calculate and get origin Point for centered image (x-axis, y-axis)
+     *
+     * @return {Point} A Point.
+     */
+    _centerImagePoint() {
+       const x = this._frame.getMidX() - (this._image.getSize().w / 2);
+       const y = this._frame.getMidY() - (this._image.getSize().h / 2);
+       return new Point(x, y);
+    }
+
+    /**
+     * Calculate and get origin Point for centered image (x-axis, y-axis)
+     *
+     * @param {Point} point - Point to validate
+     * @return {Point} A Point.
+     */
+    _validatePoint(point) {
+        console.log(point);
+        point.x = (point.x > this._frame.getMinX()) ? this._frame.getMinX() : point.x;
+        point.y = (point.y > this._frame.getMinY()) ? this._frame.getMinY() : point.y;
+
+        point.x = (point.x + this._image.getSize().w < this._frame.getMaxX()) ? this._frame.getMaxX() - this._image.getSize().w : point.x;
+        point.y = (point.y + this._image.getSize().h < this._frame.getMaxY()) ? this._frame.getMaxY() - this._image.getSize().h : point.y;
+        return point;
+    }
+
+    /**
+     * Draw an Image on canvas, clear canvas context before, draw a background pattern and frame
+     *
+     * @param {Point} point - An origin point
+     * @return {Canvas} A Canvas object.
+     */
+    _drawImage(point = new Point(0, 0)) {
+        this.clear();
+        this._drawBackground();
+
+        let baseX = this._basePoint.x + (point.x - this._lastPoint.x);
+        let baseY = this._basePoint.y + (point.y - this._lastPoint.y);
+
+        this._basePoint = this._validatePoint(new Point(baseX, baseY));
+        this._lastPoint = point;
+
+        this._context.drawImage(this._image.element,
+            this._basePoint.x,
+            this._basePoint.y,
+            this._image.getSize().w,
+            this._image.getSize().h);
+        this._cutout.draw();
         return this;
     }
 
@@ -214,8 +205,11 @@ export default class Canvas extends Element {
          * @param {Canvas} event - Event object
          */
         const _onMouseMove = (event) => {
-            const location = this._windowToCanvas(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY);
-            this._drawImage(location.x, location.y);
+            const x = event.clientX || event.touches[0].clientX;
+            const y = event.clientY || event.touches[0].clientY;
+
+            const point = this._windowToCanvas(new Point(x, y));
+            this._drawImage(point);
         };
 
         /**
@@ -236,9 +230,9 @@ export default class Canvas extends Element {
         const _onMouseDown = (event) => {
             document.addEventListener('mousemove', _onMouseMove, false);
             document.addEventListener('touchmove', _onMouseMove, false);
-            const location = this._windowToCanvas(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY);
-            this._lastPointX = location.x;
-            this._lastPointY = location.y;
+            const x = event.clientX || event.touches[0].clientX;
+            const y = event.clientY || event.touches[0].clientY;
+            this._lastPoint = this._windowToCanvas(new Point(x, y));
             document.body.style.cursor = "move";
         };
 
@@ -252,55 +246,11 @@ export default class Canvas extends Element {
     /**
      * Translate HTML coordinates to Canvas coordinates.
      *
-     * @param {Number} x - coordinates
-     * @param {Number} y - coordinates
+     * @param {Point} point - coordinates
      * @return {Object} - coordinates
      */
-    _windowToCanvas(x, y) {
+    _windowToCanvas(point) {
         const box = this._context.canvas.getBoundingClientRect();
-        return {
-            x: x - box.left * (this.element.width / box.width),
-            y: y - box.top * (this.element.height / box.height)
-        };
-    }
-
-    /**
-     * Calculate scaled image width
-     *
-     * @return {Number} - Number of pixels
-     */
-    _imageAbsoluteWidth() {
-        return this._image.element.width * this._scale;
-    }
-
-    /**
-     * Calculate scaled image height
-     *
-     * @return {Number} - Number of pixels
-     */
-    _imageAbsoluteHeight() {
-        return this._image.element.height * this._scale;
-    }
-
-    /**
-     * Generates and returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
-     * The returned image is in a resolution of 96 dpi.
-     *
-     * @return {String} - A data URI.
-     */
-    toDataURL() {
-        const temp_canvas = new Element("canvas");
-        const temp_context = temp_canvas.element.getContext("2d");
-        temp_canvas.setWidth(this._frameSize);
-        temp_canvas.setHeight(this._frameSize);
-        temp_context.drawImage(this.element,
-            this._cutoutWidth,
-            this._cutoutHeight,
-            this._frameSize,
-            this._frameSize,
-            0, 0,
-            this._frameSize,
-            this._frameSize);
-        return temp_canvas.element.toDataURL();
+        return new Point(point.x - box.left * (this.element.width / box.width), point.y - box.top * (this.element.height / box.height));
     }
 }
