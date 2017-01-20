@@ -24,7 +24,7 @@ export default class Cutout {
     draw() {
         this._context.fillStyle = styles.cutout.fill;
         this._context.beginPath();
-        this._context.rect(0, 0, this._canvas.element.width, this._canvas.element.height);
+        this._context.rect(0, 0, this._canvas._node.width, this._canvas._node.height);
         this._context.moveTo(this._frame.getMinX(), this._frame.getMinY());
         this._context.lineTo(this._frame.getMinX(), this._frame.getMaxY());
         this._context.lineTo(this._frame.getMaxX(), this._frame.getMaxY());

@@ -25,15 +25,15 @@ export default class Image extends Element {
      */
     load(url) {
         return new Promise((resolve, reject) => {
-            this.element.onload = () => {
+            this._node.onload = () => {
                 this._checkFormat();
                 resolve(this);
             };
-            this.element.onerror = () => {
+            this._node.onerror = () => {
                 reject(Error("Can't load an image."));
             };
-            this.element.src = url;
-            this.element.crossOrigin = "Anonymous";
+            this._node.src = url;
+            this._node.crossOrigin = "Anonymous";
         });
     }
 
@@ -70,8 +70,8 @@ export default class Image extends Element {
      * @return {Image} - Returns Image object
      */
     scaleToFit(frame) {
-        const widthScale = frame.getRect().size.w / this.element.width;
-        const heightScale = frame.getRect().size.h / this.element.height;
+        const widthScale = frame.getRect().size.w / this._node.width;
+        const heightScale = frame.getRect().size.h / this._node.height;
         this._scale = this._originScale = (widthScale > heightScale) ? widthScale : heightScale;
         return this;
     }
@@ -82,8 +82,8 @@ export default class Image extends Element {
      * @return {Size} - Returns Size object, which contain weight and height
      */
     getSize() {
-        const w = this.element.width * this._scale;
-        const h = this.element.height * this._scale;
+        const w = this._node.width * this._scale;
+        const h = this._node.height * this._scale;
         return new Size(w, h);
     }
 
@@ -114,10 +114,10 @@ export default class Image extends Element {
      * @return {String} Format.
      */
     _checkFormat() {
-        if (this.element.width > this.element.height) {
+        if (this._node.width > this._node.height) {
             this._format = "landscape";
         }
-        else if (this.element.width < this.element.height) {
+        else if (this._node.width < this._node.height) {
             this._format = "portrait";
         }
         else {

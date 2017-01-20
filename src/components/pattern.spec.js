@@ -24,9 +24,9 @@ describe("Pattern component",() => {
 
     it("creates Canvas element", () => {
         pattern = new Pattern();
-        expect(pattern.element.nodeType).to.equal(Node.ELEMENT_NODE);
-        expect(pattern.element.nodeName).to.equal("CANVAS");
-        expect(pattern.element).to.be.an.instanceof(window.HTMLElement);
+        expect(pattern._node.nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(pattern._node.nodeName).to.equal("CANVAS");
+        expect(pattern._node).to.be.an.instanceof(window.HTMLElement);
     });
 
     it("has _draw method, which draw the pattern on canvas and return this", () => {

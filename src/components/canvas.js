@@ -32,7 +32,7 @@ export default class Canvas extends Element {
      */
     render(parent) {
         super.render(parent);
-        this.element.style.borderRadius = "3px";
+        this._node.style.borderRadius = "3px";
         this._drawBackground();
         this._initEventListeners();
         return this;
@@ -58,7 +58,7 @@ export default class Canvas extends Element {
      */
     setHeight(height) {
         super.setHeight(height);
-        this._frame.update(this.element);
+        this._frame.update(this._node);
         return this;
     }
 
@@ -92,7 +92,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     clear() {
-        this._context.clearRect(0, 0, this.element.width, this.element.height);
+        this._context.clearRect(0, 0, this._node.width, this._node.height);
         return this;
     }
 
@@ -107,7 +107,7 @@ export default class Canvas extends Element {
         temp_canvas.setWidth(this._frame.getRect().size.w);
         temp_canvas.setHeight(this._frame.getRect().size.h);
         temp_canvas.getContext2d().drawImage(
-            this.element,
+            this._node,
             this._frame.getMinX(),
             this._frame.getMinY(),
             this._frame.getRect().size.w,
@@ -116,7 +116,7 @@ export default class Canvas extends Element {
             this._frame.getRect().size.w,
             this._frame.getRect().size.h
         );
-        return temp_canvas.element.toDataURL();
+        return temp_canvas._node.toDataURL();
     }
 
     /**
@@ -173,7 +173,7 @@ export default class Canvas extends Element {
         this._lastPoint = point;
 
         this._context.drawImage(
-            this._image.element,
+            this._image._node,
             this._basePoint.x,
             this._basePoint.y,
             this._image.getSize().w,
@@ -189,8 +189,8 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     _drawBackground() {
-        const pattern = this._context.createPattern(this._pattern.element, "repeat");
-        this._context.rect(0, 0, this.element.width, this.element.height);
+        const pattern = this._context.createPattern(this._pattern._node, "repeat");
+        this._context.rect(0, 0, this._node.width, this._node.height);
         this._context.fillStyle = pattern;
         this._context.fill();
         return this;
@@ -239,8 +239,8 @@ export default class Canvas extends Element {
             document.body.style.cursor = "move";
         };
 
-        this.element.addEventListener("mousedown", _onMouseDown, false);
-        this.element.addEventListener("touchstart", _onMouseDown, false);
+        this._node.addEventListener("mousedown", _onMouseDown, false);
+        this._node.addEventListener("touchstart", _onMouseDown, false);
         document.addEventListener("mouseup", _onMouseUp, false);
         document.addEventListener("touchend", _onMouseUp, false);
         return this;
@@ -254,6 +254,6 @@ export default class Canvas extends Element {
      */
     _windowToCanvas(point) {
         const box = this._context.canvas.getBoundingClientRect();
-        return new Point(point.x - box.left * (this.element.width / box.width), point.y - box.top * (this.element.height / box.height));
+        return new Point(point.x - box.left * (this._node.width / box.width), point.y - box.top * (this._node.height / box.height));
     }
 }

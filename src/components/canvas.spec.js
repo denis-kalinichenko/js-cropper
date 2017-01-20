@@ -52,7 +52,7 @@ describe("Canvas component", function () {
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.width).to.equal(width);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.element);
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas._node);
     });
 
     it("has setHeight method, which set height attribute of canvas element and call update() frame", () => {
@@ -67,7 +67,7 @@ describe("Canvas component", function () {
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(height);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.element);
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas._node);
     });
 
     it("has setImage method, which pass the Image object into Canvas, reset points, call scaleToFit() and returns this", () => {
@@ -75,8 +75,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image.element.width = 300;
-        image.element.height = 300;
+        image._node.width = 300;
+        image._node.height = 300;
         expect(canvas.setImage).to.be.a("function");
 
         const resetPointSpy = spy();
@@ -116,8 +116,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         let image = new Image();
-        image.element.width = 1000;
-        image.element.height = 500;
+        image._node.width = 1000;
+        image._node.height = 500;
         image._checkFormat();
         canvas.setImage(image);
         const drawedCanvas = canvas.draw();
@@ -171,7 +171,7 @@ describe("Canvas component", function () {
         canvas.setHeight(dimensions.height);;
         const drawedCanvas = canvas._drawBackground();
         expect(drawedCanvas).to.equal(canvas);
-        expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern.element, "repeat");
+        expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern._node, "repeat");
         expect(rectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
         expect(fillSpy).to.have.been.called.once();
     });
@@ -180,7 +180,7 @@ describe("Canvas component", function () {
         it("adds event listener for mousedown", () => {
             const addEventListenerSpy = spy();
             canvas = new Canvas();
-            canvas.element.addEventListener = addEventListenerSpy;
+            canvas._node.addEventListener = addEventListenerSpy;
             const dimensions = {
                 width: 500,
                 height: 300,
@@ -222,7 +222,7 @@ describe("Canvas component", function () {
             clientX: 50,
             clientY: 100,
         });
-        canvas.element.dispatchEvent(event);
+        canvas._node.dispatchEvent(event);
         expect(windowToCanvasSpy).to.have.been.called.with.exactly(new Point(50, 100));
     });
 
@@ -245,7 +245,7 @@ describe("Canvas component", function () {
             clientX: 10,
             clientY: 10,
         });
-        canvas.element.dispatchEvent(event);
+        canvas._node.dispatchEvent(event);
 
         event = new MouseEvent("mousemove", {
             clientX: 50,
@@ -324,8 +324,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image.element.width = 600;
-        image.element.height = 300;
+        image._node.width = 600;
+        image._node.height = 300;
         image._checkFormat();
 
         const drawImageSpy = spy();
@@ -346,11 +346,11 @@ describe("Canvas component", function () {
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(drawCutoutSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            image.element,
+            image._node,
             canvas._basePoint.x,
             canvas._basePoint.y,
-            Math.floor(image.element.width * canvas._image._scale),
-            Math.floor(image.element.height * canvas._image._scale)
+            Math.floor(image._node.width * canvas._image._scale),
+            Math.floor(image._node.height * canvas._image._scale)
         );
     });
 
@@ -361,8 +361,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image.element.width = 600;
-        image.element.height = 300;
+        image._node.width = 600;
+        image._node.height = 300;
         image._checkFormat();
 
         canvas.setImage(image);
@@ -381,7 +381,7 @@ describe("Canvas component", function () {
 
         expect(toDataURLSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            canvas.element,
+            canvas._node,
             canvas._frame.getMinX(),
             canvas._frame.getMinY(),
             canvas._frame.getRect().size.w,
@@ -399,8 +399,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image.element.width = 600;
-        image.element.height = 300;
+        image._node.width = 600;
+        image._node.height = 300;
         image._checkFormat();
 
         canvas.setImage(image);
@@ -417,10 +417,10 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image.element.width = 500;
-        image.element.height = 400;
+        image._node.width = 500;
+        image._node.height = 400;
         image._checkFormat();
-        image.scaleToFit(canvas._frame.update(canvas.element));
+        image.scaleToFit(canvas._frame.update(canvas._node));
 
         canvas.setImage(image);
 

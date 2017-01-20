@@ -5,10 +5,10 @@ export default class Element {
     /**
      * Create an element
      *
-     * @param {String} tagName - The name of element tag.
+     * @param {String|Object} name - The name of element tag.
      */
-    constructor(tagName) {
-        this.element = document.createElement(tagName || "div");
+    constructor(name) {
+        this._node = document.createElement(name || "div");
     }
 
     /**
@@ -22,7 +22,7 @@ export default class Element {
             throw Error("Parent node are not passed.");
         }
 
-        parent.appendChild(this.element);
+        parent.appendChild(this._node);
         return this;
     }
 
@@ -33,7 +33,7 @@ export default class Element {
      * @return {Canvas} A Canvas object.
      */
     setWidth(width) {
-        this.element.width = width;
+        this._node.width = width;
         return this;
     }
 
@@ -44,7 +44,7 @@ export default class Element {
      * @return {Canvas} A Canvas object.
      */
     setHeight(height) {
-        this.element.height = height;
+        this._node.height = height;
         return this;
     }
 
@@ -54,6 +54,6 @@ export default class Element {
      * @return {Object} - RenderingContext
      */
     getContext2d() {
-        return this.element.getContext("2d");
+        return this._node.getContext("2d");
     }
 }

@@ -26,9 +26,9 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
-        expect(frame._size).to.equal((element.element.width > element.element.height) ? element.element.height * frameProportion : element.element.width * frameProportion);
-        expect(frame._origin).to.deep.equal({ x: (element.element.width - frame._size) / 2, y: (element.element.height - frame._size) / 2 });
+        frame.update(element._node);
+        expect(frame._size).to.equal((element._node.width > element._node.height) ? element._node.height * frameProportion : element._node.width * frameProportion);
+        expect(frame._origin).to.deep.equal({ x: (element._node.width - frame._size) / 2, y: (element._node.height - frame._size) / 2 });
     });
 
     it("has getRect method, which return a rectangle properties", () => {
@@ -36,7 +36,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getRect().origin).to.be.an.instanceOf(Point);
         expect(frame.getRect().size).to.be.an.instanceOf(Size);
     });
@@ -46,7 +46,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMinX()).to.equal(frame._origin.x);
     });
 
@@ -55,7 +55,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMaxX()).to.equal(frame._origin.x + frame._size);
     });
 
@@ -64,7 +64,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMinY()).to.equal(frame._origin.y);
     });
 
@@ -73,7 +73,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMaxY()).to.equal(frame._origin.y + frame._size);
     });
 
@@ -82,7 +82,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMidX()).to.equal(frame._origin.x + (frame._size / 2));
     });
 
@@ -91,7 +91,7 @@ describe("Frame component",() => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
-        frame.update(element.element);
+        frame.update(element._node);
         expect(frame.getMidY()).to.equal(frame._origin.y + (frame._size / 2));
     });
 });

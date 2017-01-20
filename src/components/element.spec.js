@@ -2,7 +2,7 @@ import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Element from "./element";
 
-describe("Base element component",() => {
+describe("Base _node component",() => {
     let element, wrapper, cleanJsdom;
 
     beforeEach(function() {
@@ -20,10 +20,22 @@ describe("Base element component",() => {
         expect(() => { new Element() }).to.not.throw();
     });
 
-    it("properly transforms tag argument and creates element", () => {
+    it("creates element", () => {
         element = new Element();
-        expect(element.element.nodeType).to.equal(Node.ELEMENT_NODE);
-        expect(element.element).to.be.an.instanceof(window.HTMLElement);
+        expect(element._node.nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(element._node).to.be.an.instanceof(window.HTMLElement);
+    });
+
+    it("has getNode method, which returns an _node's node", () => {
+        element = new Element("div");
+        expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
+    });
+
+    it("properly transforms node argument", () => {
+        element = new Element(document.body);
+        expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
     });
 
     it("has render method, which renders element and returns this", () => {
