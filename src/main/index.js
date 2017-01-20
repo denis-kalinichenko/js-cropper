@@ -101,4 +101,22 @@ export default class ImageCrop {
     getCroppedImage() {
         return this._canvas.toDataURL();
     }
+
+    /**
+     * Sets zoom.
+     *
+     * @param {Number} zoom - Zoom value, from `0` = 0%, `1.0` = 100% of image size
+     * @return {ImageCrop} An ImageCrop object.
+     */
+    setZoom(zoom) {
+        try {
+            validateDimension(zoom);
+        }
+        catch (error) {
+            throw Error(`Zoom property: ${error.message}`);
+        }
+        this._image.setZoom(zoom);
+        this._canvas.draw();
+        return this;
+    }
 }
