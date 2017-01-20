@@ -2,7 +2,7 @@ import { expect } from "chai";
 import validateConfig from "./config";
 
 describe("Config validator", () => {
-    it("not throws Error if config is object", () => {
+    it("does not throws Error if config is object", () => {
         expect(() => {validateConfig({})}).to.not.throw(Error);
     });
 
