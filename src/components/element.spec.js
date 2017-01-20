@@ -17,7 +17,7 @@ describe("Base element component",() => {
     });
 
     it("initialises", () => {
-        expect(() => { new Element() }).to.not.throw(Error);
+        expect(() => { new Element() }).to.not.throw();
     });
 
     it("properly transforms tag argument and creates element", () => {

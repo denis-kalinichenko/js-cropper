@@ -18,7 +18,7 @@ describe("Cutout component",() => {
     it("initialises", () => {
         expect(() => {
             new Cutout(new Frame(), new Canvas())
-        }).to.not.throw(Error);
+        }).to.not.throw();
     });
 
     it("has draw method, which draw the cutout over canvas", () => {

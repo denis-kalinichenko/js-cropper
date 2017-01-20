@@ -17,7 +17,7 @@ describe("Image component",() => {
     });
 
     it("initialises", () => {
-        expect(() => {new Image()}).to.not.throw(Error);
+        expect(() => {new Image()}).to.not.throw();
     });
 
     it("creates Image element", () => {

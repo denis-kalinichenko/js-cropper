@@ -23,7 +23,7 @@ describe("Canvas component", function () {
     it("initialises", () => {
         expect(() => {
             new Canvas()
-        }).to.not.throw(Error);
+        }).to.not.throw();
     });
 
     it("has render method, which set borderRadius, draw background pattern, call render() method from Element class and return this", () => {
