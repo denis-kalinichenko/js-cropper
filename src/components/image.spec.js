@@ -1,9 +1,9 @@
-import chai, { expect } from "chai";
-import chaiAsPromised from "chai-as-promised";
+import { expect } from "chai";
 import jsdom from "jsdom-global";
 import Image from "./image";
-
-chai.use(chaiAsPromised);
+import Frame from "../objects/frame";
+import Size from "../objects/size";
+import Element from "./element";
 
 describe("Image component",() => {
     let image, cleanJsdom;
@@ -110,5 +110,55 @@ describe("Image component",() => {
         image.element.height = 600;
         image._checkFormat();
         expect(image.isSquare()).to.equal(true);
+    });
+
+    it("has scaleToFit method, which scale image to fit Frame", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+        image._checkFormat();
+
+        const element = new Element();
+        element.setWidth(500);
+        element.setHeight(300);
+        const frame = new Frame();
+        frame.update(element.element);
+        image.scaleToFit(frame);
+        expect(image._scale).to.equal(frame.getRect().size.w / image.element.width);
+        expect(image._scale).to.equal(image._originScale);
+    });
+
+    it("has getSize method, which Returns Size object, which contain weight and height", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+
+        expect(image.getSize()).to.be.an.instanceOf(Size);
+        expect(image.getSize().w).to.equal(image.element.width * image._scale);
+        expect(image.getSize().h).to.equal(image.element.height * image._scale);
+    });
+
+    it("has setZoom method, which apply zoom for an image", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+
+        expect(image._scale).to.equal(1);
+        expect(image._originScale).to.equal(1);
+        expect(image._zoom).to.equal(0);
+
+        const zoomValue = 0.5;
+        image.setZoom(zoomValue);
+        expect(image._scale).to.equal(image._originScale + (image._originScale * zoomValue));
+    });
+
+    it("has getZoom method, which return an actual zoom value", () => {
+        image = new Image();
+        image.element.width = 300;
+        image.element.height = 600;
+
+        const zoomValue = 0.5;
+        image.setZoom(zoomValue);
+        expect(image.getZoom()).to.equal(zoomValue);
     });
 });
