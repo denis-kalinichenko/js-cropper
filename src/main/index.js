@@ -1,7 +1,7 @@
-import validateNode from "../validators/node";
-import validateConfig from "../validators/config";
-import validateDimension from "../validators/dimension";
-import { dimensions } from "./../configs/default";
+import validateNode from "./../validators/node";
+import validateConfig from "./../validators/config";
+import validateDimension from "./../validators/dimension";
+import { defaultDimensions } from "../config/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
 
@@ -20,8 +20,8 @@ export default class ImageCrop {
         this._canvas = new Canvas();
         this._image = new Image();
 
-        this.setWidth(config.width || dimensions.width);
-        this.setHeight(config.height || dimensions.height);
+        this.setWidth(config.width || defaultDimensions.width);
+        this.setHeight(config.height || defaultDimensions.height);
     }
 
     /**

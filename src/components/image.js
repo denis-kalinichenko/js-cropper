@@ -1,5 +1,5 @@
 import Element from "./element";
-import Size from "../objects/size";
+import Size from "./../objects/size";
 import Promise from "es6-promise";
 
 /**

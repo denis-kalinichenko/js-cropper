@@ -1,7 +1,7 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Frame from "./frame";
-import Element from "../components/element";
+import Element from "./../components/element";
 import Size from "./size";
 import Point from "./point";
 

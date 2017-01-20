@@ -2,8 +2,7 @@ import {expect, spy} from "chai";
 import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
-import Point from "../objects/point";
-import Size from "../objects/size";
+import Point from "./../objects/point";
 import {getContextMock} from "./../../test/mock";
 
 describe("Canvas component", function () {
@@ -346,11 +345,13 @@ describe("Canvas component", function () {
         expect(clearSpy).to.have.been.called.once();
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(drawCutoutSpy).to.have.been.called.once();
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(image.element,
+        expect(drawImageSpy).to.have.been.called.once.with.exactly(
+            image.element,
             canvas._basePoint.x,
             canvas._basePoint.y,
             Math.floor(image.element.width * canvas._image._scale),
-            Math.floor(image.element.height * canvas._image._scale));
+            Math.floor(image.element.height * canvas._image._scale)
+        );
     });
 
     it("has toDataURL method, which return image as DataURL", () => {
@@ -379,14 +380,16 @@ describe("Canvas component", function () {
         const dataURL = canvas.toDataURL();
 
         expect(toDataURLSpy).to.have.been.called.once();
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas.element,
+        expect(drawImageSpy).to.have.been.called.once.with.exactly(
+            canvas.element,
             canvas._frame.getMinX(),
             canvas._frame.getMinY(),
             canvas._frame.getRect().size.w,
             canvas._frame.getRect().size.h,
             0, 0,
             canvas._frame.getRect().size.w,
-            canvas._frame.getRect().size.h);
+            canvas._frame.getRect().size.h
+        );
     });
 
     it("has _centerImagePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {

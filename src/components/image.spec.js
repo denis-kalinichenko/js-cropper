@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import jsdom from "jsdom-global";
 import Image from "./image";
-import Frame from "../objects/frame";
-import Size from "../objects/size";
+import Frame from "./../objects/frame";
+import Size from "./../objects/size";
 import Element from "./element";
 
 describe("Image component",() => {

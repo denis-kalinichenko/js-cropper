@@ -1,8 +1,8 @@
 import Element from "./element";
 import Image from "./image";
 import Pattern from "./pattern";
-import Frame from "../objects/frame";
-import Point from "../objects/point";
+import Frame from "./../objects/frame";
+import Point from "./../objects/point";
 import Cutout from "./cutout";
 
 /**
@@ -106,14 +106,16 @@ export default class Canvas extends Element {
         const temp_canvas = new Element("canvas");
         temp_canvas.setWidth(this._frame.getRect().size.w);
         temp_canvas.setHeight(this._frame.getRect().size.h);
-        temp_canvas.getContext2d().drawImage(this.element,
+        temp_canvas.getContext2d().drawImage(
+            this.element,
             this._frame.getMinX(),
             this._frame.getMinY(),
             this._frame.getRect().size.w,
             this._frame.getRect().size.h,
             0, 0,
             this._frame.getRect().size.w,
-            this._frame.getRect().size.h);
+            this._frame.getRect().size.h
+        );
         return temp_canvas.element.toDataURL();
     }
 
@@ -171,11 +173,13 @@ export default class Canvas extends Element {
         this._basePoint = this._validatePoint(new Point(baseX, baseY));
         this._lastPoint = point;
 
-        this._context.drawImage(this._image.element,
+        this._context.drawImage(
+            this._image.element,
             this._basePoint.x,
             this._basePoint.y,
             this._image.getSize().w,
-            this._image.getSize().h);
+            this._image.getSize().h
+        );
         this._cutout.draw();
         return this;
     }

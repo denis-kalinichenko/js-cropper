@@ -2,7 +2,7 @@ import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Cutout from "./cutout";
 import Canvas from "./canvas";
-import Frame from "../objects/frame";
+import Frame from "./../objects/frame";
 
 describe("Cutout component",() => {
     let cutout, cleanJsdom;

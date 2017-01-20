@@ -1,4 +1,4 @@
-import {styles} from "../configs/default";
+import {styles} from "../config/default";
 
 /**
  * Class representing a cutout over canvas

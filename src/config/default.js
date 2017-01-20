@@ -1,11 +1,11 @@
 /**
  * Default Canvas dimensions
  *
- * @return {Object} dimensions - A width and height.
+ * @return {Object} defaultDimensions - A width and height.
  */
-export const dimensions = {
+export const defaultDimensions = {
     width: 560,
-    height: 340
+    height: 340,
 };
 
 /**

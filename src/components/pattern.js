@@ -1,5 +1,5 @@
 import Element from "./element";
-import {styles} from "./../configs/default";
+import {styles} from "../config/default";
 
 /**
  * Class representing a Pattern element
