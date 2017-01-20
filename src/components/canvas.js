@@ -148,7 +148,6 @@ export default class Canvas extends Element {
      * @return {Point} A Point.
      */
     _validatePoint(point) {
-        console.log(point);
         point.x = (point.x > this._frame.getMinX()) ? this._frame.getMinX() : point.x;
         point.y = (point.y > this._frame.getMinY()) ? this._frame.getMinY() : point.y;
 

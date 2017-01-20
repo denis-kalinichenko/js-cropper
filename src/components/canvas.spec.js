@@ -424,8 +424,6 @@ describe("Canvas component", function () {
 
         canvas.setImage(image);
 
-        console.log(canvas._frame.getRect());
-
         let x = canvas._frame.getMinX() - 10;
         let y = canvas._frame.getMinY();
         expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(x, y));
