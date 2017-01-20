@@ -65,6 +65,15 @@ export default class Frame {
     }
 
     /**
+     *  Get the x- coordinate that establishes the center of a rectangle.
+     *
+     * @returns {Number} - The x- coordinate that establishes the center of a rectangle.
+     */
+    getMidX() {
+        return this._origin.x + (this._size / 2);
+    }
+
+    /**
      * Get the smallest value of the x-coordinate for the rectangle.
      *
      * @return {Number} - The smallest value of the x-coordinate for the rectangle.
@@ -80,5 +89,13 @@ export default class Frame {
      */
     getMaxY() {
         return this._origin.y + this._size;
+    }
+
+    /**
+     * Get the y-coordinate that establishes the center of the rectangle.
+     * @returns {*}
+     */
+    getMidY() {
+        return this._origin.y + (this._size / 2);
     }
 };

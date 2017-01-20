@@ -65,7 +65,6 @@ describe("Frame component",() => {
         element.setWidth(560);
         element.setHeight(340);
         frame.update(element.element);
-        console.log(frame.getRect());
         expect(frame.getMinY()).to.equal(frame._origin.y);
     });
 
@@ -76,5 +75,23 @@ describe("Frame component",() => {
         element.setHeight(340);
         frame.update(element.element);
         expect(frame.getMaxY()).to.equal(frame._origin.y + frame._size);
+    });
+
+    it("has getMidX method, which return the x-coordinate that establishes the center of a rectangle", () => {
+        frame = new Frame();
+        const element = new Element();
+        element.setWidth(560);
+        element.setHeight(340);
+        frame.update(element.element);
+        expect(frame.getMidX()).to.equal(frame._origin.x + (frame._size / 2));
+    });
+
+    it("has getMidY method, which return the y-coordinate that establishes the center of a rectangle", () => {
+        frame = new Frame();
+        const element = new Element();
+        element.setWidth(560);
+        element.setHeight(340);
+        frame.update(element.element);
+        expect(frame.getMidY()).to.equal(frame._origin.y + (frame._size / 2));
     });
 });
