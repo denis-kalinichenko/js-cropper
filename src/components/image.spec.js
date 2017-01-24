@@ -35,23 +35,6 @@ describe("Image component",() => {
         });
     });
 
-    it("has checkFormat method, which check an image format (landscape, portrait or square) and return format", () => {
-        image = new Image();
-        image.setWidth(300);
-        image.setHeight(600);
-        expect(image._checkFormat()).to.equal("portrait");
-
-        image = new Image();
-        image.setWidth(330);
-        image.setHeight(330);
-        expect(image._checkFormat()).to.equal("square");
-
-        image = new Image();
-        image.setWidth(690);
-        image.setHeight(330);
-        expect(image._checkFormat()).to.equal("landscape");
-    });
-
     it("has isPortrait method, which return true if image format is portrait and return false if not", () => {
         image = new Image();
         image.setWidth(300);
