@@ -36,8 +36,8 @@ export default class Frame {
     /**
      * Get rectangle properties.
      *
-     * @return {Point} origin - An origin Point, which in the upper-left corner and the rectangle extends towards the lower-right corner.
-     * @return {Size} size - A size that specifies the height and width of the rectangle.
+     * @return {Object} - Object.point is an origin Point, which in the upper-left corner and the rectangle extends towards the lower-right corner.
+     * Object.size is a size that specifies the height and width of the rectangle.
      */
     getRect() {
         return {
@@ -67,7 +67,7 @@ export default class Frame {
     /**
      *  Get the x- coordinate that establishes the center of a rectangle.
      *
-     * @returns {Number} - The x- coordinate that establishes the center of a rectangle.
+     * @returns {Number} - The x-coordinate that establishes the center of a rectangle.
      */
     getMidX() {
         return this._origin.x + (this._size / 2);
@@ -93,7 +93,7 @@ export default class Frame {
 
     /**
      * Get the y-coordinate that establishes the center of the rectangle.
-     * @returns {*}
+     * @returns {Number} - The y-coordinate that establishes the center of a rectangle.
      */
     getMidY() {
         return this._origin.y + (this._size / 2);
