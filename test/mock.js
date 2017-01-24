@@ -1,5 +1,5 @@
 export function getContextMock() {
-    HTMLCanvasElement.prototype.getContext = function getContext(contextId) {
+    HTMLCanvasElement.prototype.getContext = (contextId) => {
         return {
             fillRect: () => {},
             createPattern: () => {},
