@@ -43,6 +43,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if portrait.
      */
     isPortrait() {
+        this._checkFormat();
         return this._format === "portrait";
     }
 
@@ -52,6 +53,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if landscape.
      */
     isLandscape() {
+        this._checkFormat();
         return this._format === "landscape";
     }
 
@@ -61,6 +63,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if square.
      */
     isSquare() {
+        this._checkFormat();
         return this._format === "square";
     }
 

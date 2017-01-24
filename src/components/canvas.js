@@ -238,8 +238,8 @@ export default class Canvas extends Element {
          *
          */
         const _onMouseUp = () => {
-            document.removeEventListener('mousemove', _onMouseMove, false);
-            document.removeEventListener('touchmove', _onMouseMove, false);
+            document.removeEventListener("mousemove", _onMouseMove, false);
+            document.removeEventListener("touchmove", _onMouseMove, false);
             document.body.style.cursor = "";
         };
 
@@ -249,8 +249,8 @@ export default class Canvas extends Element {
          * @param {Canvas} event - Event object
          */
         const _onMouseDown = (event) => {
-            document.addEventListener('mousemove', _onMouseMove, false);
-            document.addEventListener('touchmove', _onMouseMove, false);
+            document.addEventListener("mousemove", _onMouseMove, false);
+            document.addEventListener("touchmove", _onMouseMove, false);
             const x = event.clientX || event.touches[0].clientX;
             const y = event.clientY || event.touches[0].clientY;
             this._lastPoint = this._windowToCanvas(new Point(x, y));

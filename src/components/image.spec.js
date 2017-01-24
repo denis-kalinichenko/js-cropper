@@ -56,19 +56,16 @@ describe("Image component",() => {
         image = new Image();
         image.setWidth(300);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isPortrait()).to.equal(true);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(300);
-        image._checkFormat();
         expect(image.isPortrait()).to.equal(false);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isPortrait()).to.equal(false);
     });
 
@@ -76,19 +73,16 @@ describe("Image component",() => {
         image = new Image();
         image.setWidth(300);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isLandscape()).to.equal(false);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(300);
-        image._checkFormat();
         expect(image.isLandscape()).to.equal(true);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isLandscape()).to.equal(false);
     });
 
@@ -96,19 +90,16 @@ describe("Image component",() => {
         image = new Image();
         image.setWidth(300);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isSquare()).to.equal(false);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(300);
-        image._checkFormat();
         expect(image.isSquare()).to.equal(false);
 
         image = new Image();
         image.setWidth(600);
         image.setHeight(600);
-        image._checkFormat();
         expect(image.isSquare()).to.equal(true);
     });
 
@@ -116,7 +107,6 @@ describe("Image component",() => {
         image = new Image();
         image.setWidth(300);
         image.setHeight(600);
-        image._checkFormat();
 
         const element = new Element();
         element.setWidth(500);
