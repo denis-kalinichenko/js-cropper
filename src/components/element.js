@@ -1,3 +1,5 @@
+import Size from "./../objects/size";
+
 /**
  * Class representing a base element
  */
@@ -5,10 +7,13 @@ export default class Element {
     /**
      * Create an element
      *
-     * @param {String|Object} name - The name of element tag.
+     * @param {String|Object} node - The element.
      */
-    constructor(name) {
-        this._node = document.createElement(name || "div");
+    constructor(node) {
+        this._node = node;
+        if (!node || typeof node === "string") {
+            this._node = document.createElement(node || "div");
+        }
     }
 
     /**
@@ -46,6 +51,24 @@ export default class Element {
     setHeight(height) {
         this._node.height = height;
         return this;
+    }
+
+    /**
+     * Get a drawing 2d context on the canvas
+     *
+     * @return {Object} - RenderingContext
+     */
+    getSize() {
+        return new Size(this._node.width, this._node.height);
+    }
+
+    /**
+     * Get a drawing 2d context on the canvas
+     *
+     * @return {Object} - A node.
+     */
+    getNode()  {
+        return this._node;
     }
 
     /**

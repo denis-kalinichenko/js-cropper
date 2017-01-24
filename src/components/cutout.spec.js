@@ -49,7 +49,7 @@ describe("Cutout component",() => {
         canvas.setHeight(dimensions.height);
 
         const frame = new Frame();
-        frame.update(canvas._node);
+        frame.update(canvas.getNode());
 
         cutout = new Cutout(frame, canvas);
         cutout.draw();

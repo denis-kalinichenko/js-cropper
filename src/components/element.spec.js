@@ -2,7 +2,7 @@ import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Element from "./element";
 
-describe("Base _node component",() => {
+describe("Base element component",() => {
     let element, wrapper, cleanJsdom;
 
     beforeEach(function() {
@@ -22,11 +22,19 @@ describe("Base _node component",() => {
 
     it("creates element", () => {
         element = new Element();
-        expect(element._node.nodeType).to.equal(Node.ELEMENT_NODE);
-        expect(element._node).to.be.an.instanceof(window.HTMLElement);
+        const node = element.getNode();
+        expect(node.nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(node).to.be.an.instanceof(window.HTMLElement);
     });
 
-    it("has getNode method, which returns an _node's node", () => {
+    it("creates element from existing node", () => {
+        const node = document.querySelector(".wrapper");
+        element = new Element(node);
+        expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);
+        expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
+    });
+
+    it("has getNode method, which returns an element's node", () => {
         element = new Element("div");
         expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);
         expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
@@ -93,7 +101,7 @@ describe("Base _node component",() => {
         const width = 69;
 
         element.render(wrapper);
-        const resizedElement = element.setWidth(width);
+        const resizedElement = element.setWidth(width); 
 
         const elementNode = wrapper.querySelector("span");
         expect(elementNode.width).to.equal(width);

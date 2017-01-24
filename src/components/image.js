@@ -25,15 +25,15 @@ export default class Image extends Element {
      */
     load(url) {
         return new Promise((resolve, reject) => {
-            this._node.onload = () => {
+            this.getNode().onload = () => {
                 this._checkFormat();
                 resolve(this);
             };
-            this._node.onerror = () => {
+            this.getNode().onerror = () => {
                 reject(Error("Can't load an image."));
             };
-            this._node.src = url;
-            this._node.crossOrigin = "Anonymous";
+            this.getNode().src = url;
+            this.getNode().crossOrigin = "Anonymous";
         });
     }
 
@@ -70,9 +70,10 @@ export default class Image extends Element {
      * @return {Image} - Returns Image object
      */
     scaleToFit(frame) {
-        const widthScale = frame.getRect().size.w / this._node.width;
-        const heightScale = frame.getRect().size.h / this._node.height;
-        this._scale = this._originScale = (widthScale > heightScale) ? widthScale : heightScale;
+        const widthScale = frame.getRect().size.width / this.getNode().width;
+        const heightScale = frame.getRect().size.height / this.getNode().height;
+        const largestScale = (widthScale > heightScale) ? widthScale : heightScale;
+        this._scale = this._originScale = (largestScale > 1) ? 1: largestScale;
         return this;
     }
 
@@ -82,8 +83,8 @@ export default class Image extends Element {
      * @return {Size} - Returns Size object, which contain weight and height
      */
     getSize() {
-        const w = this._node.width * this._scale;
-        const h = this._node.height * this._scale;
+        const w = this.getNode().width * this._scale;
+        const h = this.getNode().height * this._scale;
         return new Size(w, h);
     }
 
@@ -114,10 +115,10 @@ export default class Image extends Element {
      * @return {String} Format.
      */
     _checkFormat() {
-        if (this._node.width > this._node.height) {
+        if (this.getNode().width > this.getNode().height) {
             this._format = "landscape";
         }
-        else if (this._node.width < this._node.height) {
+        else if (this.getNode().width < this.getNode().height) {
             this._format = "portrait";
         }
         else {

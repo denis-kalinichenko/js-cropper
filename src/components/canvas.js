@@ -32,7 +32,7 @@ export default class Canvas extends Element {
      */
     render(parent) {
         super.render(parent);
-        this._node.style.borderRadius = "3px";
+        this.getNode().style.borderRadius = "3px";
         this._drawBackground();
         this._initEventListeners();
         return this;
@@ -46,7 +46,7 @@ export default class Canvas extends Element {
      */
     setWidth(width) {
         super.setWidth(width);
-        this._frame.update(this.element);
+        this._frame.update(this.getNode());
         return this;
     }
 
@@ -58,7 +58,7 @@ export default class Canvas extends Element {
      */
     setHeight(height) {
         super.setHeight(height);
-        this._frame.update(this._node);
+        this._frame.update(this.getNode());
         return this;
     }
 
@@ -92,7 +92,7 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     clear() {
-        this._context.clearRect(0, 0, this._node.width, this._node.height);
+        this._context.clearRect(0, 0, this.getNode().width, this.getNode().height);
         return this;
     }
 
@@ -104,19 +104,19 @@ export default class Canvas extends Element {
      */
     toDataURL() {
         const temp_canvas = new Element("canvas");
-        temp_canvas.setWidth(this._frame.getRect().size.w);
-        temp_canvas.setHeight(this._frame.getRect().size.h);
+        temp_canvas.setWidth(this._frame.getRect().size.width);
+        temp_canvas.setHeight(this._frame.getRect().size.height);
         temp_canvas.getContext2d().drawImage(
-            this._node,
+            this.getNode(),
             this._frame.getMinX(),
             this._frame.getMinY(),
-            this._frame.getRect().size.w,
-            this._frame.getRect().size.h,
+            this._frame.getRect().size.width,
+            this._frame.getRect().size.height,
             0, 0,
-            this._frame.getRect().size.w,
-            this._frame.getRect().size.h
+            this._frame.getRect().size.width,
+            this._frame.getRect().size.height
         );
-        return temp_canvas._node.toDataURL();
+        return temp_canvas.getNode().toDataURL();
     }
 
     /**
@@ -136,8 +136,8 @@ export default class Canvas extends Element {
      * @return {Point} A Point.
      */
     _centerImagePoint() {
-       const x = this._frame.getMidX() - (this._image.getSize().w / 2);
-       const y = this._frame.getMidY() - (this._image.getSize().h / 2);
+       const x = this._frame.getMidX() - (this._image.getSize().width / 2);
+       const y = this._frame.getMidY() - (this._image.getSize().height / 2);
        return new Point(x, y);
     }
 
@@ -148,19 +148,37 @@ export default class Canvas extends Element {
      * @return {Point} A Point.
      */
     _validatePoint(point) {
-        point.x = (point.x > this._frame.getMinX()) ? this._frame.getMinX() : point.x;
-        point.y = (point.y > this._frame.getMinY()) ? this._frame.getMinY() : point.y;
+        const validPoint = point;
 
-        point.x = (point.x + this._image.getSize().w < this._frame.getMaxX()) ? this._frame.getMaxX() - this._image.getSize().w : point.x;
-        point.y = (point.y + this._image.getSize().h < this._frame.getMaxY()) ? this._frame.getMaxY() - this._image.getSize().h : point.y;
-        return point;
+        if (this._image.getSize().width < this._frame.getRect().size.width) {
+            validPoint.x = this._centerImagePoint().x;
+        } else if (point.x > this._frame.getMinX()) {
+            validPoint.x = this._frame.getMinX();
+        } else if (point.x + this._image.getSize().width < this._frame.getMaxX()) {
+            validPoint.x = this._frame.getMaxX() - this._image.getSize().width;
+        } else {
+            validPoint.x = point.x;
+        }
+
+
+        if (this._image.getSize().height < this._frame.getRect().size.height) {
+            validPoint.y = this._centerImagePoint().y;
+        } else if (point.y > this._frame.getMinY()) {
+            validPoint.y = this._frame.getMinY();
+        } else if (point.y + this._image.getSize().height < this._frame.getMaxY()) {
+            validPoint.y = this._frame.getMaxY() - this._image.getSize().height;
+        } else {
+            validPoint.y = point.y;
+        }
+
+        return validPoint;
     }
 
     /**
      * Draw an Image on canvas, clear canvas context before, draw a background pattern and frame
      *
      * @param {Point} point - An origin point
-     * @return {Canvas} A Canvas object.
+     * @return {Canvas} A Canvas object. 
      */
     _drawImage(point = new Point(0, 0)) {
         this.clear();
@@ -173,11 +191,11 @@ export default class Canvas extends Element {
         this._lastPoint = point;
 
         this._context.drawImage(
-            this._image._node,
+            this._image.getNode(),
             this._basePoint.x,
             this._basePoint.y,
-            this._image.getSize().w,
-            this._image.getSize().h
+            this._image.getSize().width,
+            this._image.getSize().height
         );
         this._cutout.draw();
         return this;
@@ -189,8 +207,8 @@ export default class Canvas extends Element {
      * @return {Canvas} A Canvas object.
      */
     _drawBackground() {
-        const pattern = this._context.createPattern(this._pattern._node, "repeat");
-        this._context.rect(0, 0, this._node.width, this._node.height);
+        const pattern = this._context.createPattern(this._pattern.getNode(), "repeat");
+        this._context.rect(0, 0, this.getNode().width, this.getNode().height);
         this._context.fillStyle = pattern;
         this._context.fill();
         return this;
@@ -239,8 +257,8 @@ export default class Canvas extends Element {
             document.body.style.cursor = "move";
         };
 
-        this._node.addEventListener("mousedown", _onMouseDown, false);
-        this._node.addEventListener("touchstart", _onMouseDown, false);
+        this.getNode().addEventListener("mousedown", _onMouseDown, false);
+        this.getNode().addEventListener("touchstart", _onMouseDown, false);
         document.addEventListener("mouseup", _onMouseUp, false);
         document.addEventListener("touchend", _onMouseUp, false);
         return this;
@@ -254,6 +272,6 @@ export default class Canvas extends Element {
      */
     _windowToCanvas(point) {
         const box = this._context.canvas.getBoundingClientRect();
-        return new Point(point.x - box.left * (this._node.width / box.width), point.y - box.top * (this._node.height / box.height));
+        return new Point(point.x - box.left * (this.getNode().width / box.width), point.y - box.top * (this.getNode().height / box.height));
     }
 }

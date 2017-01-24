@@ -52,7 +52,7 @@ describe("Canvas component", function () {
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.width).to.equal(width);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas._node);
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.getNode());
     });
 
     it("has setHeight method, which set height attribute of canvas element and call update() frame", () => {
@@ -67,7 +67,7 @@ describe("Canvas component", function () {
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(height);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas._node);
+        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.getNode());
     });
 
     it("has setImage method, which pass the Image object into Canvas, reset points, call scaleToFit() and returns this", () => {
@@ -75,8 +75,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image._node.width = 300;
-        image._node.height = 300;
+        image.setWidth(300);
+        image.setHeight(300);
         expect(canvas.setImage).to.be.a("function");
 
         const resetPointSpy = spy();
@@ -116,8 +116,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         let image = new Image();
-        image._node.width = 1000;
-        image._node.height = 500;
+        image.getNode().width = 1000;
+        image.getNode().height = 500;
         image._checkFormat();
         canvas.setImage(image);
         const drawedCanvas = canvas.draw();
@@ -168,10 +168,10 @@ describe("Canvas component", function () {
             height: 300,
         };
         canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);;
+        canvas.setHeight(dimensions.height);
         const drawedCanvas = canvas._drawBackground();
         expect(drawedCanvas).to.equal(canvas);
-        expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern._node, "repeat");
+        expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern.getNode(), "repeat");
         expect(rectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
         expect(fillSpy).to.have.been.called.once();
     });
@@ -180,7 +180,7 @@ describe("Canvas component", function () {
         it("adds event listener for mousedown", () => {
             const addEventListenerSpy = spy();
             canvas = new Canvas();
-            canvas._node.addEventListener = addEventListenerSpy;
+            canvas.getNode().addEventListener = addEventListenerSpy;
             const dimensions = {
                 width: 500,
                 height: 300,
@@ -222,7 +222,7 @@ describe("Canvas component", function () {
             clientX: 50,
             clientY: 100,
         });
-        canvas._node.dispatchEvent(event);
+        canvas.getNode().dispatchEvent(event);
         expect(windowToCanvasSpy).to.have.been.called.with.exactly(new Point(50, 100));
     });
 
@@ -324,8 +324,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image._node.width = 600;
-        image._node.height = 300;
+        image.getNode().width = 600;
+        image.getNode().height = 300;
         image._checkFormat();
 
         const drawImageSpy = spy();
@@ -346,11 +346,11 @@ describe("Canvas component", function () {
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(drawCutoutSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            image._node,
+            image.getNode(),
             canvas._basePoint.x,
             canvas._basePoint.y,
-            Math.floor(image._node.width * canvas._image._scale),
-            Math.floor(image._node.height * canvas._image._scale)
+            Math.floor(image.getNode().width * canvas._image._scale),
+            Math.floor(image.getNode().height * canvas._image._scale)
         );
     });
 
@@ -361,8 +361,8 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image._node.width = 600;
-        image._node.height = 300;
+        image.getNode().width = 600;
+        image.getNode().height = 300;
         image._checkFormat();
 
         canvas.setImage(image);
@@ -381,14 +381,14 @@ describe("Canvas component", function () {
 
         expect(toDataURLSpy).to.have.been.called.once();
         expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            canvas._node,
+            canvas.getNode(),
             canvas._frame.getMinX(),
             canvas._frame.getMinY(),
-            canvas._frame.getRect().size.w,
-            canvas._frame.getRect().size.h,
+            canvas._frame.getRect().size.width,
+            canvas._frame.getRect().size.height,
             0, 0,
-            canvas._frame.getRect().size.w,
-            canvas._frame.getRect().size.h
+            canvas._frame.getRect().size.width,
+            canvas._frame.getRect().size.height
         );
     });
 
@@ -399,14 +399,14 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image._node.width = 600;
-        image._node.height = 300;
+        image.getNode().width = 600;
+        image.getNode().height = 300;
         image._checkFormat();
 
         canvas.setImage(image);
 
-        const expectedX = canvas._frame.getMidX() - (canvas._image.getSize().w / 2);
-        const expectedY = canvas._frame.getMidY() - (canvas._image.getSize().h / 2);
+        const expectedX = canvas._frame.getMidX() - (canvas._image.getSize().width / 2);
+        const expectedY = canvas._frame.getMidY() - (canvas._image.getSize().height / 2);
         expect(canvas._centerImagePoint()).to.deep.equal(new Point(expectedX, expectedY));
     });
 
@@ -417,10 +417,10 @@ describe("Canvas component", function () {
         canvas.render(wrapper);
 
         const image = new Image();
-        image._node.width = 500;
-        image._node.height = 400;
+        image.getNode().width = 500;
+        image.getNode().height = 400;
         image._checkFormat();
-        image.scaleToFit(canvas._frame.update(canvas._node));
+        image.scaleToFit(canvas._frame.update(canvas.getNode()));
 
         canvas.setImage(image);
 
