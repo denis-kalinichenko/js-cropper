@@ -77,7 +77,7 @@ export default class Canvas extends Element {
     }
 
     /**
-     * Public method which draws an Image at initial position and add event listeners
+     * Draw an Image at initial position
      *
      * @return {Canvas} A Canvas object.
      */
