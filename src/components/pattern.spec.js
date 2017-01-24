@@ -16,7 +16,7 @@ describe("Pattern component",() => {
     it("initialises", () => {
         Pattern.prototype.getContext2d = () => {
             return {
-                fillRect: () => {}
+                fillRect: () => {},
             };
         };
         expect(() => {new Pattern()}).to.not.throw();
@@ -33,7 +33,7 @@ describe("Pattern component",() => {
         const fillRectSpy = spy();
         Pattern.prototype.getContext2d = () => {
             return {
-                fillRect: fillRectSpy
+                fillRect: fillRectSpy,
             }
         };
 
