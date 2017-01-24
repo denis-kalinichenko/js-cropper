@@ -25,7 +25,7 @@ export default class Canvas extends Element {
     }
 
     /**
-     * Call render() method from Element class, set styles, draw background
+     * Render a canvas
      *
      * @param {Object} parent - The DOM Element object, parent node
      * @return {Canvas} An Canvas object.
