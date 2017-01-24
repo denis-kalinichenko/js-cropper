@@ -17,7 +17,7 @@ describe("Frame component",() => {
     });
 
     it("initialises", () => {
-        expect(() => {new Frame()}).to.not.throw(Error);
+        expect(() => {new Frame()}).to.not.throw();
     });
 
     it("has update method, which update size and coordinates of rectangle", () => {

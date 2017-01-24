@@ -5,7 +5,7 @@ describe("Size component",() => {
     let size;
 
     it("initialises", () => {
-        expect(() => {new Size()}).to.not.throw(Error);
+        expect(() => {new Size()}).to.not.throw();
     });
 
     it("creates Size element", () => {

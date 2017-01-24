@@ -3,7 +3,7 @@ import validateConfig from "./config";
 
 describe("Config validator", () => {
     it("does not throws Error if config is object", () => {
-        expect(() => {validateConfig({})}).to.not.throw(Error);
+        expect(() => {validateConfig({})}).to.not.throw();
     });
 
     it("throws Error if config is invalid or not passed", () => {

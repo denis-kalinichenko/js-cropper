@@ -132,7 +132,7 @@ describe("Base element component",() => {
         expect(resizedElement).to.equal(element);
     });
 
-    it("has getContext2d() method, which return a drawing 2d context on the canvas", () => {
+    it("has getContext2d() method, which returns a drawing 2d context on the canvas", () => {
         element = new Element("canvas");
         expect(element.getContext2d).to.be.a("function");
 

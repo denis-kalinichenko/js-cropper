@@ -19,7 +19,7 @@ describe("Image Crop component", () => {
     });
 
     it("initialises", () => {
-        expect(() => { new ImageCrop() }).to.not.throw(Error);
+        expect(() => { new ImageCrop() }).to.not.throw();
     });
 
     it("has render method, which renders Canvas element and returns this", () => {

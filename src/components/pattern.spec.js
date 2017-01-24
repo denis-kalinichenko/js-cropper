@@ -19,7 +19,7 @@ describe("Pattern component",() => {
                 fillRect: () => {}
             };
         };
-        expect(() => {new Pattern()}).to.not.throw(Error);
+        expect(() => {new Pattern()}).to.not.throw();
     });
 
     it("creates Canvas element", () => {

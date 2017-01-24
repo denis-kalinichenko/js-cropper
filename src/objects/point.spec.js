@@ -5,7 +5,7 @@ describe("Point component",() => {
     let point;
 
     it("initialises", () => {
-        expect(() => {new Point()}).to.not.throw(Error);
+        expect(() => {new Point()}).to.not.throw();
     });
 
     it("creates Point element", () => {
