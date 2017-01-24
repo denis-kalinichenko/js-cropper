@@ -13,7 +13,6 @@ export default class Image extends Element {
     constructor() {
         super("img");
         this._scale = this._originScale = 1;
-        this._format = null;
         this._zoom = 0;
     }
 
@@ -43,8 +42,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if portrait.
      */
     isPortrait() {
-        this._checkFormat();
-        return this._format === "portrait";
+        return this._checkFormat() === "portrait";
     }
 
     /**
@@ -53,8 +51,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if landscape.
      */
     isLandscape() {
-        this._checkFormat();
-        return this._format === "landscape";
+        return this._checkFormat() === "landscape";
     }
 
     /**
@@ -63,8 +60,7 @@ export default class Image extends Element {
      * @return {Boolean} Returns true if square.
      */
     isSquare() {
-        this._checkFormat();
-        return this._format === "square";
+        return this._checkFormat() === "square";
     }
 
     /**
@@ -119,14 +115,11 @@ export default class Image extends Element {
      */
     _checkFormat() {
         if (this.getNode().width > this.getNode().height) {
-            this._format = "landscape";
+            return "landscape";
         }
-        else if (this.getNode().width < this.getNode().height) {
-            this._format = "portrait";
+        if (this.getNode().width < this.getNode().height) {
+            return "portrait";
         }
-        else {
-            this._format = "square";
-        }
-        return this._format;
+        return "square";
     }
 }
