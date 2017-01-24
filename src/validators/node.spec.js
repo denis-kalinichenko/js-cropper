@@ -22,9 +22,9 @@ describe("Node validator", () => {
     });
 
     it("throws Error if selector is invalid or not passed", () => {
-        expect(() => {validateNode()}).to.throw("Node is not passed.");
-        expect(() => {validateNode(null)}).to.throw("Node is not passed.");
-        expect(() => {validateNode(NaN)}).to.throw("Node is not passed.");
+        expect(() => {validateNode()}).to.throw("Node is not passed or invalid selector.");
+        expect(() => {validateNode(null)}).to.throw("Node is not passed or invalid selector.");
+        expect(() => {validateNode(NaN)}).to.throw("Node is not passed or invalid selector.");
         expect(() => {validateNode(".fake")}).to.throw("Invalid selector.");
         expect(() => {validateNode({})}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");
         expect(() => {validateNode([])}).to.throw("Node should be instance of window.HTMLElement or valid selector string.");

@@ -6,7 +6,7 @@
  */
 export default function validateDimension(value) {
     if (!value) {
-        throw Error("Dimension is not passed.");
+        throw Error("Dimension is not passed or invalid.");
     }
 
     if (typeof value !== "number") {

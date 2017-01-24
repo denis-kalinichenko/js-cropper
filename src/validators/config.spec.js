@@ -7,9 +7,9 @@ describe("Config validator", () => {
     });
 
     it("throws Error if config is invalid or not passed", () => {
-        expect(() => {validateConfig()}).to.throw("Config is not passed.");
-        expect(() => {validateConfig(null)}).to.throw("Config is not passed.");
-        expect(() => {validateConfig(NaN)}).to.throw("Config is not passed.");
+        expect(() => {validateConfig()}).to.throw("Config is not passed or invalid.");
+        expect(() => {validateConfig(null)}).to.throw("Config is not passed or invalid.");
+        expect(() => {validateConfig(NaN)}).to.throw("Config is not passed or invalid.");
         expect(() => {validateConfig("string")}).to.throw("Invalid config.");
         expect(() => {validateConfig([])}).to.throw("Invalid config.");
         expect(() => {validateConfig(1)}).to.throw("Invalid config.");

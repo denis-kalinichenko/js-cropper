@@ -5,7 +5,7 @@
  */
 export default function validateConfig(config) {
     if (!config) {
-        throw Error("Config is not passed.");
+        throw Error("Config is not passed or invalid.");
     }
 
     if (Object.prototype.toString.call(config) !== "[object Object]") {

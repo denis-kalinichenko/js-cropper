@@ -26,7 +26,6 @@ describe("Cutout component",() => {
         const rectSpy = spy();
         const moveToSpy = spy();
         const lineToSpy = spy();
-        const closePathSpy = spy();
         const fillSpy = spy();
         HTMLCanvasElement.prototype.getContext = function getContext() {
             return {
@@ -34,7 +33,6 @@ describe("Cutout component",() => {
                 rect: rectSpy,
                 moveTo: moveToSpy,
                 lineTo: lineToSpy,
-                closePath: closePathSpy,
                 fill: fillSpy,
                 fillRect: () => {}
             };
@@ -61,7 +59,6 @@ describe("Cutout component",() => {
         expect(lineToSpy).to.have.been.called.with.exactly(frame.getMaxX(), frame.getMaxY());
         expect(lineToSpy).to.have.been.called.with.exactly(frame.getMaxX(), frame.getMinY());
         expect(lineToSpy).to.have.been.called.with.exactly(frame.getMinX(), frame.getMinY());
-        expect(closePathSpy).to.have.been.called.once();
         expect(fillSpy).to.have.been.called.once();
     });
 });
