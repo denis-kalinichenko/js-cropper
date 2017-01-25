@@ -4,6 +4,7 @@ import Pattern from "./pattern";
 import Frame from "./../objects/frame";
 import Point from "./../objects/point";
 import Cutout from "./cutout";
+import Generator from "./generator";
 
 /**
  * Class representing a canvas element
@@ -19,6 +20,7 @@ export default class Canvas extends Element {
         this._pattern = new Pattern();
         this._frame = new Frame();
         this._cutout = new Cutout(this._frame, this);
+        this._generator = new Generator(this._frame, this);
 
         this._lastPoint = new Point(0, 0);
         this._basePoint = new Point(0, 0);
@@ -103,20 +105,7 @@ export default class Canvas extends Element {
      * @return {String} - A data URI.
      */
     toDataURL() {
-        const temp_canvas = new Element("canvas");
-        temp_canvas.setWidth(this._frame.getRect().size.width);
-        temp_canvas.setHeight(this._frame.getRect().size.height);
-        temp_canvas.getContext2d().drawImage(
-            this.getNode(),
-            this._frame.getMinX(),
-            this._frame.getMinY(),
-            this._frame.getRect().size.width,
-            this._frame.getRect().size.height,
-            0, 0,
-            this._frame.getRect().size.width,
-            this._frame.getRect().size.height
-        );
-        return temp_canvas.getNode().toDataURL();
+        return this._generator.toDataURL();
     }
 
     /**

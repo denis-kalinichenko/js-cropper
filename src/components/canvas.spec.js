@@ -360,36 +360,10 @@ describe("Canvas component", function () {
         canvas.setWidth(560);
         canvas.render(wrapper);
 
-        const image = new Image();
-        image.getNode().width = 600;
-        image.getNode().height = 300;
-        image._checkFormat();
-
-        canvas.setImage(image);
-
-        const drawImageSpy = spy();
         const toDataURLSpy = spy();
-
-        HTMLCanvasElement.prototype.toDataURL = toDataURLSpy;
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                drawImage: drawImageSpy
-            };
-        };
-
+        canvas._generator.toDataURL = toDataURLSpy;
         const dataURL = canvas.toDataURL();
-
         expect(toDataURLSpy).to.have.been.called.once();
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            canvas.getNode(),
-            canvas._frame.getMinX(),
-            canvas._frame.getMinY(),
-            canvas._frame.getRect().size.width,
-            canvas._frame.getRect().size.height,
-            0, 0,
-            canvas._frame.getRect().size.width,
-            canvas._frame.getRect().size.height
-        );
     });
 
     it("has _centerImagePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {
