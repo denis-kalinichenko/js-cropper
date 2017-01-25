@@ -29,7 +29,7 @@ export default class Cutout {
         this._context.lineTo(this._frame.getMinX(), this._frame.getMaxY());
         this._context.lineTo(this._frame.getMaxX(), this._frame.getMaxY());
         this._context.lineTo(this._frame.getMaxX(), this._frame.getMinY());
-        this._context.lineTo(this._frame.getMinX(), this._frame.getMinY());
+        this._context.closePath();
         this._context.fill();
         return this;
     }
