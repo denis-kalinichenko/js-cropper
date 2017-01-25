@@ -6,7 +6,7 @@ import Frame from "./../objects/frame";
 import Image from "./image";
 import { getContextMock } from "./../../test/mock";
 
-describe("Cutout component",() => {
+describe("Generator component",() => {
     let cleanJsdom;
 
     beforeEach(function() {

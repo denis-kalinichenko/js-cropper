@@ -5,6 +5,7 @@ import Frame from "./../objects/frame";
 import Point from "./../objects/point";
 import Cutout from "./cutout";
 import Generator from "./generator";
+import MoveEventListener from "./../events/move";
 
 /**
  * Class representing a canvas element
@@ -21,6 +22,7 @@ export default class Canvas extends Element {
         this._frame = new Frame();
         this._cutout = new Cutout(this._frame, this);
         this._generator = new Generator(this._frame, this);
+        this._moveEventListener = new MoveEventListener(this);
 
         this._lastPoint = new Point(0, 0);
         this._basePoint = new Point(0, 0);
@@ -36,7 +38,13 @@ export default class Canvas extends Element {
         super.render(parent);
         this.getNode().style.borderRadius = "3px";
         this._drawBackground();
-        this._initEventListeners();
+        this._moveEventListener.init();
+        this._moveEventListener.onPress((point) => {
+            this._lastPoint = point;
+        });
+        this._moveEventListener.onMove((point) => {
+            this._drawImage(point);
+        });
         return this;
     }
 
@@ -99,7 +107,8 @@ export default class Canvas extends Element {
     }
 
     /**
-     * Generates and returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
+     * Generates and returns a data URI containing a representation
+     * of the image in the format specified by the type parameter (defaults to PNG).
      * The returned image is in a resolution of 96 dpi.
      *
      * @return {String} - A data URI.
@@ -201,66 +210,5 @@ export default class Canvas extends Element {
         this._context.fillStyle = pattern;
         this._context.fill();
         return this;
-    }
-
-    /**
-     * Initialize event listeners
-     *
-     * @return {Canvas} A Canvas object.
-     */
-    _initEventListeners() {
-        /**
-         * Mousemove event listener which draw an image on canvas by moving (dragging)
-         *
-         * @param {Canvas} event - Event object
-         */
-        const _onMouseMove = (event) => {
-            const x = event.clientX || event.touches[0].clientX;
-            const y = event.clientY || event.touches[0].clientY;
-
-            const point = this._windowToCanvas(new Point(x, y));
-            this._drawImage(point);
-        };
-
-        /**
-         * mouseup event listener which destroy mousemove listener and remove cursor style
-         *
-         */
-        const _onMouseUp = () => {
-            document.removeEventListener("mousemove", _onMouseMove, false);
-            document.removeEventListener("touchmove", _onMouseMove, false);
-            document.body.style.cursor = "";
-        };
-
-        /**
-         * mousedown event listener which initialize mousemove listener, set cursor style, save last points
-         *
-         * @param {Canvas} event - Event object
-         */
-        const _onMouseDown = (event) => {
-            document.addEventListener("mousemove", _onMouseMove, false);
-            document.addEventListener("touchmove", _onMouseMove, false);
-            const x = event.clientX || event.touches[0].clientX;
-            const y = event.clientY || event.touches[0].clientY;
-            this._lastPoint = this._windowToCanvas(new Point(x, y));
-            document.body.style.cursor = "move";
-        };
-
-        this.getNode().addEventListener("mousedown", _onMouseDown, false);
-        this.getNode().addEventListener("touchstart", _onMouseDown, false);
-        document.addEventListener("mouseup", _onMouseUp, false);
-        document.addEventListener("touchend", _onMouseUp, false);
-        return this;
-    }
-
-    /**
-     * Translate HTML coordinates to Canvas coordinates.
-     *
-     * @param {Point} point - coordinates
-     * @return {Object} - coordinates
-     */
-    _windowToCanvas(point) {
-        const box = this._context.canvas.getBoundingClientRect();
-        return new Point(point.x - box.left * (this.getNode().width / box.width), point.y - box.top * (this.getNode().height / box.height));
     }
 }
