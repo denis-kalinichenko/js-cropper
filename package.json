@@ -6,9 +6,8 @@
   "scripts": {
     "test": "mocha src/**/*.spec.js",
     "test:custom": "mocha",
-    "compile": "babel -d lib src",
+    "lib": "babel -d lib src",
     "dist": "rollup ./src/main/index.js --config rollup.config.js && rollup ./src/main/index.js --config rollup.config.min.js",
-    "prepublish": "npm run compile && npm run dist"
   },
   "files": [
     "dist/",
@@ -50,17 +49,17 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-uglify": "^1.0.1"
+    "rollup-plugin-uglify": "^1.0.1",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0"
   },
   "peerDependencies": {
     "g2a-framework": "^1.3.0"
   },
   "dependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.21.0",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "babel-preset-es2016": "^6.16.0",
-    "babel-preset-es2017": "^6.16.0",
     "es6-promise": "^4.0.5"
   }
 }
