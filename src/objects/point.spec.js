@@ -11,4 +11,10 @@ describe("Point component",() => {
         expect(point.x).to.equal(50);
         expect(point.y).to.equal(300);
     });
+
+    it("creates Point, even if arguments are not passed", () => {
+        const point = new Point();
+        expect(point.x).to.equal(0);
+        expect(point.y).to.equal(0);
+    });
 });

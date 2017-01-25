@@ -11,4 +11,10 @@ describe("Size component",() => {
         expect(size.width).to.equal(50);
         expect(size.height).to.equal(300);
     });
+
+    it("creates Size, even if arguments are not passed", () => {
+        const size = new Size();
+        expect(size.width).to.equal(0);
+        expect(size.height).to.equal(0);
+    });
 });
