@@ -43,7 +43,7 @@ export default class Element {
     }
 
     /**
-     * Change width of Element
+     * Change height of Element
      *
      * @param {Number} height - The number of pixels.
      * @return {Canvas} A Canvas object.
