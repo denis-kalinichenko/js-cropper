@@ -37,7 +37,7 @@ describe("MoveEventListener component",() => {
         expect(bodyAddEventListenerSpy).to.have.been.called.with("touchend");
     });
 
-    it("it fire onMove callback, after move action", () => {
+    it("it fires onMove callback, after move action", () => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
@@ -76,7 +76,7 @@ describe("MoveEventListener component",() => {
         expect(onMoveCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
-    it("it fire onPress callback, after press action", () => {
+    it("it fires onPress callback, after press action", () => {
         const element = new Element();
         element.setWidth(560);
         element.setHeight(340);
