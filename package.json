@@ -8,6 +8,7 @@
     "test:custom": "mocha",
     "lib": "babel -d lib src",
     "dist": "rollup ./src/main/index.js --config rollup.config.js && rollup ./src/main/index.js --config rollup.config.min.js",
+    "prepublish": "npm run lib && npm run dist"
   },
   "files": [
     "dist/",
@@ -39,6 +40,10 @@
     }
   ],
   "license": "UNLICENSED",
+  "engines": {
+    "npm": ">=2.0.0",
+    "node": ">=4.0.0"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
