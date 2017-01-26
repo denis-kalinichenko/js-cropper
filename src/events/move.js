@@ -30,7 +30,7 @@ export default class MoveEventListener {
      *
      * @param {Function} callback - Callback.
      */
-    onMove(callback = () => {}) {
+    onMove(callback) {
         if (typeof callback === "function") {
             this._onMoveCallback = callback;
         }
@@ -41,7 +41,7 @@ export default class MoveEventListener {
      *
      * @param {Function} callback - Callback.
      */
-    onPress(callback = () => {}) {
+    onPress(callback) {
         if (typeof callback === "function") {
             this._onPressCallback = callback;
         }

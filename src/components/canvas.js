@@ -182,8 +182,8 @@ export default class Canvas extends Element {
         this.clear();
         this._drawBackground();
 
-        let baseX = this._basePoint.x + (point.x - this._lastPoint.x);
-        let baseY = this._basePoint.y + (point.y - this._lastPoint.y);
+        const baseX = this._basePoint.x + (point.x - this._lastPoint.x);
+        const baseY = this._basePoint.y + (point.y - this._lastPoint.y);
 
         this._basePoint = this._validatePoint(new Point(baseX, baseY));
         this._lastPoint = point;

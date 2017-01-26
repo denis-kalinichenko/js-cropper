@@ -2,9 +2,9 @@ import { expect } from "chai";
 import jsdom from "jsdom-global";
 import validateNode from "./node";
 
-let cleanJsdom;
-
 describe("Node validator", () => {
+    let cleanJsdom;
+
     beforeEach(() => {
         cleanJsdom = jsdom();
         const wrapper = document.createElement("div");
