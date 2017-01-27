@@ -146,6 +146,6 @@ describe("Base element component",() => {
         element = new Element("input");
         element.render(wrapper);
         element.setType("range");
-        expect(document.querySelector("input").outerHTML).to.equal(`<input type="range"/>`);
+        expect(document.querySelector("input").outerHTML).to.equal(`<input type="range">`);
     });
 });

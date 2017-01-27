@@ -79,4 +79,9 @@ export default class Element {
     getContext2d() {
         return this._node.getContext("2d");
     }
+
+    setType(type) {
+        this._node.type = type;
+        return this;
+    }
 }
