@@ -4,6 +4,7 @@ import validateDimension from "./../validators/dimension";
 import { defaultDimensions } from "../config/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
+import Slider from "./../components/slider";
 
 /**
  * Class representing Image Crop
@@ -19,6 +20,7 @@ export default class ImageCrop {
 
         this._canvas = new Canvas();
         this._image = new Image();
+        this._slider = new Slider();
 
         this.setWidth(config.width || defaultDimensions.width);
         this.setHeight(config.height || defaultDimensions.height);
@@ -33,6 +35,10 @@ export default class ImageCrop {
     render(node) {
         this._node = validateNode(node);
         this._canvas.render(this._node);
+        this._slider.render(this._node);
+        this._slider.onChange((value) => {
+            this.setZoom(value / 100);
+        });
         return this;
     }
 

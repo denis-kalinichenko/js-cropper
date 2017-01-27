@@ -26,7 +26,7 @@ describe("Slider component",() => {
         const slider = new Slider();
         slider.render(wrapper);
         expect(slider.render).to.be.a("function");
-        expect(slider.getNode().outerHTML).to.equal(`<input type="range" class="slider" min="0" max="100">`);
+        expect(slider.getNode().outerHTML).to.equal(`<input type="range" class="slider" min="0" max="100" value="0">`);
     });
 
     it("has onChange method, which fires after value change and returns a value from 0 to 100", () => {

@@ -17,5 +17,6 @@ describe("Dimension validator", () => {
 
     it("returns valid dimension", () => {
         expect(validateDimension(500)).to.equal(500);
+        expect(validateDimension(0)).to.equal(0);
     });
 });
