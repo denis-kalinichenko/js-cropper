@@ -158,4 +158,17 @@ describe("Base element component",() => {
         element.addClass("dobry");
         expect(document.querySelector(".wrapper").innerHTML).to.equal(`<div class="dzien dobry"></div>`);
     });
+
+    it("has setAttribute() method, which sets the attribute to HTML node", () => {
+        element = new Element("input");
+        element.render(wrapper);
+        element.setAttribute("name", "username");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="username">`);
+
+        element.setAttribute("name", "password");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="password">`);
+
+        element.setAttribute("type", "password");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="password" type="password">`);
+    });
 });
