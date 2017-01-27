@@ -72,7 +72,7 @@ export default class Element {
     }
 
     /**
-     *  Get a drawing 2в context on the canvas
+     * Get a drawing 2в context on the canvas
      *
      * @return {Object} - RenderingContext
      */
@@ -80,8 +80,23 @@ export default class Element {
         return this._node.getContext("2d");
     }
 
+    /**
+     * Change the type of HTML element (type attribute)
+     *
+     * @return {Element} - An Element object.
+     */
     setType(type) {
         this._node.type = type;
+        return this;
+    }
+
+    /**
+     * Add class to HTML element (attribute `class`)
+     *
+     * @return {Element} - An Element object.
+     */
+    addClass(newClass) {
+        this._node.className += this._node.className.length > 1 ? ` ${newClass}` : newClass;
         return this;
     }
 }

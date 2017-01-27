@@ -148,4 +148,14 @@ describe("Base element component",() => {
         element.setType("range");
         expect(document.querySelector("input").outerHTML).to.equal(`<input type="range">`);
     });
+
+    it("has addClass() method, which set the attribute of HTML node", () => {
+        element = new Element();
+        element.render(wrapper);
+        element.addClass("dzien");
+        expect(document.querySelector(".wrapper").innerHTML).to.equal(`<div class="dzien"></div>`);
+
+        element.addClass("dobry");
+        expect(document.querySelector(".wrapper").innerHTML).to.equal(`<div class="dzien dobry"></div>`);
+    });
 });
