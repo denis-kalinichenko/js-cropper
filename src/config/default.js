@@ -1,7 +1,5 @@
 /**
  * Default Canvas dimensions
- *
- * @return {Object} defaultDimensions - A width and height.
  */
 export const defaultDimensions = {
     width: 560,
@@ -10,8 +8,6 @@ export const defaultDimensions = {
 
 /**
  * Default styles
- *
- * @return {Object} styles
  */
 export const styles = {
     cutout: {
