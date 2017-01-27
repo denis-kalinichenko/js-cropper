@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Slider from "./slider";
 import Element from "./element";
@@ -24,9 +24,8 @@ describe("Slider component",() => {
 
     it("has redner method, which render a slider", () => {
         const slider = new Slider();
-
         slider.render(wrapper);
         expect(slider.render).to.be.a("function");
-        expect(slider.getNode().outerHTML).to.equal(`<input type="range" class="slider">`);
+        expect(slider.getNode().outerHTML).to.equal(`<input type="range" class="slider" min="0" max="100">`);
     });
 });

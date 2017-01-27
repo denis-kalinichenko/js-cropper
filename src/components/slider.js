@@ -9,11 +9,9 @@ export default class Slider extends Element {
      */
     constructor() {
         super("input");
-    }
-
-    render(parent) {
-
-        super.render(parent);
-
+        this.setType("range");
+        this.addClass("slider");
+        this.setAttribute("min", 0);
+        this.setAttribute("max", 100);
     }
 }
