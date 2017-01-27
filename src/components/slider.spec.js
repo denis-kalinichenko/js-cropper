@@ -28,4 +28,16 @@ describe("Slider component",() => {
         expect(slider.render).to.be.a("function");
         expect(slider.getNode().outerHTML).to.equal(`<input type="range" class="slider" min="0" max="100">`);
     });
+
+    it("has onChange method, which fires after value change and returns a value from 0 to 100", () => {
+        const slider = new Slider();
+        slider.render(wrapper);
+
+        const onChangeSpy = spy();
+        const expectedValue = 80;
+
+        slider.onChange(onChangeSpy);
+        document.querySelector("input").value = expectedValue;
+        expect(onChangeSpy).to.have.been.called.once.with.exactly(expectedValue);
+    });
 });
