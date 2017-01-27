@@ -99,4 +99,14 @@ export default class Element {
         this._node.className += this._node.className.length > 1 ? ` ${newClass}` : newClass;
         return this;
     }
+
+    /**
+     * Adds a new attribute or changes the value of an existing attribute on the HTML element.
+     *
+     * @return {Element} - An Element object.
+     */
+    setAttribute(attributeName, attributeValue) {
+        this._node.setAttribute(attributeName, attributeValue);
+        return this;
+    }
 }
