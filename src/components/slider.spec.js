@@ -37,7 +37,11 @@ describe("Slider component",() => {
         const expectedValue = 80;
 
         slider.onChange(onChangeSpy);
-        document.querySelector("input").value = expectedValue;
+        const input = document.querySelector("input");
+        input.value = expectedValue;
+
+        const event = new Event("change");
+        input.dispatchEvent(event);
         expect(onChangeSpy).to.have.been.called.once.with.exactly(expectedValue);
     });
 });
