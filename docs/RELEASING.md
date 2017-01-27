@@ -11,7 +11,7 @@
 
 1. Run `npm test`. Check if any error/warning messages exists and fix.
 
-1. Make new build, run `npm run dist`. Commit it.
+1. Make new dist build, run `npm run dist`. Commit it.
 
 1. Create a Pull Request.
 

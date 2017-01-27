@@ -4,11 +4,11 @@
   "description": "G2A UI framework image crop module",
   "main": "lib/main/index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register src/**/*.spec.js || exit 0",
-    "test:custom": "mocha --compilers js:babel-core/register || exit 0",
-    "compile": "babel -d lib src",
+    "test": "mocha src/**/*.spec.js",
+    "test:custom": "mocha",
+    "lib": "babel -d lib src",
     "dist": "rollup ./src/main/index.js --config rollup.config.js && rollup ./src/main/index.js --config rollup.config.min.js",
-    "prepublish": "npm run compile && npm run dist"
+    "prepublish": "npm run lib && npm run dist"
   },
   "files": [
     "dist/",
@@ -40,6 +40,10 @@
     }
   ],
   "license": "UNLICENSED",
+  "engines": {
+    "npm": ">=2.0.0",
+    "node": ">=4.0.0"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
@@ -50,16 +54,17 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-uglify": "^1.0.1"
-  },
-  "peerDependencies": {
-    "g2a-framework": "^1.3.0"
-  },
-  "dependencies": {
+    "rollup-plugin-uglify": "^1.0.1",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-preset-es2016": "^6.16.0",
     "babel-preset-es2017": "^6.16.0"
+  },
+  "peerDependencies": {
+    "g2a-framework": "^1.3.0"
+  },
+  "dependencies": {
+    "es6-promise": "^4.0.5"
   }
 }

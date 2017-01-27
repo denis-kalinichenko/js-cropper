@@ -1,0 +1,5 @@
+--compilers js:babel-core/register
+--require test/bootstrap.js
+--reporter spec
+--recursive
+--growl
