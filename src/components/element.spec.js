@@ -141,4 +141,11 @@ describe("Base element component",() => {
         const context = element.getContext2d();
         expect(getContextSpy).to.have.been.called.once.with.exactly("2d");
     });
+
+    it("has setType() method, which set the attribute of HTML node", () => {
+        element = new Element("input");
+        element.render(wrapper);
+        element.setType("range");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input type="range"/>`);
+    });
 });
