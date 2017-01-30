@@ -34,6 +34,16 @@ describe("Base element component",() => {
         expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
     });
 
+    it("creates SVG and USE element", () => {
+        const wrapper = document.querySelector(".wrapper");
+        element = new Element("svg");
+        element.render(wrapper);
+
+        const use = new Element("use");
+        use.render(element.getNode());
+        expect(wrapper.innerHTML).to.equal(`<svg><use></use></svg>`);
+    });
+
     it("has getNode method, which returns an element's node", () => {
         element = new Element("div");
         expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);

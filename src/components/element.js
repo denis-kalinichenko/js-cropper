@@ -12,6 +12,10 @@ export default class Element {
     constructor(node) {
         this._node = node;
         if (!node || typeof node === "string") {
+            if (node === "svg" || node === "use") {
+                this._node = document.createElementNS("http://www.w3.org/2000/svg", node);
+                return;
+            }
             this._node = document.createElement(node || "div");
         }
     }
