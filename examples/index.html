@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Image Crop demo</title>
     <script src="../dist/g2a-image-crop.js"></script>
+    <link rel="stylesheet" href="https://docs.code.g2a.com/g2a-ui-framework/1.3.0/css/g2a-framework.min.css">
     <style>
         html, body {
             height: 100%;
@@ -18,10 +19,12 @@
     </svg>
 </head>
 <body>
-    <div id="crop"></div>
-    <button onclick="showResult()">Crop</button>
-    <br>
-    <img src="" alt="" id="result">
+    <div class="container">
+        <div id="crop"></div>
+        <button class="btn btn-primary" onclick="showResult()">Crop Me</button>
+        <br>
+        <img src="" alt="" id="result">
+    </div>
     <script>
         var imageCrop = new ImageCrop();
         imageCrop.render("#crop");
