@@ -20,7 +20,7 @@ export default class Slider extends Element {
     }
 
     /**
-     * Callback function, whioch be fired after (touch/mouse) moving (dragging)
+     * Callback function, which be fired after changing the value
      *
      * @param {Function} callback - Callback.
      */
@@ -31,6 +31,9 @@ export default class Slider extends Element {
         return this;
     }
 
+    /**
+     * Fires custom callback.
+     */
     _onChange() {
         this._onChangeCallback(Number(this.getNode().value));
     }
