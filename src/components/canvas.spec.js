@@ -26,7 +26,7 @@ describe("Canvas component", function () {
         }).to.not.throw();
     });
 
-    it("has render method, which set borderRadius, draw background pattern, call render() method from Element class and return this", () => {
+    it("has render method, which draws background pattern, call render() method from Element class and return this", () => {
         canvas = new Canvas();
         expect(canvas.render).to.be.a("function");
 
@@ -35,7 +35,6 @@ describe("Canvas component", function () {
 
         let renderedCanvas = canvas.render(wrapper);
         expect(wrapper.querySelectorAll("canvas")).to.have.length(1);
-        expect(wrapper.querySelectorAll("canvas")[0].style.borderRadius).to.equal("3px");
         expect(drawBackgroundSpy).to.have.been.called.once();
         expect(renderedCanvas).to.equal(canvas);
     });

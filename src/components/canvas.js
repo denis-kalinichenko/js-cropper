@@ -36,7 +36,6 @@ export default class Canvas extends Element {
      */
     render(parent) {
         super.render(parent);
-        this.getNode().style.borderRadius = "3px";
         this._drawBackground();
         this._moveEventListener.init();
         this._moveEventListener.onPress((point) => {
