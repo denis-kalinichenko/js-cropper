@@ -5,6 +5,8 @@ import { defaultDimensions } from "../config/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
 import Slider from "./../components/slider";
+import Element from "./../components/element";
+import Icon from "./../components/icon";
 
 /**
  * Class representing Image Crop
@@ -34,11 +36,32 @@ export default class ImageCrop {
      */
     render(node) {
         this._node = validateNode(node);
-        this._canvas.render(this._node);
-        this._slider.render(this._node);
+
+        const wrapper = new Element();
+        wrapper.addClass("image-crop");
+        wrapper.render(this._node);
+        this._canvas.render(wrapper.getNode());
+
+        const tools = new Element();
+        tools.addClass("image-crop-tools");
+        tools.render(wrapper.getNode());
+
+        const zoomSlider = new Element();
+        zoomSlider.addClass("image-crop-zoom");
+        zoomSlider.render(tools.getNode());
+
+        const leftIcon = new Icon("frame-landscape");
+        const rightIcon = new Icon("frame-landscape");
+
+        leftIcon.render(zoomSlider.getNode());
+
+        this._slider.render(zoomSlider.getNode());
         this._slider.onChange((value) => {
             this.setZoom(value / 100);
         });
+
+        rightIcon.render(zoomSlider.getNode());
+
         return this;
     }
 

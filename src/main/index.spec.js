@@ -29,8 +29,11 @@ describe("Image Crop component", () => {
 
         const renderedImageCrop = imageCrop.render(wrapper);
 
-        const canvas = wrapper.querySelectorAll("canvas");
-        expect(canvas).to.have.length(1);
+        expect(wrapper.querySelectorAll(".image-crop")).to.have.length(1);
+        expect(wrapper.querySelectorAll("canvas")).to.have.length(1);
+        expect(wrapper.querySelectorAll(".image-crop-tools")).to.have.length(1);
+        expect(wrapper.querySelectorAll(".image-crop-zoom")).to.have.length(1);
+        expect(wrapper.querySelectorAll("svg.icon.icon-frame-landscape")).to.have.length(2);
 
         expect(renderedImageCrop).to.equal(imageCrop);
     });
