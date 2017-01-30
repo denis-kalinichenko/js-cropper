@@ -5,6 +5,10 @@ export function getContextMock() {
             createPattern: () => {},
             rect: () => {},
             fill: () => {},
+            beginPath: () => {},
+            moveTo: () => {},
+            lineTo: () => {},
+            closePath: () => {},
         };
     }
 }

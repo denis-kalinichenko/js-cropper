@@ -255,8 +255,6 @@ describe("Canvas component", function () {
         const image = new Image();
         image.getNode().width = 500;
         image.getNode().height = 400;
-        image._checkFormat();
-        image.scaleToFit(canvas._frame.update(canvas.getNode()));
 
         canvas.setImage(image);
 
@@ -278,19 +276,17 @@ describe("Canvas component", function () {
         const image = new Image();
         image.getNode().width = 500;
         image.getNode().height = 400;
-        image._checkFormat();
-        image.scaleToFit(canvas._frame.update(canvas.getNode()));
 
         canvas.setImage(image);
 
+        const clearRectSpy = spy();
         const drawImageSpy = spy();
-        canvas._drawImage = drawImageSpy;
+        canvas._context.clearRect = clearRectSpy;
+        canvas._context.drawImage = drawImageSpy;
 
         const zoomedCanvas = canvas.setZoom(0.5);
-        expect(drawImageSpy).to.have.been.called.with.exactly(new Point(-90.3125, -72.25));
+        expect(clearRectSpy).to.have.been.called();
+        expect(drawImageSpy).to.have.been.called.with.exactly(image.getNode(), -90.3125, -72.25, 541.875, 433.5);
         expect(zoomedCanvas).to.equal(canvas);
-
-        canvas.setZoom(0.2);
-        expect(drawImageSpy).to.have.been.called.with.exactly(new Point(54.1875, 43.349999999999994));
     });
 });
