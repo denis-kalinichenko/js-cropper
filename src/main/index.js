@@ -121,8 +121,7 @@ export default class ImageCrop {
         catch (error) {
             throw Error(`Zoom property: ${error.message}`);
         }
-        this._image.setZoom(zoom);
-        this._canvas.draw();
+        this._canvas.setZoom(zoom);
         return this;
     }
 }

@@ -118,6 +118,22 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Sets zoom.
+     *
+     * @param {Number} zoom - Zoom value, from `0` = 0%, `1.0` = 100% of image size
+     * @return {Canvas} - A Canvas object.
+     */
+    setZoom(zoom) {
+        const lastImageSize = this._image.getSize();
+        this._image.setZoom(zoom);
+        const imageSize = this._image.getSize();
+        const x = this._lastPoint.x - ((imageSize.width - lastImageSize.width) / 2);
+        const y = this._lastPoint.y - ((imageSize.height - lastImageSize.height) / 2);
+        this._drawImage(new Point(x, y));
+        return this;
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.

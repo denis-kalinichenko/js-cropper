@@ -269,4 +269,29 @@ describe("Canvas component", function () {
         y = canvas._frame.getMinY();
         expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(canvas._frame.getMinX(), y));
     });
+
+    it("has setZoom method, which sets zoom and return this", () => {
+        canvas = new Canvas();
+        canvas.setHeight(340);
+        canvas.setWidth(560);
+        canvas.render(wrapper);
+
+        const image = new Image();
+        image.getNode().width = 500;
+        image.getNode().height = 400;
+        image._checkFormat();
+        image.scaleToFit(canvas._frame.update(canvas.getNode()));
+
+        canvas.setImage(image);
+
+        const drawImageSpy = spy();
+        canvas._drawImage = drawImageSpy;
+
+        const zoomedCanvas = canvas.setZoom(0.5);
+        expect(drawImageSpy).to.have.been.called.with.exactly(new Point(-90.3125, -72.25));
+        expect(zoomedCanvas).to.equal(canvas);
+
+        canvas.setZoom(0.2);
+        expect(drawImageSpy).to.have.been.called.with.exactly(new Point(54.1875, 43.349999999999994));
+    });
 });

@@ -148,14 +148,10 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const setZoomSpy = spy();
-        imageCrop._image.setZoom = setZoomSpy;
-
-        const drawSpy = spy();
-        imageCrop._canvas.draw = drawSpy;
+        imageCrop._canvas.setZoom = setZoomSpy;
 
         const zoomedImage = imageCrop.setZoom(0.5);
         expect(setZoomSpy).to.have.been.called.once.with.exactly(0.5);
-        expect(drawSpy).to.have.been.called.once();
         expect(zoomedImage).to.equal(imageCrop);
     });
 });
