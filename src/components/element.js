@@ -76,7 +76,7 @@ export default class Element {
     }
 
     /**
-     * Get a drawing 2в context on the canvas
+     * Get a drawing 2d context on the canvas
      *
      * @return {Object} - RenderingContext
      */
