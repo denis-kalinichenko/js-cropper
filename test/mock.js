@@ -9,6 +9,8 @@ export function getContextMock() {
             moveTo: () => {},
             lineTo: () => {},
             closePath: () => {},
+            clearRect: () => {},
+            drawImage: () => {},
         };
     }
 }

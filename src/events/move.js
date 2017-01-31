@@ -17,6 +17,7 @@ export default class MoveEventListener {
 
         this._onMoveCallback = () => {};
         this._onPressCallback = () => {};
+        this._onReleaseCallback = () => {};
 
         this._onReleaseHandler = this._onRelease.bind(this);
         this._onPressHandler = this._onPress.bind(this);
@@ -24,7 +25,7 @@ export default class MoveEventListener {
     }
 
     /**
-     * onMove callback function be fired after (touch/mouse) moving (dragging)
+     * Callback function which fires after (touch/mouse) moving (dragging)
      *
      * @param {Function} callback - Callback.
      */
@@ -35,13 +36,24 @@ export default class MoveEventListener {
     }
 
     /**
-     * onPress callback function be fired after (touch/mouse) press
+     * Callback function which fires after touch press / mouse click
      *
      * @param {Function} callback - Callback.
      */
     onPress(callback) {
         if (typeof callback === "function") {
             this._onPressCallback = callback;
+        }
+    }
+
+    /**
+     * Callback function which fires after mouse/finger releasing
+     *
+     * @param {Function} callback - Callback.
+     */
+    onRelease(callback) {
+        if (typeof callback === "function") {
+            this._onReleaseCallback = callback;
         }
     }
 
@@ -61,9 +73,7 @@ export default class MoveEventListener {
      * @param {Object} event - Event object.
      */
     _onMove(event) {
-        const x = event.clientX || event.touches[0].clientX;
-        const y = event.clientY || event.touches[0].clientY;
-        this._onMoveCallback(this._convertCoordinates(new Point(x, y)));
+        this._onMoveCallback(this._getEventPoint(event));
     }
 
     /**
@@ -74,18 +84,16 @@ export default class MoveEventListener {
     _onPress(event) {
         this._parent.getNode().addEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().addEventListener("touchmove", this._onMoveHandler, false);
-
-        const x = event.clientX || event.touches[0].clientX;
-        const y = event.clientY || event.touches[0].clientY;
-        this._onPressCallback(this._convertCoordinates(new Point(x, y)));
+        this._onPressCallback(this._getEventPoint(event));
     }
 
     /**
      * Handler for (touch/mouse) release action.
      */
-    _onRelease() {
+    _onRelease(event) {
         this._parent.getNode().removeEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().removeEventListener("touchmove", this._onMoveHandler, false);
+        this._onReleaseCallback(this._getEventPoint(event));
     }
 
     /**
@@ -99,5 +107,11 @@ export default class MoveEventListener {
         const x = point.x - box.left * (this._element.getNode().width / box.width);
         const y = point.y - box.top * (this._element.getNode().height / box.height);
         return new Point(x, y);
+    }
+
+    _getEventPoint(event) {
+        const x = event.clientX || event.touches[0].clientX;
+        const y = event.clientY || event.touches[0].clientY;
+        return this._convertCoordinates(new Point(x, y));
     }
 }

@@ -51,6 +51,19 @@ describe("Image Crop component", () => {
         expect(canvasNode.height).to.equal(config.height);
     });
 
+    it("properly transforms onChange callback from config", () => {
+        const onChangeSpy = spy();
+        const config = {
+            width: 400,
+            height: 400,
+            onChange: onChangeSpy
+        };
+        imageCrop = new ImageCrop(config);
+        imageCrop.render(wrapper);
+        imageCrop.setZoom(0.5);
+        expect(onChangeSpy).to.have.been.called();
+    });
+
     it("has setWidth method, which changes width style property of Canvas container and returns this", () => {
         imageCrop = new ImageCrop({ width: 400 });
         expect(imageCrop.setWidth).to.be.a("function");

@@ -16,7 +16,7 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
-        this._context = this.getContext2d();
+        this._context = this._node.getContext("2d");
         this._image = new Image();
         this._pattern = new Pattern();
         this._frame = new Frame();
@@ -26,6 +26,8 @@ export default class Canvas extends Element {
 
         this._lastPoint = new Point(0, 0);
         this._basePoint = new Point(0, 0);
+
+        this._onChangeCallback = () => {};
     }
 
     /**
@@ -43,6 +45,8 @@ export default class Canvas extends Element {
         });
         this._moveEventListener.onMove((point) => {
             this._drawImage(point);
+        });
+        this._moveEventListener.onRelease(() => {
         });
         return this;
     }
@@ -133,6 +137,15 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Callback function which fires after canvas drawing
+     *
+     * @param {Function} callback - Callback.
+     */
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.
@@ -172,7 +185,6 @@ export default class Canvas extends Element {
         } else {
             validPoint.x = point.x;
         }
-
 
         if (this._image.getSize().height < this._frame.getRect().size.height) {
             validPoint.y = this._centerImagePoint().y;
