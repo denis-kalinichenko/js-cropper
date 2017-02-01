@@ -1,4 +1,4 @@
-import { expect, spy } from "chai";
+import { expect } from "chai";
 import jsdom from "jsdom-global";
 import Pattern from "./pattern";
 import { ContextMock, getContextCalls } from "./../../test/mock";

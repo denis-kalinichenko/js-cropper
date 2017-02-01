@@ -3,7 +3,7 @@ import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
 import Point from "./../objects/point";
-import {getContextMock} from "./../../test/mock";
+import { ContextMock, getContextCalls, CanvasMock } from "./../../test/mock";
 
 describe("Canvas component", function () {
     let canvas, wrapper, cleanJsdom;
@@ -13,11 +13,12 @@ describe("Canvas component", function () {
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
-        getContextMock();
+        Canvas.__Rewire__("Context", ContextMock);
     });
 
     afterEach(function () {
         cleanJsdom();
+        Canvas.__ResetDependency__("Context", ContextMock);
     });
 
     it("initialises", () => {

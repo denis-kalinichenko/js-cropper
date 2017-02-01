@@ -5,8 +5,8 @@ import Frame from "./../objects/frame";
 import Point from "./../objects/point";
 import Cutout from "./cutout";
 import Generator from "./generator";
-import Context from "./../objects/context";
 import MoveEventListener from "./../events/move";
+import Context from "./../objects/context";
 
 /**
  * Class representing a canvas element

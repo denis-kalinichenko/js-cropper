@@ -1,31 +1,31 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Generator from "./generator";
-import Canvas from "./canvas";
 import Frame from "./../objects/frame";
 import Image from "./image";
-import { getContextMock } from "./../../test/mock";
+import { ContextMock, getContextCalls, CanvasMock, FrameMock } from "./../../test/mock";
 
 describe("Generator component",() => {
     let cleanJsdom;
 
     beforeEach(function() {
         cleanJsdom = jsdom();
-        getContextMock();
+        Generator.__Rewire__("Context", ContextMock);
     });
 
     afterEach(function() {
         cleanJsdom();
+        Generator.__ResetDependency__("Context");
     });
 
     it("initialises", () => {
         expect(() => {
-            new Generator(new Frame(), new Canvas())
+            new Generator(new Frame(), new CanvasMock())
         }).to.not.throw();
     });
 
     it("has toDataURL method, which return image as DataURL", () => {
-        const canvas = new Canvas();
+        const canvas = new CanvasMock();
         const frame = new Frame();
         const generator = new Generator(frame, canvas);
 
@@ -35,28 +35,18 @@ describe("Generator component",() => {
 
         canvas.setImage(image);
 
-        const drawImageSpy = spy();
         const toDataURLSpy = spy();
 
         HTMLCanvasElement.prototype.toDataURL = toDataURLSpy;
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                drawImage: drawImageSpy
-            };
-        };
 
         const dataURL = generator.toDataURL();
 
         expect(toDataURLSpy).to.have.been.called.once();
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            canvas.getNode(),
-            frame.getMinX(),
-            frame.getMinY(),
-            frame.getRect().size.width,
-            frame.getRect().size.height,
-            0, 0,
-            frame.getRect().size.width,
-            frame.getRect().size.height
-        );
+
+        const expectedCalls = [
+            { name: 'drawImage', arguments: [ {}, 0, 0, 0, 0, 0, 0, 0, 0 ] }
+        ];
+
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });
