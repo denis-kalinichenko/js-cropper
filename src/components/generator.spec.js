@@ -32,12 +32,13 @@ describe("Generator component",() => {
         HTMLCanvasElement.prototype.toDataURL = toDataURLSpy;
 
         const dataURL = generator.toDataURL();
-
-        const expectedCalls = [
-            { name: 'drawImage', arguments: [ canvas.getNode(), 135.5, 25.5, 289, 289, 0, 0, 289, 289 ] }
-        ];
-
         expect(toDataURLSpy).to.have.been.called.once();
+
+        const expectedCalls = [{
+            name: 'drawImage',
+            arguments: [ canvas.getNode(), 135.5, 25.5, 289, 289, 0, 0, 289, 289 ]
+        }];
+
         expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });
