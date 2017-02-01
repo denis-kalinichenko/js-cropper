@@ -116,8 +116,11 @@ export class ContextMock {
 }
 
 export class CanvasMock {
+    constructor() {
+        this._node = document.createElement("canvas");
+    }
     getNode() {
-        return document.createElement("canvas");
+        return this._node;
     }
 }
 
@@ -144,4 +147,36 @@ export class FrameMock {
     getMaxX() {
         return 424.5;
     }
+
+    getMidX() {
+        return 280;
+    }
+
+    getMidY() {
+        return 170;
+    }
+
+    update() {
+        return this;
+    }
+}
+
+export class PatternMock {
+    constructor() {
+        this._node = document.createElement("canvas");
+    }
+
+    getNode() {
+        return this._node;
+    }
+}
+
+export class CutoutMock {
+    draw() {
+        return this;
+    }
+}
+
+export class GeneratorMock {
+
 }
