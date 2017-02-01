@@ -1,4 +1,5 @@
-
+import Size from "./../src/objects/size";
+import Point from "./../src/objects/point";
 
 export function getContextMock() {
     HTMLCanvasElement.prototype.getContext = (contextId) => {
@@ -115,13 +116,24 @@ export class ContextMock {
 }
 
 export class CanvasMock {
-    constructor() {
-
+    getNode() {
+        return document.createElement("canvas");
     }
 }
 
 export class FrameMock {
-    constructor() {
+    getRect() {
+        return {
+            size: new Size(289, 289),
+            origin: new Point(135.5, 25.5)
+        };
+    }
 
+    getMinX() {
+        return 135.5;
+    }
+
+    getMinY() {
+        return 25.5;
     }
 }

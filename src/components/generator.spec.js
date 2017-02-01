@@ -1,8 +1,6 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Generator from "./generator";
-import Frame from "./../objects/frame";
-import Image from "./image";
 import { ContextMock, getContextCalls, CanvasMock, FrameMock } from "./../../test/mock";
 
 describe("Generator component",() => {
@@ -20,20 +18,14 @@ describe("Generator component",() => {
 
     it("initialises", () => {
         expect(() => {
-            new Generator(new Frame(), new CanvasMock())
+            new Generator(new FrameMock(), new CanvasMock())
         }).to.not.throw();
     });
 
     it("has toDataURL method, which return image as DataURL", () => {
         const canvas = new CanvasMock();
-        const frame = new Frame();
+        const frame = new FrameMock();
         const generator = new Generator(frame, canvas);
-
-        const image = new Image();
-        image.setWidth(600);
-        image.setHeight(300);
-
-        canvas.setImage(image);
 
         const toDataURLSpy = spy();
 
@@ -41,12 +33,11 @@ describe("Generator component",() => {
 
         const dataURL = generator.toDataURL();
 
-        expect(toDataURLSpy).to.have.been.called.once();
-
         const expectedCalls = [
-            { name: 'drawImage', arguments: [ {}, 0, 0, 0, 0, 0, 0, 0, 0 ] }
+            { name: 'drawImage', arguments: [ canvas.getNode(), 135.5, 25.5, 289, 289, 0, 0, 289, 289 ] }
         ];
 
+        expect(toDataURLSpy).to.have.been.called.once();
         expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });
