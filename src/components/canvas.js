@@ -5,6 +5,7 @@ import Frame from "./../objects/frame";
 import Point from "./../objects/point";
 import Cutout from "./cutout";
 import Generator from "./generator";
+import Context from "./../objects/context";
 import MoveEventListener from "./../events/move";
 
 /**
@@ -16,7 +17,7 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
-        this._context = this.getContext2d();
+        this._context = new Context(this._node.getContext("2d"));
         this._image = new Image();
         this._pattern = new Pattern();
         this._frame = new Frame();
@@ -208,7 +209,7 @@ export default class Canvas extends Element {
             this._basePoint.x,
             this._basePoint.y,
             this._image.getSize().width,
-            this._image.getSize().height
+            this._image.getSize().height,
         );
         this._cutout.draw();
         return this;
@@ -222,7 +223,7 @@ export default class Canvas extends Element {
     _drawBackground() {
         const pattern = this._context.createPattern(this._pattern.getNode(), "repeat");
         this._context.rect(0, 0, this.getNode().width, this.getNode().height);
-        this._context.fillStyle = pattern;
+        this._context.fillStyle(pattern);
         this._context.fill();
         return this;
     }
