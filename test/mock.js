@@ -136,4 +136,12 @@ export class FrameMock {
     getMinY() {
         return 25.5;
     }
+
+    getMaxY() {
+        return 314.5;
+    }
+
+    getMaxX() {
+        return 424.5;
+    }
 }
