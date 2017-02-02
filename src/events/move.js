@@ -30,9 +30,7 @@ export default class MoveEventListener {
      * @param {Function} callback - Callback.
      */
     onMove(callback) {
-        if (typeof callback === "function") {
-            this._onMoveCallback = callback;
-        }
+        this._onMoveCallback = callback;
     }
 
     /**
@@ -41,9 +39,7 @@ export default class MoveEventListener {
      * @param {Function} callback - Callback.
      */
     onPress(callback) {
-        if (typeof callback === "function") {
-            this._onPressCallback = callback;
-        }
+        this._onPressCallback = callback;
     }
 
     /**
@@ -52,9 +48,7 @@ export default class MoveEventListener {
      * @param {Function} callback - Callback.
      */
     onRelease(callback) {
-        if (typeof callback === "function") {
-            this._onReleaseCallback = callback;
-        }
+        this._onReleaseCallback = callback;
     }
 
     /**
