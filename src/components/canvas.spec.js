@@ -196,7 +196,7 @@ describe("Canvas component", function () {
         expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 
-    it("properly transforms onChange callback", () => {
+    it("properly transforms 'onChange' callback property ", () => {
         canvas = new Canvas();
         const myFuncSpy = spy();
 
