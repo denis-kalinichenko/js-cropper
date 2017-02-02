@@ -1,6 +1,7 @@
 import validateNode from "./../validators/node";
 import validateConfig from "./../validators/config";
 import validateDimension from "./../validators/dimension";
+import validateCallback from "./../validators/callback";
 import { defaultDimensions } from "../config/default";
 import Canvas from "./../components/canvas";
 import Image from "./../components/image";
@@ -26,6 +27,9 @@ export default class ImageCrop {
 
         this.setWidth(config.width || defaultDimensions.width);
         this.setHeight(config.height || defaultDimensions.height);
+
+        this._onInitCallback = validateCallback(config.onInit);
+        this._onChangeCallback = validateCallback(config.onChange);
     }
 
     /**
@@ -61,6 +65,12 @@ export default class ImageCrop {
         });
 
         rightIcon.render(zoomSlider.getNode());
+
+        this._onInitCallback(this);
+
+        this._canvas.onChange(() => {
+            this._onChangeCallback(this);
+        });
 
         return this;
     }

@@ -27,6 +27,8 @@ export default class Canvas extends Element {
 
         this._lastPoint = new Point(0, 0);
         this._basePoint = new Point(0, 0);
+
+        this._onChangeCallback = () => {};
     }
 
     /**
@@ -134,6 +136,15 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Callback function which fires after canvas drawing
+     *
+     * @param {Function} callback - Callback.
+     */
+    onChange(callback) {
+        this._onChangeCallback = callback;
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.
@@ -174,7 +185,6 @@ export default class Canvas extends Element {
             validPoint.x = point.x;
         }
 
-
         if (this._image.getSize().height < this._frame.getRect().size.height) {
             validPoint.y = this._centerImagePoint().y;
         } else if (point.y > this._frame.getMinY()) {
@@ -212,6 +222,7 @@ export default class Canvas extends Element {
             this._image.getSize().height,
         );
         this._cutout.draw();
+        this._onChangeCallback(this);
         return this;
     }
 

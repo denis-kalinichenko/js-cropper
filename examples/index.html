@@ -20,6 +20,8 @@
 </head>
 <body>
     <div class="container">
+        <br>
+        <br>
         <div id="crop"></div>
         <button class="btn btn-primary" onclick="showResult()">Crop Me</button>
         <br>
@@ -27,10 +29,17 @@
         <img src="" alt="" id="result">
     </div>
     <script>
-        var imageCrop = new ImageCrop();
+        var imageCrop = new ImageCrop({
+            onInit: function (crop) {
+                console.info("ImageCrop is ready");
+            },
+            onChange: function (crop) {
+                console.log("onChange callback fired");
+            }
+        });
         imageCrop.render("#crop");
-        imageCrop.loadImage("img/big.jpg").then(function () {
-            console.info("ImageCrop is ready");
+        imageCrop.loadImage("img/big.jpg").then(function (crop) {
+            console.info("Image is ready to crop.");
         });
 
         function showResult() {
