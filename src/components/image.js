@@ -66,6 +66,7 @@ export default class Image extends Element {
     /**
      * Scale image to fit Frame.
      *
+     * @param {Frame} frame - A Frame object.
      * @return {Number} - Scale value.
      */
     scaleToFit(frame) {
