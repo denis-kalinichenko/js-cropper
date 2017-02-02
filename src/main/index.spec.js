@@ -1,7 +1,7 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import ImageCrop from "./index";
-import { getContextMock } from "./../../test/mock";
+import { CanvasMock, getCanvasCalls } from "./../../test/mock";
 
 describe("Image Crop component", () => {
     let imageCrop, wrapper, cleanJsdom;
@@ -11,11 +11,12 @@ describe("Image Crop component", () => {
         wrapper = document.createElement("div");
         wrapper.id = "image-crop";
         document.body.appendChild(wrapper);
-        getContextMock();
+        ImageCrop.__Rewire__("Canvas", CanvasMock);
     });
 
     afterEach(function() {
         cleanJsdom();
+        ImageCrop.__ResetDependency__("Canvas");
     });
 
     it("initialises", () => {
@@ -30,11 +31,16 @@ describe("Image Crop component", () => {
         const renderedImageCrop = imageCrop.render(wrapper);
 
         expect(wrapper.querySelectorAll(".image-crop")).to.have.length(1);
-        expect(wrapper.querySelectorAll("canvas")).to.have.length(1);
         expect(wrapper.querySelectorAll(".image-crop-tools")).to.have.length(1);
         expect(wrapper.querySelectorAll(".image-crop-zoom")).to.have.length(1);
         expect(wrapper.querySelectorAll("svg.icon.icon-frame-landscape")).to.have.length(2);
 
+        const expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'setHeight', arguments: [ 340 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
         expect(renderedImageCrop).to.equal(imageCrop);
     });
 
@@ -46,9 +52,12 @@ describe("Image Crop component", () => {
         imageCrop = new ImageCrop(config);
         imageCrop.render(wrapper);
 
-        const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.width).to.equal(config.width);
-        expect(canvasNode.height).to.equal(config.height);
+        const expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 400 ] },
+            { name: 'setHeight', arguments: [ 400 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
     });
 
     it("properly transforms onChange callback from config", () => {
@@ -69,22 +78,23 @@ describe("Image Crop component", () => {
         expect(imageCrop.setWidth).to.be.a("function");
         imageCrop.render(wrapper);
 
-        const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.width).to.equal(400);
+        let expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 400 ] },
+            { name: 'setHeight', arguments: [ 340 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
 
         const resizedImageCrop = imageCrop.setWidth(600);
-        expect(canvasNode.width).to.equal(600);
+        expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 400 ] },
+            { name: 'setHeight', arguments: [ 340 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'setWidth', arguments: [ 600 ]  }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
 
         expect(resizedImageCrop).to.equal(imageCrop);
-    });
-
-    it("has setWidth method, which changes width style property of Canvas container before render()", () => {
-        imageCrop = new ImageCrop();
-        imageCrop.setWidth(400);
-        imageCrop.render(wrapper);
-
-        const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.width).to.equal(400);
     });
 
     it("has setHeight method, which changes height attribute of Canvas container and returns this", () => {
@@ -92,22 +102,22 @@ describe("Image Crop component", () => {
         expect(imageCrop.setHeight).to.be.a("function");
         imageCrop.render(wrapper);
 
-        const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.height).to.equal(123);
+        let expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'setHeight', arguments: [ 123 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
 
         const resizedImageCrop = imageCrop.setHeight(321);
-        expect(canvasNode.height).to.equal(321);
-
+        expectedCanvasCalls = [
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'setHeight', arguments: [ 123 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'setHeight', arguments: [ 321 ]  }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
         expect(resizedImageCrop).to.equal(imageCrop);
-    });
-
-    it("has setHeight method, which changes width attribute of Canvas container before render()", () => {
-        imageCrop = new ImageCrop();
-        imageCrop.setHeight(400);
-        imageCrop.render(wrapper);
-
-        const canvasNode = wrapper.querySelector("canvas");
-        expect(canvasNode.height).to.equal(400);
     });
 
     it("has loadImage method, which pass Image into Canvas and call draw() method", () => {

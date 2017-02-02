@@ -1,4 +1,5 @@
 import Element from "./element";
+import Context from "./../objects/context";
 
 /**
  * Class representing a Generator
@@ -11,6 +12,7 @@ export default class Generator extends Element {
         super("canvas");
         this._frame = frame;
         this._canvas = canvas;
+        this._context = new Context(this._node.getContext("2d"));
     }
 
     /**
@@ -22,7 +24,7 @@ export default class Generator extends Element {
     toDataURL() {
         this.setWidth(this._frame.getRect().size.width);
         this.setHeight(this._frame.getRect().size.height);
-        this.getContext2d().drawImage(
+        this._context.drawImage(
             this._canvas.getNode(),
             this._frame.getMinX(),
             this._frame.getMinY(),

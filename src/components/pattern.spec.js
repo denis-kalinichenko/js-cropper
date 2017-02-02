@@ -1,24 +1,23 @@
-import { expect, spy } from "chai";
+import { expect } from "chai";
 import jsdom from "jsdom-global";
 import Pattern from "./pattern";
+import { ContextMock, getContextCalls } from "./../../test/mock";
+import { styles } from "./../config/default";
 
 describe("Pattern component",() => {
     let pattern, cleanJsdom;
 
     beforeEach(function () {
         cleanJsdom = jsdom();
+        Pattern.__Rewire__("Context", ContextMock);
     });
 
     afterEach(function () {
         cleanJsdom();
+        Pattern.__ResetDependency__("Context");
     });
 
     it("initialises", () => {
-        Pattern.prototype.getContext2d = () => {
-            return {
-                fillRect: () => {},
-            };
-        };
         expect(() => {new Pattern()}).to.not.throw();
     });
 
@@ -30,13 +29,6 @@ describe("Pattern component",() => {
     });
 
     it("has _draw method, which draw the pattern on canvas and return this", () => {
-        const fillRectSpy = spy();
-        Pattern.prototype.getContext2d = () => {
-            return {
-                fillRect: fillRectSpy,
-            }
-        };
-
         pattern = new Pattern();
         const dimensions = {
             width: 16,
@@ -47,9 +39,24 @@ describe("Pattern component",() => {
 
         const readyPattern = pattern._draw();
         expect(readyPattern).to.equal(pattern);
-        expect(fillRectSpy).to.have.been.called.with.exactly(0, 0, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(8, 0, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(0, 8, 8, 8);
-        expect(fillRectSpy).to.have.been.called.with.exactly(8, 8, 8, 8);
+
+        const expectedCalls = [
+            { name: 'fillStyle', arguments: [ styles.pattern.fill1 ] },
+            { name: 'fillRect', arguments: [ 0, 0, 8, 8 ] },
+            { name: 'fillStyle', arguments: [ styles.pattern.fill2 ] },
+            { name: 'fillRect', arguments: [ 8, 0, 8, 8 ] },
+            { name: 'fillRect', arguments: [ 0, 8, 8, 8 ] },
+            { name: 'fillStyle', arguments: [ styles.pattern.fill1 ] },
+            { name: 'fillRect', arguments: [ 8, 8, 8, 8 ] },
+            { name: 'fillStyle', arguments: [ styles.pattern.fill1 ] },
+            { name: 'fillRect', arguments: [ 0, 0, 8, 8 ] },
+            { name: 'fillStyle', arguments: [ styles.pattern.fill2 ] },
+            { name: 'fillRect', arguments: [ 8, 0, 8, 8 ] },
+            { name: 'fillRect', arguments: [ 0, 8, 8, 8 ] },
+            { name: 'fillStyle', arguments: [ styles.pattern.fill1 ] },
+            { name: 'fillRect', arguments: [ 8, 8, 8, 8 ] }
+        ];
+
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });

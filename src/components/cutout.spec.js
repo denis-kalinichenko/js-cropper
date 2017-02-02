@@ -1,66 +1,43 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
 import Cutout from "./cutout";
-import Canvas from "./canvas";
-import Frame from "./../objects/frame";
+import {styles} from "./../config/default";
+import { ContextMock, getContextCalls, FrameMock, CanvasMock } from "./../../test/mock";
 
 describe("Cutout component",() => {
     let cutout, cleanJsdom;
 
     beforeEach(function() {
         cleanJsdom = jsdom();
+        Cutout.__Rewire__("Context", ContextMock);
     });
 
     afterEach(function() {
         cleanJsdom();
+        Cutout.__ResetDependency__("Context");
     });
 
     it("initialises", () => {
         expect(() => {
-            new Cutout(new Frame(), new Canvas())
+            new Cutout(new FrameMock(), new CanvasMock())
         }).to.not.throw();
     });
 
     it("has draw method, which draw the cutout over canvas", () => {
-        const beginPathSpy = spy();
-        const rectSpy = spy();
-        const moveToSpy = spy();
-        const lineToSpy = spy();
-        const fillSpy = spy();
-        const closePathSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                beginPath: beginPathSpy,
-                rect: rectSpy,
-                moveTo: moveToSpy,
-                lineTo: lineToSpy,
-                fill: fillSpy,
-                closePath: closePathSpy,
-                fillRect: () => {},
-            };
-        };
-
-        const canvas = new Canvas();
-        const dimensions = {
-            width: 500,
-            height: 300,
-        };
-        canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-
-        const frame = new Frame();
-        frame.update(canvas.getNode());
-
-        cutout = new Cutout(frame, canvas);
+        cutout = new Cutout(new FrameMock(), new CanvasMock());
         cutout.draw();
 
-        expect(beginPathSpy).to.have.been.called.once();
-        expect(rectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
-        expect(moveToSpy).to.have.been.called.once.with.exactly(frame.getMinX(), frame.getMinY());
-        expect(lineToSpy).to.have.been.called.with.exactly(frame.getMinX(), frame.getMaxY());
-        expect(lineToSpy).to.have.been.called.with.exactly(frame.getMaxX(), frame.getMaxY());
-        expect(lineToSpy).to.have.been.called.with.exactly(frame.getMaxX(), frame.getMinY());
-        expect(closePathSpy).to.have.been.called.once();
-        expect(fillSpy).to.have.been.called.once();
+        const expectedCalls = [
+            { name: 'fillStyle', arguments: [ styles.cutout.fill ] },
+            { name: 'beginPath', arguments: [] },
+            { name: 'rect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'moveTo', arguments: [ 135.5, 25.5 ] },
+            { name: 'lineTo', arguments: [ 135.5, 314.5 ] },
+            { name: 'lineTo', arguments: [ 424.5, 314.5 ] },
+            { name: 'lineTo', arguments: [ 424.5, 25.5 ] },
+            { name: 'closePath', arguments: [] },
+            { name: 'fill', arguments: [] }
+        ];
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });

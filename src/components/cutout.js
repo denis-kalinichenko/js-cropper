@@ -1,4 +1,5 @@
-import {styles} from "../config/default";
+import {styles} from "./../config/default";
+import Context from "./../objects/context";
 
 /**
  * Class representing a cutout over canvas
@@ -13,7 +14,7 @@ export default class Cutout {
     constructor(frame, canvas) {
         this._frame = frame;
         this._canvas = canvas;
-        this._context = this._canvas.getContext2d();
+        this._context = new Context(this._canvas.getNode().getContext("2d"));
     }
 
     /**
@@ -22,7 +23,7 @@ export default class Cutout {
      * @return {Cutout} A Cutout object.
      */
     draw() {
-        this._context.fillStyle = styles.cutout.fill;
+        this._context.fillStyle(styles.cutout.fill);
         this._context.beginPath();
         this._context.rect(0, 0, this._canvas.getNode().width, this._canvas.getNode().height);
         this._context.moveTo(this._frame.getMinX(), this._frame.getMinY());
