@@ -224,6 +224,7 @@ export default class Canvas extends Element {
             this._image.getSize().height,
         );
         this._cutout.draw();
+        this._onChangeCallback(this);
         return this;
     }
 

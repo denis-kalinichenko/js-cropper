@@ -195,4 +195,14 @@ describe("Canvas component", function () {
         expect(zoomedCanvas).to.equal(canvas);
         expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
+
+    it("properly transforms onChange callback", () => {
+        canvas = new Canvas();
+        const myFuncSpy = spy();
+
+        canvas.onChange(myFuncSpy);
+        canvas.draw();
+        canvas.setZoom(0.5);
+        expect(myFuncSpy).to.have.been.called(2).with.exactly(canvas);
+    });
 });
