@@ -45,9 +45,10 @@ describe("Slider component",() => {
         expect(onChangeSpy).to.have.been.called.once.with.exactly(expectedValue);
     });
 
-    it("has setValue method, which sets a value", () => {
+    it("has setValue method, which sets a value and returns this", () => {
         const slider = new Slider();
-        slider.setValue(60);
+        const changedSlider = slider.setValue(60);
         expect(Number(slider.getNode().value)).to.equal(60);
+        expect(changedSlider).to.equal(slider);
     });
 });
