@@ -6,6 +6,7 @@ import Point from "./../objects/point";
 import Cutout from "./cutout";
 import Generator from "./generator";
 import MoveEventListener from "./../events/move";
+import Context from "./../objects/context";
 
 /**
  * Class representing a canvas element
@@ -16,7 +17,7 @@ export default class Canvas extends Element {
      */
     constructor() {
         super("canvas");
-        this._context = this.getContext2d();
+        this._context = new Context(this._node.getContext("2d"));
         this._image = new Image();
         this._pattern = new Pattern();
         this._frame = new Frame();
@@ -36,7 +37,6 @@ export default class Canvas extends Element {
      */
     render(parent) {
         super.render(parent);
-        this.getNode().style.borderRadius = "3px";
         this._drawBackground();
         this._moveEventListener.init();
         this._moveEventListener.onPress((point) => {
@@ -118,6 +118,22 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Sets zoom.
+     *
+     * @param {Number} zoom - Zoom value, from `0` = 0%, `1.0` = 100% of image size
+     * @return {Canvas} - A Canvas object.
+     */
+    setZoom(zoom) {
+        const lastImageSize = this._image.getSize();
+        this._image.setZoom(zoom);
+        const imageSize = this._image.getSize();
+        const x = this._lastPoint.x - ((imageSize.width - lastImageSize.width) / 2);
+        const y = this._lastPoint.y - ((imageSize.height - lastImageSize.height) / 2);
+        this._drawImage(new Point(x, y));
+        return this;
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.
@@ -193,7 +209,7 @@ export default class Canvas extends Element {
             this._basePoint.x,
             this._basePoint.y,
             this._image.getSize().width,
-            this._image.getSize().height
+            this._image.getSize().height,
         );
         this._cutout.draw();
         return this;
@@ -207,7 +223,7 @@ export default class Canvas extends Element {
     _drawBackground() {
         const pattern = this._context.createPattern(this._pattern.getNode(), "repeat");
         this._context.rect(0, 0, this.getNode().width, this.getNode().height);
-        this._context.fillStyle = pattern;
+        this._context.fillStyle(pattern);
         this._context.fill();
         return this;
     }

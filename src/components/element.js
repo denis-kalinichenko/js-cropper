@@ -12,6 +12,10 @@ export default class Element {
     constructor(node) {
         this._node = node;
         if (!node || typeof node === "string") {
+            if (node === "svg" || node === "use") {
+                this._node = document.createElementNS("http://www.w3.org/2000/svg", node);
+                return;
+            }
             this._node = document.createElement(node || "div");
         }
     }
@@ -72,11 +76,41 @@ export default class Element {
     }
 
     /**
-     *  Get a drawing 2в context on the canvas
+     * Get a drawing 2d context on the canvas
      *
      * @return {Object} - RenderingContext
      */
     getContext2d() {
         return this._node.getContext("2d");
+    }
+
+    /**
+     * Change the type of HTML element (type attribute)
+     *
+     * @return {Element} - An Element object.
+     */
+    setType(type) {
+        this._node.type = type;
+        return this;
+    }
+
+    /**
+     * Add class to HTML element (attribute `class`)
+     *
+     * @return {Element} - An Element object.
+     */
+    addClass(newClass) {
+        this._node.className += this._node.className.length > 1 ? ` ${newClass}` : newClass;
+        return this;
+    }
+
+    /**
+     * Adds a new attribute or changes the value of an existing attribute on the HTML element.
+     *
+     * @return {Element} - An Element object.
+     */
+    setAttribute(attributeName, attributeValue) {
+        this._node.setAttribute(attributeName, attributeValue);
+        return this;
     }
 }

@@ -4,21 +4,32 @@
     <meta charset="UTF-8">
     <title>Image Crop demo</title>
     <script src="../dist/g2a-image-crop.js"></script>
+    <link rel="stylesheet" href="https://docs.code.g2a.com/g2a-ui-framework/1.3.0/css/g2a-framework.min.css">
     <style>
         html, body {
             height: 100%;
         }
     </style>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0"
+         style="position:absolute">
+        <symbol viewBox="0 0 315.58 315.58" id="icon-frame-landscape">
+            <path d="M310.58 33.331H5a5 5 0 0 0-5 5v238.918a5 5 0 0 0 5 5h305.58c2.763 0 5-2.238 5-5V38.331c0-2.762-2.237-5-5-5zm-25 209.055l-68.766-71.214a2.047 2.047 0 0 0-2.823-.114l-47.695 41.979-60.962-75.061a2.007 2.007 0 0 0-1.63-.756 2.043 2.043 0 0 0-1.597.822L30 234.797V63.331h255.58v179.055z"></path>
+            <path d="M210.059 135.555c13.538 0 24.529-10.982 24.529-24.531 0-13.545-10.991-24.533-24.529-24.533-13.549 0-24.528 10.988-24.528 24.533 0 13.548 10.98 24.531 24.528 24.531z"></path>
+        </symbol>
+    </svg>
 </head>
 <body>
-    <div id="crop"></div>
-    <button onclick="showResult()">Crop</button>
-    <br>
-    <img src="" alt="" id="result">
+    <div class="container">
+        <div id="crop"></div>
+        <button class="btn btn-primary" onclick="showResult()">Crop Me</button>
+        <br>
+        <br>
+        <img src="" alt="" id="result">
+    </div>
     <script>
         var imageCrop = new ImageCrop();
         imageCrop.render("#crop");
-        imageCrop.loadImage("img/4rfBhA4.jpg").then(function () {
+        imageCrop.loadImage("img/big.jpg").then(function () {
             console.info("ImageCrop is ready");
         });
 

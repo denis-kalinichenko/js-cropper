@@ -18,8 +18,6 @@ export default class MoveEventListener {
         this._onMoveCallback = () => {};
         this._onPressCallback = () => {};
 
-        this._cursorDefault = this._parent.getNode().style.cursor;
-
         this._onReleaseHandler = this._onRelease.bind(this);
         this._onPressHandler = this._onPress.bind(this);
         this._onMoveHandler = this._onMove.bind(this);
@@ -76,7 +74,6 @@ export default class MoveEventListener {
     _onPress(event) {
         this._parent.getNode().addEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().addEventListener("touchmove", this._onMoveHandler, false);
-        this._parent.getNode().style.cursor = "move";
 
         const x = event.clientX || event.touches[0].clientX;
         const y = event.clientY || event.touches[0].clientY;
@@ -89,7 +86,6 @@ export default class MoveEventListener {
     _onRelease() {
         this._parent.getNode().removeEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().removeEventListener("touchmove", this._onMoveHandler, false);
-        this._parent.getNode().style.cursor = this._cursorDefault;
     }
 
     /**

@@ -5,7 +5,7 @@
  * @return {Number} value - valid dimension
  */
 export default function validateDimension(value) {
-    if (!value) {
+    if (!value && value !== 0) {
         throw Error("Dimension is not passed or invalid.");
     }
 

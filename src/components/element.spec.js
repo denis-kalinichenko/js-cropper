@@ -34,6 +34,16 @@ describe("Base element component",() => {
         expect(element.getNode()).to.be.an.instanceof(window.HTMLElement);
     });
 
+    it("creates SVG and USE element", () => {
+        const wrapper = document.querySelector(".wrapper");
+        element = new Element("svg");
+        element.render(wrapper);
+
+        const use = new Element("use");
+        use.render(element.getNode());
+        expect(wrapper.innerHTML).to.equal(`<svg><use></use></svg>`);
+    });
+
     it("has getNode method, which returns an element's node", () => {
         element = new Element("div");
         expect(element.getNode().nodeType).to.equal(Node.ELEMENT_NODE);
@@ -140,5 +150,35 @@ describe("Base element component",() => {
         HTMLCanvasElement.prototype.getContext = getContextSpy;
         const context = element.getContext2d();
         expect(getContextSpy).to.have.been.called.once.with.exactly("2d");
+    });
+
+    it("has setType() method, which set the attribute of HTML node", () => {
+        element = new Element("input");
+        element.render(wrapper);
+        element.setType("range");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input type="range">`);
+    });
+
+    it("has addClass() method, which set the attribute of HTML node", () => {
+        element = new Element();
+        element.render(wrapper);
+        element.addClass("dzien");
+        expect(document.querySelector(".wrapper").innerHTML).to.equal(`<div class="dzien"></div>`);
+
+        element.addClass("dobry");
+        expect(document.querySelector(".wrapper").innerHTML).to.equal(`<div class="dzien dobry"></div>`);
+    });
+
+    it("has setAttribute() method, which sets the attribute to HTML node", () => {
+        element = new Element("input");
+        element.render(wrapper);
+        element.setAttribute("name", "username");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="username">`);
+
+        element.setAttribute("name", "password");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="password">`);
+
+        element.setAttribute("type", "password");
+        expect(document.querySelector("input").outerHTML).to.equal(`<input name="password" type="password">`);
     });
 });
