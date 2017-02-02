@@ -67,6 +67,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onMoveHandler(event);
         expect(onMoveCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        onMoveCallbackSpy.reset();
 
         const anotherOnMoveCallbackSpy = spy();
         moveEventListener.onMove(anotherOnMoveCallbackSpy);
@@ -77,7 +78,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onMoveHandler(event);
         expect(anotherOnMoveCallbackSpy).to.have.been.called.once.with.exactly(new Point(61, 61));
-        expect(onMoveCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        expect(onMoveCallbackSpy).to.not.have.been.called();
     });
 
     it("it fires onPress callback, after press action", () => {
@@ -110,6 +111,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onPressHandler(event);
         expect(onPressCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        onPressCallbackSpy.reset();
 
         const anotherOnPressCallbackSpy = spy();
         moveEventListener.onPress(anotherOnPressCallbackSpy);
@@ -120,7 +122,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onPressHandler(event);
         expect(anotherOnPressCallbackSpy).to.have.been.called.once.with.exactly(new Point(61, 61));
-        expect(onPressCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        expect(onPressCallbackSpy).to.not.have.been.called();
     });
 
     it("it fires onRelease callback, after touch/mouse release action", () => {
@@ -153,6 +155,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onReleaseHandler(event);
         expect(onReleaseCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        onReleaseCallbackSpy.reset();
 
         const anotherOnReleaseCallbackSpy = spy();
         moveEventListener.onRelease(anotherOnReleaseCallbackSpy);
@@ -163,7 +166,7 @@ describe("MoveEventListener component",() => {
 
         moveEventListener.onReleaseHandler(event);
         expect(anotherOnReleaseCallbackSpy).to.have.been.called.once.with.exactly(new Point(61, 61));
-        expect(onReleaseCallbackSpy).to.have.been.called.once.with.exactly(new Point(42, 43));
+        expect(onReleaseCallbackSpy).to.not.have.been.called();
     });
 
     it("has _convertCoordinates method, which translates viewport coordinates to coordinates relative to the element", () => {

@@ -204,12 +204,13 @@ describe("Canvas component", function () {
         canvas.draw();
         canvas.setZoom(0.5);
         expect(myFuncSpy).to.have.been.called(2).with.exactly(canvas);
+        myFuncSpy.reset();
 
         const myAnotherFunc = spy();
         canvas.onChange(myAnotherFunc);
         canvas.draw();
         canvas.setZoom(0.5);
         expect(myAnotherFunc).to.have.been.called(2).with.exactly(canvas);
-        expect(myFuncSpy).to.have.been.called(2).with.exactly(canvas);
+        expect(myFuncSpy).to.not.have.been.called();
     });
 });
