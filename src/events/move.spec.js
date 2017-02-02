@@ -68,12 +68,15 @@ describe("MoveEventListener component",() => {
         moveEventListener.onMoveHandler(event);
         expect(onMoveCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
 
+        const anotherOnMoveCallbackSpy = spy();
+        moveEventListener.onMove(anotherOnMoveCallbackSpy);
+
         event = {
             touches: [{ clientX: 69, clientY : 69 }]
         };
 
         moveEventListener.onMoveHandler(event);
-        expect(onMoveCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
+        expect(anotherOnMoveCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
     it("it fires onPress callback, after press action", () => {
@@ -107,12 +110,15 @@ describe("MoveEventListener component",() => {
         moveEventListener.onPressHandler(event);
         expect(onPressCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
 
+        const anotherOnPressCallbackSpy = spy();
+        moveEventListener.onPress(anotherOnPressCallbackSpy);
+
         event = {
             touches: [{ clientX: 69, clientY : 69 }]
         };
 
         moveEventListener.onPressHandler(event);
-        expect(onPressCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
+        expect(anotherOnPressCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
     it("it fires onRelease callback, after touch/mouse release action", () => {
@@ -146,12 +152,15 @@ describe("MoveEventListener component",() => {
         moveEventListener.onReleaseHandler(event);
         expect(onReleaseCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
 
+        const anotherOnReleaseCallbackSpy = spy();
+        moveEventListener.onRelease(anotherOnReleaseCallbackSpy);
+
         event = {
             touches: [{ clientX: 69, clientY : 69 }]
         };
 
         moveEventListener.onReleaseHandler(event);
-        expect(onReleaseCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
+        expect(anotherOnReleaseCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
     it("has _convertCoordinates method, which translates viewport coordinates to coordinates relative to the element", () => {
