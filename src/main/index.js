@@ -29,6 +29,7 @@ export default class ImageCrop {
         this.setHeight(config.height || defaultDimensions.height);
 
         this._onInitCallback = validateCallback(config.onInit);
+        this._onChangeCallback = validateCallback(config.onChange);
     }
 
     /**
@@ -66,6 +67,10 @@ export default class ImageCrop {
         rightIcon.render(zoomSlider.getNode());
 
         this._onInitCallback(this);
+
+        this._canvas.onChange(() => {
+            this._onChangeCallback(this);
+        });
 
         return this;
     }

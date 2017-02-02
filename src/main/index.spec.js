@@ -61,16 +61,15 @@ describe("Image Crop component", () => {
     });
 
     it("properly transforms onChange callback from config", () => {
-        const onChangeSpy = spy();
+        const onChangeFunc = spy();
         const config = {
             width: 400,
             height: 400,
-            onChange: onChangeSpy
+            onChange: onChangeFunc
         };
         imageCrop = new ImageCrop(config);
         imageCrop.render(wrapper);
-        imageCrop.setZoom(0.5);
-        expect(onChangeSpy).to.have.been.called();
+        expect(onChangeFunc).to.have.been.called.once.with.exactly(imageCrop);
     });
 
     it("has setWidth method, which changes width style property of Canvas container and returns this", () => {

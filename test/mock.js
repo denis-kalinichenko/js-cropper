@@ -166,6 +166,11 @@ export class CanvasMock {
         });
         return this;
     }
+
+    onChange(spy) {
+        this._onChangeCallback = spy();
+        return this;
+    }
 }
 
 /**

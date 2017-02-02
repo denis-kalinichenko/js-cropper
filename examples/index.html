@@ -31,18 +31,15 @@
     <script>
         var imageCrop = new ImageCrop({
             onInit: function (crop) {
-                console.log(crop);
                 console.info("ImageCrop is ready");
             },
             onChange: function (crop) {
-                console.log(crop);
                 console.log("onChange callback fired");
             }
         });
         imageCrop.render("#crop");
         imageCrop.loadImage("img/big.jpg").then(function (crop) {
             console.info("Image is ready to crop.");
-            console.log(crop);
         });
 
         function showResult() {
