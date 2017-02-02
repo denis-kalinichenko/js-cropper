@@ -86,7 +86,7 @@ describe("Image component",() => {
         expect(image.isSquare()).to.equal(true);
     });
 
-    it("has scaleToFit method, which scale image to fit Frame", () => {
+    it("has scaleToFit method, which scales image for fit to Frame", () => {
         image = new Image();
         image.setWidth(300);
         image.setHeight(600);
@@ -96,9 +96,22 @@ describe("Image component",() => {
         element.setHeight(300);
         const frame = new Frame();
         frame.update(element.getNode());
-        image.scaleToFit(frame);
-        expect(image._scale).to.equal(frame.getRect().size.width / image.getNode().width);
-        expect(image._scale).to.equal(image._originScale);
+        const scale = image.scaleToFit(frame);
+        expect(scale).to.equal(0.85);
+    });
+
+    it("has scaleToFit method, which scales image for fit to frame even if image is smaller than frame", () => {
+        image = new Image();
+        image.setWidth(20);
+        image.setHeight(30);
+
+        const element = new Element();
+        element.setWidth(500);
+        element.setHeight(300);
+        const frame = new Frame();
+        frame.update(element.getNode());
+        const scale = image.scaleToFit(frame);
+        expect(scale).to.equal(12.75);
     });
 
     it("has getSize method, which Returns Size object, which contain weight and height", () => {
