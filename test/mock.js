@@ -109,15 +109,62 @@ export function getNodes() {
     return nodes;
 }
 
+let canvasCalls = [];
+
+export function getCanvasCalls() {
+    return canvasCalls;
+}
 /**
  * Class representing a Canvas class mock
  */
 export class CanvasMock {
     constructor() {
         nodes.canvas = document.createElement("canvas");
+        canvasCalls = [];
     }
+
     getNode() {
         return nodes.canvas;
+    }
+
+    setWidth(...args) {
+        canvasCalls.push({
+            name: "setWidth",
+            arguments: args
+        });
+        return this;
+    }
+
+    setHeight(...args) {
+        canvasCalls.push({
+            name: "setHeight",
+            arguments: args
+        });
+        return this;
+    }
+
+    render(...args) {
+        canvasCalls.push({
+            name: "render",
+            arguments: args
+        });
+        return this;
+    }
+
+    setImage(...args) {
+        canvasCalls.push({
+            name: "setImage",
+            arguments: args
+        });
+        return this;
+    }
+
+    draw(...args) {
+        canvasCalls.push({
+            name: "draw",
+            arguments: args
+        });
+        return this;
     }
 }
 
