@@ -1,21 +1,6 @@
 import Size from "./../src/objects/size";
 import Point from "./../src/objects/point";
 
-export function getContextMock() {
-    HTMLCanvasElement.prototype.getContext = (contextId) => {
-        return {
-            fillRect: () => {},
-            createPattern: () => {},
-            rect: () => {},
-            fill: () => {},
-            beginPath: () => {},
-            moveTo: () => {},
-            lineTo: () => {},
-            closePath: () => {},
-        };
-    }
-}
-
 let contextCalls = [];
 /**
  * @returns {Array} contextCalls - An Array of calls.
@@ -117,10 +102,16 @@ export class ContextMock {
 
 let nodes = {};
 
+/**
+ * @returns {Array} nodes - Array of nodes.
+ */
 export function getNodes() {
     return nodes;
 }
 
+/**
+ * Class representing a Canvas class mock
+ */
 export class CanvasMock {
     constructor() {
         nodes.canvas = document.createElement("canvas");
@@ -130,6 +121,9 @@ export class CanvasMock {
     }
 }
 
+/**
+ * Class representing a Frame class mock
+ */
 export class FrameMock {
     getRect() {
         return {
@@ -167,6 +161,9 @@ export class FrameMock {
     }
 }
 
+/**
+ * Class representing a Pattern class mock
+ */
 export class PatternMock {
     constructor() {
         nodes.pattern = document.createElement("canvas");
@@ -177,12 +174,24 @@ export class PatternMock {
     }
 }
 
+/**
+ * Class representing a Cutout class mock
+ */
 export class CutoutMock {
     draw() {
         return this;
     }
 }
 
+/**
+ * Class representing a Generator class mock
+ */
 export class GeneratorMock {
+    constructor() {
+        nodes.generator = document.createElement("canvas");
+    }
 
+    getNode() {
+        return nodes.generator;
+    }
 }
