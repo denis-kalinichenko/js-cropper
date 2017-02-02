@@ -47,8 +47,6 @@ export default class Canvas extends Element {
         this._moveEventListener.onMove((point) => {
             this._drawImage(point);
         });
-        this._moveEventListener.onRelease(() => {
-        });
         return this;
     }
 

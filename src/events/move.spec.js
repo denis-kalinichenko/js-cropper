@@ -65,14 +65,14 @@ describe("MoveEventListener component",() => {
             clientY: 51,
         };
 
-        moveEventListener._onMove(event);
+        moveEventListener.onMoveHandler(event);
         expect(onMoveCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
 
         event = {
             touches: [{ clientX: 69, clientY : 69 }]
         };
 
-        moveEventListener._onMove(event);
+        moveEventListener.onMoveHandler(event);
         expect(onMoveCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
@@ -104,15 +104,54 @@ describe("MoveEventListener component",() => {
             clientY: 51,
         };
 
-        moveEventListener._onPress(event);
+        moveEventListener.onPressHandler(event);
         expect(onPressCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
 
         event = {
             touches: [{ clientX: 69, clientY : 69 }]
         };
 
-        moveEventListener._onPress(event);
+        moveEventListener.onPressHandler(event);
         expect(onPressCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
+    });
+
+    it("it fires onRelease callback, after touch/mouse release action", () => {
+        const element = new Element();
+        element.setWidth(560);
+        element.setHeight(340);
+
+        element.getNode().getBoundingClientRect = () => {
+            return {
+                bottom: 348,
+                height: 340,
+                left: 8,
+                right: 568,
+                top: 8,
+                width: 560,
+            }
+        };
+
+        moveEventListener = new MoveEventListener(element);
+
+        const onReleaseCallbackSpy = spy();
+
+        moveEventListener.init();
+        moveEventListener.onRelease(onReleaseCallbackSpy);
+
+        let event = {
+            clientX: 50,
+            clientY: 51,
+        };
+
+        moveEventListener.onReleaseHandler(event);
+        expect(onReleaseCallbackSpy).to.have.been.called.with.exactly(new Point(42, 43));
+
+        event = {
+            touches: [{ clientX: 69, clientY : 69 }]
+        };
+
+        moveEventListener.onReleaseHandler(event);
+        expect(onReleaseCallbackSpy).to.have.been.called.with.exactly(new Point(61, 61));
     });
 
     it("has _convertCoordinates method, which translates viewport coordinates to coordinates relative to the element", () => {

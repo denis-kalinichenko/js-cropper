@@ -19,9 +19,9 @@ export default class MoveEventListener {
         this._onPressCallback = () => {};
         this._onReleaseCallback = () => {};
 
-        this._onReleaseHandler = this._onRelease.bind(this);
-        this._onPressHandler = this._onPress.bind(this);
-        this._onMoveHandler = this._onMove.bind(this);
+        this._onReleaseHandler = this.onReleaseHandler.bind(this);
+        this._onPressHandler = this.onPressHandler.bind(this);
+        this._onMoveHandler = this.onMoveHandler.bind(this);
     }
 
     /**
@@ -72,7 +72,7 @@ export default class MoveEventListener {
      *
      * @param {Object} event - Event object.
      */
-    _onMove(event) {
+    onMoveHandler(event) {
         this._onMoveCallback(this._getEventPoint(event));
     }
 
@@ -81,7 +81,7 @@ export default class MoveEventListener {
      *
      * @param {Object} event - Event object.
      */
-    _onPress(event) {
+    onPressHandler(event) {
         this._parent.getNode().addEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().addEventListener("touchmove", this._onMoveHandler, false);
         this._onPressCallback(this._getEventPoint(event));
@@ -90,7 +90,7 @@ export default class MoveEventListener {
     /**
      * Handler for (touch/mouse) release action.
      */
-    _onRelease(event) {
+    onReleaseHandler(event) {
         this._parent.getNode().removeEventListener("mousemove", this._onMoveHandler, false);
         this._parent.getNode().removeEventListener("touchmove", this._onMoveHandler, false);
         this._onReleaseCallback(this._getEventPoint(event));
