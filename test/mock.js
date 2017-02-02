@@ -171,6 +171,10 @@ export class CanvasMock {
         this._onChangeCallback = spy();
         return this;
     }
+
+    redraw() {
+        return this;
+    }
 }
 
 /**

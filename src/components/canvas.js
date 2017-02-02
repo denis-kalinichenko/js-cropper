@@ -99,6 +99,18 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Redraw an Image
+     *
+     * @return {Canvas} A Canvas object.
+     */
+    redraw() {
+        this._resetPoints();
+        this._image.scaleToFit(this._frame);
+        this.draw();
+        return this;
+    }
+
+    /**
      * Clear canvas context
      *
      * @return {Canvas} A Canvas object.

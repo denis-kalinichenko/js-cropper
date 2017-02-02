@@ -89,6 +89,7 @@ export default class ImageCrop {
             throw Error(`Width property: ${error.message}`);
         }
         this._canvas.setWidth(width);
+        this._canvas.redraw();
         return this;
     }
 
@@ -106,6 +107,7 @@ export default class ImageCrop {
             throw Error(`Height property: ${error.message}`);
         }
         this._canvas.setHeight(height);
+        this._canvas.redraw();
         return this;
     }
 
