@@ -32,6 +32,16 @@ export default class Slider extends Element {
     }
 
     /**
+     * Sets a value
+     *
+     * @param {Number} value - A value from 0 to 100
+     */
+    setValue(value) {
+        this.getNode().value = value;
+        return this;
+    }
+
+    /**
      * Fires custom callback.
      */
     _onChange() {

@@ -44,4 +44,10 @@ describe("Slider component",() => {
         input.dispatchEvent(event);
         expect(onChangeSpy).to.have.been.called.once.with.exactly(expectedValue);
     });
+
+    it("has setValue method, which sets a value", () => {
+        const slider = new Slider();
+        slider.setValue(60);
+        expect(Number(slider.getNode().value)).to.equal(60);
+    });
 });
