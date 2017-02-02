@@ -3,7 +3,7 @@ import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
 import Point from "./../objects/point";
-import { ContextMock, getContextCalls, CanvasMock } from "./../../test/mock";
+import { ContextMock, getContextCalls, PatternMock, FrameMock, CutoutMock, GeneratorMock, getNodes } from "./../../test/mock";
 
 describe("Canvas component", function () {
     let canvas, wrapper, cleanJsdom;
@@ -13,12 +13,21 @@ describe("Canvas component", function () {
         wrapper = document.createElement("div");
         wrapper.className = "wrapper";
         document.body.appendChild(wrapper);
+
         Canvas.__Rewire__("Context", ContextMock);
+        Canvas.__Rewire__("Pattern", PatternMock);
+        Canvas.__Rewire__("Frame", FrameMock);
+        Canvas.__Rewire__("Cutout", CutoutMock);
+        Canvas.__Rewire__("Generator", GeneratorMock);
     });
 
     afterEach(function () {
         cleanJsdom();
-        Canvas.__ResetDependency__("Context", ContextMock);
+        Canvas.__ResetDependency__("Context");
+        Canvas.__ResetDependency__("Pattern");
+        Canvas.__ResetDependency__("Frame");
+        Canvas.__ResetDependency__("Cutout");
+        Canvas.__ResetDependency__("Generator");
     });
 
     it("initialises", () => {
@@ -40,34 +49,26 @@ describe("Canvas component", function () {
         expect(renderedCanvas).to.equal(canvas);
     });
 
-    it("has setWidth method, which set width attribute of canvas element and call update() frame", () => {
+    it("has setWidth method, which set width attribute of canvas element", () => {
         canvas = new Canvas();
         const width = 100;
-
-        const updateFrameSpy = spy();
-        canvas._frame.update = updateFrameSpy;
 
         canvas.setWidth(width);
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.width).to.equal(width);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.getNode());
     });
 
-    it("has setHeight method, which set height attribute of canvas element and call update() frame", () => {
+    it("has setHeight method, which set height attribute of canvas element", () => {
         canvas = new Canvas();
         const height = 150;
-
-        const updateFrameSpy = spy();
-        canvas._frame.update = updateFrameSpy;
 
         canvas.setHeight(height);
         canvas.render(wrapper);
 
         const canvasNode = wrapper.querySelector("canvas");
         expect(canvasNode.height).to.equal(height);
-        expect(updateFrameSpy).to.have.been.called.once.with.exactly(canvas.getNode());
     });
 
     it("has setImage method, which pass the Image object into Canvas, reset points, call scaleToFit() and returns this", () => {
@@ -105,36 +106,37 @@ describe("Canvas component", function () {
         expect(canvas._basePoint.y).to.equal(0);
     });
 
-    it("has draw method, which call drawImage and returns this", () => {
+    it("has draw method, which draws Image Crop on canvas", () => {
         canvas = new Canvas();
         canvas.setWidth(300);
         canvas.setHeight(300);
-
-        const drawImageSpy = spy();
-        canvas._drawImage = drawImageSpy;
 
         canvas.render(wrapper);
 
         let image = new Image();
         image.getNode().width = 1000;
         image.getNode().height = 500;
-        image._checkFormat();
         canvas.setImage(image);
         const drawedCanvas = canvas.draw();
 
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(canvas._centerImagePoint());
+        const expectedCalls = [
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 300, 300 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'clearRect', arguments: [ 0, 0, 300, 300 ] },
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 300, 300 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'drawImage', arguments: [ image.getNode(), -9, 25.5, 578, 289 ]}
+        ];
+
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
         expect(drawedCanvas).to.equal(canvas);
     });
 
     it("has clear method, which clear canvas 2d context and return this", () => {
-        const clearRectSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                clearRect: clearRectSpy,
-                fillRect: () => {}
-            };
-        };
-
         canvas = new Canvas();
         const dimensions = {
             width: 500,
@@ -142,79 +144,14 @@ describe("Canvas component", function () {
         };
         canvas.setWidth(dimensions.width);
         canvas.setHeight(dimensions.height);
+
+        const expectedCalls = [
+            { name: 'clearRect', arguments: [ 0, 0, dimensions.width, dimensions.height ] }
+        ];
 
         const clearedCanvas = canvas.clear();
         expect(clearedCanvas).to.equal(canvas);
-        expect(clearRectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
-    });
-
-    it("has _drawBackground method, which draw background and return this", () => {
-        const createPatternSpy = spy();
-        const rectSpy = spy();
-        const fillSpy = spy();
-        HTMLCanvasElement.prototype.getContext = function getContext() {
-            return {
-                createPattern: createPatternSpy,
-                rect: rectSpy,
-                fill: fillSpy,
-                fillRect: () => {
-                }
-            };
-        };
-
-        canvas = new Canvas();
-        const dimensions = {
-            width: 500,
-            height: 300,
-        };
-        canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-        const drawedCanvas = canvas._drawBackground();
-        expect(drawedCanvas).to.equal(canvas);
-        expect(createPatternSpy).to.have.been.called.once.with.exactly(canvas._pattern.getNode(), "repeat");
-        expect(rectSpy).to.have.been.called.once.with.exactly(0, 0, dimensions.width, dimensions.height);
-        expect(fillSpy).to.have.been.called.once();
-    });
-
-    it("has _drawImage method, which draw an Image and returns this", () => {
-        const dimensions = {
-            width: 1000,
-            height: 1000
-        };
-        canvas = new Canvas();
-        canvas.setWidth(dimensions.width);
-        canvas.setHeight(dimensions.height);
-        canvas.render(wrapper);
-
-        const image = new Image();
-        image.getNode().width = 600;
-        image.getNode().height = 300;
-        image._checkFormat();
-
-        const drawImageSpy = spy();
-        const clearSpy = spy();
-        const drawBackgroundSpy = spy();
-        const drawCutoutSpy = spy();
-        canvas._context = {
-            drawImage: drawImageSpy
-        };
-        canvas.clear = clearSpy;
-        canvas._drawBackground = drawBackgroundSpy;
-        canvas._cutout.draw = drawCutoutSpy;
-
-        canvas.setImage(image);
-        canvas._drawImage(new Point(10, 10));
-
-        expect(clearSpy).to.have.been.called.once();
-        expect(drawBackgroundSpy).to.have.been.called.once();
-        expect(drawCutoutSpy).to.have.been.called.once();
-        expect(drawImageSpy).to.have.been.called.once.with.exactly(
-            image.getNode(),
-            canvas._basePoint.x,
-            canvas._basePoint.y,
-            Math.floor(image.getNode().width * canvas._image._scale),
-            Math.floor(image.getNode().height * canvas._image._scale)
-        );
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 
     it("has toDataURL method, which return image as DataURL", () => {
@@ -229,45 +166,6 @@ describe("Canvas component", function () {
         expect(toDataURLSpy).to.have.been.called.once();
     });
 
-    it("has _centerImagePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {
-        canvas = new Canvas();
-        canvas.setHeight(400);
-        canvas.setWidth(560);
-        canvas.render(wrapper);
-
-        const image = new Image();
-        image.getNode().width = 600;
-        image.getNode().height = 300;
-        image._checkFormat();
-
-        canvas.setImage(image);
-
-        const expectedX = canvas._frame.getMidX() - (canvas._image.getSize().width / 2);
-        const expectedY = canvas._frame.getMidY() - (canvas._image.getSize().height / 2);
-        expect(canvas._centerImagePoint()).to.deep.equal(new Point(expectedX, expectedY));
-    });
-
-    it("has _validatePoint method, which calculate and return origin Point for centered image (x-axis, y-axis)", () => {
-        canvas = new Canvas();
-        canvas.setHeight(340);
-        canvas.setWidth(560);
-        canvas.render(wrapper);
-
-        const image = new Image();
-        image.getNode().width = 500;
-        image.getNode().height = 400;
-
-        canvas.setImage(image);
-
-        let x = canvas._frame.getMinX() - 10;
-        let y = canvas._frame.getMinY();
-        expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(x, y));
-
-        x = canvas._frame.getMinX() + 50;
-        y = canvas._frame.getMinY();
-        expect(canvas._validatePoint(new Point(x, y))).to.deep.equal(new Point(canvas._frame.getMinX(), y));
-    });
-
     it("has setZoom method, which sets zoom and return this", () => {
         canvas = new Canvas();
         canvas.setHeight(340);
@@ -280,14 +178,21 @@ describe("Canvas component", function () {
 
         canvas.setImage(image);
 
-        const clearRectSpy = spy();
-        const drawImageSpy = spy();
-        canvas._context.clearRect = clearRectSpy;
-        canvas._context.drawImage = drawImageSpy;
+        const expectedCalls = [
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 560, 340 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'clearRect', arguments: [ 0, 0, 560, 340 ] },
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 560, 340 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'drawImage', arguments: [ image.getNode(), -90.3125, -72.25, 541.875, 433.5 ] }
+        ];
 
         const zoomedCanvas = canvas.setZoom(0.5);
-        expect(clearRectSpy).to.have.been.called();
-        expect(drawImageSpy).to.have.been.called.with.exactly(image.getNode(), -90.3125, -72.25, 541.875, 433.5);
         expect(zoomedCanvas).to.equal(canvas);
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
     });
 });

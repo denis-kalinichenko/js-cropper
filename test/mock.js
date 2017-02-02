@@ -115,12 +115,18 @@ export class ContextMock {
     }
 }
 
+let nodes = {};
+
+export function getNodes() {
+    return nodes;
+}
+
 export class CanvasMock {
     constructor() {
-        this._node = document.createElement("canvas");
+        nodes.canvas = document.createElement("canvas");
     }
     getNode() {
-        return this._node;
+        return nodes.canvas;
     }
 }
 
@@ -163,11 +169,11 @@ export class FrameMock {
 
 export class PatternMock {
     constructor() {
-        this._node = document.createElement("canvas");
+        nodes.pattern = document.createElement("canvas");
     }
 
     getNode() {
-        return this._node;
+        return nodes.pattern;
     }
 }
 
