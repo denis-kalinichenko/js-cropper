@@ -61,7 +61,7 @@ export default class ImageCrop {
 
         this._slider.render(zoomSlider.getNode());
         this._slider.onChange((value) => {
-            this.setZoom(value / 100);
+            this._canvas.setZoom(value / 100);
         });
 
         rightIcon.render(zoomSlider.getNode());
@@ -157,6 +157,13 @@ export default class ImageCrop {
             throw Error(`Zoom property: ${error.message}`);
         }
         this._canvas.setZoom(zoom);
+        this._slider.setValue(zoom * 100);
+        return this;
+    }
+
+    reset() {
+        this.setZoom(0);
+        this._canvas.redraw();
         return this;
     }
 }

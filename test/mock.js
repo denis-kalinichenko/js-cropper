@@ -175,6 +175,14 @@ export class CanvasMock {
     redraw() {
         return this;
     }
+
+    setZoom(...args) {
+        canvasCalls.push({
+            name: "setZoom",
+            arguments: args
+        });
+        return this;
+    }
 }
 
 /**

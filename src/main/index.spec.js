@@ -173,10 +173,39 @@ describe("Image Crop component", () => {
         imageCrop.render(wrapper);
 
         const setZoomSpy = spy();
-        imageCrop._canvas.setZoom = setZoomSpy;
 
         const zoomedImage = imageCrop.setZoom(0.5);
-        expect(setZoomSpy).to.have.been.called.once.with.exactly(0.5);
+
+        const expectedCalls = [
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'setHeight', arguments: [ 340 ] },
+            { name: 'setHeight', arguments: [ 400 ] },
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'setZoom', arguments: [ 0.5 ] }
+        ];
+
+        expect(getCanvasCalls()).to.deep.equal(expectedCalls);
         expect(zoomedImage).to.equal(imageCrop);
+    });
+
+    it("has reset method, which resets zoom and image position", () => {
+        imageCrop = new ImageCrop();
+        imageCrop.setHeight(400);
+        imageCrop.setWidth(560);
+        imageCrop.render(wrapper);
+
+        const resetedCrop = imageCrop.reset();
+
+        const expectedCalls = [
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'setHeight', arguments: [ 340 ] },
+            { name: 'setHeight', arguments: [ 400 ] },
+            { name: 'setWidth', arguments: [ 560 ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'setZoom', arguments: [ 0 ] }
+        ];
+        expect(getCanvasCalls()).to.deep.equal(expectedCalls);
+        expect(resetedCrop).to.equal(imageCrop);
     });
 });
