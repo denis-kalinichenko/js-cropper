@@ -4,10 +4,10 @@
  * @param {Function} callback - Callback function.
  */
 export default function validateCallback(callback) {
-    if (!callback) {
+    if (typeof callback === "undefined") {
         return () => {};
     }
-    if (typeof callback !== "function") {
+    if (!callback || typeof callback !== "function") {
         throw Error("Invalid callback.");
     }
     return callback;
