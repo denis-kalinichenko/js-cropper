@@ -72,7 +72,7 @@ export default class Image extends Element {
         const widthScale = frame.getRect().size.width / this.getNode().width;
         const heightScale = frame.getRect().size.height / this.getNode().height;
         const largestScale = (widthScale > heightScale) ? widthScale : heightScale;
-        this._scale = this._originScale = (largestScale > 1) ? 1: largestScale;
+        this._scale = this._originScale = largestScale;
         return this;
     }
 
