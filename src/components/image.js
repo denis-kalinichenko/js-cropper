@@ -66,14 +66,14 @@ export default class Image extends Element {
     /**
      * Scale image to fit Frame.
      *
-     * @return {Image} - Returns Image object
+     * @return {Number} - Scale value.
      */
     scaleToFit(frame) {
         const widthScale = frame.getRect().size.width / this.getNode().width;
         const heightScale = frame.getRect().size.height / this.getNode().height;
         const largestScale = (widthScale > heightScale) ? widthScale : heightScale;
         this._scale = this._originScale = largestScale;
-        return this;
+        return this._scale;
     }
 
     /**
