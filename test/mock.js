@@ -183,6 +183,13 @@ export class CanvasMock {
         });
         return this;
     }
+
+    getFrameRectOnImage() {
+        return {
+            origin: { x: 234.42906574394465, y: 44.117647058823536 },
+            size: { width: 500, height: 500 },
+        };
+    }
 }
 
 /**
