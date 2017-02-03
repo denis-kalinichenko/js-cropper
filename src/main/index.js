@@ -168,8 +168,9 @@ export default class ImageCrop {
     }
 
     /**
-     * @returns {{origin: {x: number, y: number}, size: {width: number, height: number}}} - Frame origin and size
-     * relative to an Image.
+     * Get Frame origin and size relative to an Image.
+     *
+     * @returns {{origin: {x: number, y: number}, size: {width: number, height: number}}}
      */
     getFrameRectOnImage() {
         return this._canvas.getFrameRectOnImage();

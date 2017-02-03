@@ -157,9 +157,9 @@ export default class Canvas extends Element {
     }
 
     /**
+     *  Get Frame origin and size relative to an Image.
      *
-     * @returns {{origin: {x: number, y: number}, size: {width: number, height: number}}} - Frame origin and size
-     * relative to an Image.
+     * @returns {{origin: {x: number, y: number}, size: {width: number, height: number}}}
      */
     getFrameRectOnImage() {
         const originX = (this._frame.getMinX() - this._basePoint.x) / this._image.getScale();
