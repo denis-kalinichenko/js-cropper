@@ -109,6 +109,10 @@ export default class Image extends Element {
         return this._zoom;
     }
 
+    getScale() {
+        return this._scale;
+    }
+
     /**
      * Method, which check an image format (landscape or portrait) and save it.
      *
