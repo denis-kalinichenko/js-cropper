@@ -7,7 +7,6 @@ import Cutout from "./cutout";
 import Generator from "./generator";
 import MoveEventListener from "./../events/move";
 import Context from "./../objects/context";
-import Size from "./../objects/size";
 
 /**
  * Class representing a canvas element
@@ -158,7 +157,9 @@ export default class Canvas extends Element {
     }
 
     /**
-     * @returns {{origin: Point, size: Size}} - Frame origin and size relative to an Image.
+     *
+     * @returns {{origin: {x: number, y: number}, size: {width: number, height: number}}} - Frame origin and size
+     * relative to an Image.
      */
     getFrameRectOnImage() {
         const originX = (this._frame.getMinX() - this._basePoint.x) / this._image.getScale();
@@ -166,8 +167,14 @@ export default class Canvas extends Element {
         const frameWidth = this._frame.getRect().size.width / this._image.getScale();
         const frameHeight = this._frame.getRect().size.width / this._image.getScale();
         return {
-            origin: new Point(originX, originY),
-            size: new Size(frameWidth, frameHeight),
+            origin: {
+                x: originX,
+                y: originY,
+            },
+            size: {
+                width: frameWidth,
+                height: frameHeight,
+            },
         }
     }
 
