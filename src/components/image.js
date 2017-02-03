@@ -109,6 +109,11 @@ export default class Image extends Element {
         return this._zoom;
     }
 
+    /**
+     * Get actual scale value
+     *
+     * @returns {Number} - An actual scale value.
+     */
     getScale() {
         return this._scale;
     }

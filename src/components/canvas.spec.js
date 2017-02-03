@@ -3,6 +3,7 @@ import jsdom from "jsdom-global"
 import Canvas from "./canvas";
 import Image from "./image";
 import Point from "./../objects/point";
+
 import { ContextMock, getContextCalls, PatternMock, FrameMock, CutoutMock, GeneratorMock, getNodes } from "./../../test/mock";
 
 describe("Canvas component", function () {
@@ -223,9 +224,21 @@ describe("Canvas component", function () {
         image.getNode().height = 500;
         canvas.setImage(image);
 
-        const expectedRect = {
+        let expectedRect = {
             origin: { x: 234.42906574394465, y: 44.117647058823536 },
             size: { width: 500.00000000000006, height: 500.00000000000006 },
+        };
+
+        expect(canvas.getFrameRectOnImage()).to.deep.equal(expectedRect);
+
+        image = new Image();
+        image.getNode().width = 690;
+        image.getNode().height = 1024;
+        canvas.setImage(image);
+
+        expectedRect = {
+            origin: { x: 323.5121107266436, y: 60.88235294117647 },
+            size: { width: 690, height: 690 },
         };
 
         expect(canvas.getFrameRectOnImage()).to.deep.equal(expectedRect);
