@@ -147,4 +147,12 @@ describe("Image component",() => {
         image.setZoom(zoomValue);
         expect(image.getZoom()).to.equal(zoomValue);
     });
+
+    it("has getScale method, returns actual scale value", () => {
+        image = new Image();
+        image.setWidth(300);
+        image.setHeight(600);
+        image.setZoom(0.5);
+        expect(image.getScale()).to.equal(1.5);
+    });
 });

@@ -166,4 +166,13 @@ export default class ImageCrop {
         this._canvas.redraw();
         return this;
     }
+
+    /**
+     * Get Frame origin and size relative to an Image.
+     *
+     * @returns {{origin: {x: Number, y: Number}, size: {width: Number, height: Number}}}
+     */
+    getFrameRectOnImage() {
+        return this._canvas.getFrameRectOnImage();
+    }
 }

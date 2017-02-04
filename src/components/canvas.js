@@ -157,6 +157,28 @@ export default class Canvas extends Element {
     }
 
     /**
+     *  Get Frame origin and size relative to an Image.
+     *
+     * @returns {{origin: {x: Number, y: Number}, size: {width: Number, height: Number}}}
+     */
+    getFrameRectOnImage() {
+        const originX = (this._frame.getMinX() - this._basePoint.x) / this._image.getScale();
+        const originY = (this._frame.getMinY() - this._basePoint.y) / this._image.getScale();
+        const frameWidth = this._frame.getRect().size.width / this._image.getScale();
+        const frameHeight = this._frame.getRect().size.width / this._image.getScale();
+        return {
+            origin: {
+                x: originX,
+                y: originY,
+            },
+            size: {
+                width: frameWidth,
+                height: frameHeight,
+            },
+        };
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.

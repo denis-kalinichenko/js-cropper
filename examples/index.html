@@ -34,7 +34,7 @@
                 console.info("ImageCrop is ready");
             },
             onChange: function (crop) {
-                console.log("onChange callback fired");
+                console.log(crop.getFrameRectOnImage());
             }
         });
         imageCrop.render("#crop");

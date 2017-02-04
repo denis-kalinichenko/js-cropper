@@ -110,6 +110,15 @@ export default class Image extends Element {
     }
 
     /**
+     * Get actual scale value
+     *
+     * @returns {Number} - An actual scale value.
+     */
+    getScale() {
+        return this._scale;
+    }
+
+    /**
      * Method, which check an image format (landscape or portrait) and save it.
      *
      * @return {String} Format.
