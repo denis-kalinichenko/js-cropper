@@ -172,7 +172,19 @@ export default class ImageCrop {
      *
      * @returns {{origin: {x: Number, y: Number}, size: {width: Number, height: Number}}}
      */
-    getFrameRectOnImage() {
-        return this._canvas.getFrameRectOnImage();
+    getData() {
+        return this._canvas.getData();
+    }
+
+    /**
+     * Set a Frame origin and size relative to an Image.
+     *
+     * @param {Object} data - A frame origin (top, left) point and frame size.
+     * @returns {ImageCrop} - An ImageCrop instance.
+     */
+    setData(data) {
+        const { zoom } = this._canvas.setData(data);
+        this._slider.setValue(zoom * 100);
+        return this;
     }
 }

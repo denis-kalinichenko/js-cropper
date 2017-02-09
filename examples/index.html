@@ -9,6 +9,9 @@
         html, body {
             height: 100%;
         }
+        body {
+            margin-top: 40px;
+        }
     </style>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0"
          style="position:absolute">
@@ -20,13 +23,25 @@
 </head>
 <body>
     <div class="container">
+        <div class="row">
+            <div class="col-d-5 col-l-4">
+                <div id="crop"></div>
+            </div>
+            <div class="col-d-5 col-l-4">
+                <p>Preview:</p>
+                <img src="" alt="" id="result">
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary" onclick="showResult()" title="Update preview">Crop Me</button>
         <br>
         <br>
-        <div id="crop"></div>
-        <button class="btn btn-primary" onclick="showResult()">Crop Me</button>
+        <button class="btn btn-success" onclick="getData()">imageCrop.getData()</button>
+        <button class="btn btn-danger" onclick="setData()">imageCrop.setData(data)</button>
         <br>
         <br>
-        <img src="" alt="" id="result">
+        <label for="data">Data:</label>
+        <textarea name="data" id="data" class="form-control form-medium" rows="10"></textarea>
     </div>
     <script>
         var imageCrop = new ImageCrop({
@@ -34,7 +49,7 @@
                 console.info("ImageCrop is ready");
             },
             onChange: function (crop) {
-                console.log(crop.getFrameRectOnImage());
+                console.log("onChange callback");
             }
         });
         imageCrop.render("#crop");
@@ -44,6 +59,14 @@
 
         function showResult() {
             document.getElementById("result").src = imageCrop.getCroppedImage();
+        }
+
+        function getData() {
+            document.getElementById("data").value = JSON.stringify(imageCrop.getData(), null, 2);
+        }
+
+        function setData() {
+            imageCrop.setData(JSON.parse(document.getElementById("data").value));
         }
     </script>
 </body>

@@ -119,6 +119,15 @@ export default class Image extends Element {
     }
 
     /**
+     * Get origin scale value (without zoom)
+     *
+     * @returns {Number} - An origin scale value.
+     */
+    getOriginScale() {
+        return this._originScale;
+    }
+
+    /**
      * Method, which check an image format (landscape or portrait) and save it.
      *
      * @return {String} Format.

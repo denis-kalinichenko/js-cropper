@@ -161,7 +161,7 @@ export default class Canvas extends Element {
      *
      * @returns {{origin: {x: Number, y: Number}, size: {width: Number, height: Number}}}
      */
-    getFrameRectOnImage() {
+    getData() {
         const originX = (this._frame.getMinX() - this._basePoint.x) / this._image.getScale();
         const originY = (this._frame.getMinY() - this._basePoint.y) / this._image.getScale();
         const frameWidth = this._frame.getRect().size.width / this._image.getScale();
@@ -176,6 +176,29 @@ export default class Canvas extends Element {
                 height: frameHeight,
             },
         };
+    }
+
+    /**
+     * Set a Frame origin and size relative to an Image.
+     *
+     * @param {Object} data - A frame origin (top, left) point and frame size.
+     * @returns {Object} - A frame origin point and zoom value.
+     */
+    setData(data) {
+        const expectedScale = this._frame.getRect().size.width / data.size.width;
+        const zoom = (expectedScale - this._image.getOriginScale()) / this._image.getOriginScale();
+        this.setZoom(zoom);
+
+        const x = this._frame.getMinX() - (data.origin.x * this._image.getScale());
+        const y = this._frame.getMinY() - (data.origin.y * this._image.getScale());
+        const point = new Point(x, y);
+        this._resetPoints();
+        this._drawImage(point);
+
+        return {
+            origin: point,
+            zoom: zoom,
+        }
     }
 
     /**

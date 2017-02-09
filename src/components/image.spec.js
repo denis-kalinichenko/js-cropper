@@ -155,4 +155,14 @@ describe("Image component",() => {
         image.setZoom(0.5);
         expect(image.getScale()).to.equal(1.5);
     });
+
+    it("has getOriginScale method, returns origin scale value", () => {
+        image = new Image();
+        image.setWidth(300);
+        image.setHeight(600);
+        expect(image.getOriginScale()).to.equal(1);
+        image.setZoom(0.5);
+        expect(image.getScale()).to.equal(1.5);
+        expect(image.getOriginScale()).to.equal(1);
+    });
 });

@@ -184,11 +184,22 @@ export class CanvasMock {
         return this;
     }
 
-    getFrameRectOnImage() {
+    getData() {
         return {
             origin: { x: 234.42906574394465, y: 44.117647058823536 },
             size: { width: 500, height: 500 },
         };
+    }
+
+    setData(...args) {
+        canvasCalls.push({
+            name: "setData",
+            arguments: args
+        });
+        return {
+            zoom: 0.7,
+            origin: new Point(26, 26),
+        }
     }
 }
 
