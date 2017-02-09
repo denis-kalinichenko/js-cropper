@@ -1,7 +1,7 @@
 {
   "name": "g2a-image-crop",
+  "version": "0.1.0",
   "authors": [
-    "Maksym Dudynskyi <it105@g2a.com>",
     "Denys Kalinichenko <it51@g2a.com>"
   ],
   "description": "G2A UI framework image crop module",

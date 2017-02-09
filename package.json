@@ -29,16 +29,14 @@
     "ui",
     "component"
   ],
-  "contributors": [
-    {
-      "name": "Maksym Dudynskyi",
-      "email": "it105@g2a.com"
-    },
-    {
-      "name": "Denys Kalinichenko",
-      "email": "it51@g2a.com"
-    }
-  ],
+  "author": {
+    "name": "Denys Kalinichenko",
+    "email": "it51@g2a.com"
+  },
+  "bugs": {
+    "url" : "https://jira.code.g2a.com/projects/GN/issues",
+    "email" : "framework@g2a.com"
+  },
   "license": "UNLICENSED",
   "engines": {
     "npm": ">=2.0.0",
