@@ -172,7 +172,7 @@ export default class ImageCrop {
      *
      * @returns {{origin: {x: Number, y: Number}, size: {width: Number, height: Number}}}
      */
-    getFrameRectOnImage() {
-        return this._canvas.getFrameRectOnImage();
+    getData() {
+        return this._canvas.getData();
     }
 }

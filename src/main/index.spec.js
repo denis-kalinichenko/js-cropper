@@ -209,13 +209,13 @@ describe("Image Crop component", () => {
         expect(resetedCrop).to.equal(imageCrop);
     });
 
-    it("has getFrameRectOnImage method, which returns current frame position on image in full size", () => {
+    it("has getData method, which returns current frame position on image in full size", () => {
         imageCrop = new ImageCrop();
         imageCrop.render(wrapper);
         const expectedData = {
             origin: { x: 234.42906574394465, y: 44.117647058823536 },
             size: { width: 500, height: 500 },
         };
-        expect(imageCrop.getFrameRectOnImage()).to.deep.equal(expectedData);
+        expect(imageCrop.getData()).to.deep.equal(expectedData);
     });
 });

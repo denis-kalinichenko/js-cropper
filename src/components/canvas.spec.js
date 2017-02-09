@@ -229,7 +229,7 @@ describe("Canvas component", function () {
             size: { width: 500.00000000000006, height: 500.00000000000006 },
         };
 
-        expect(canvas.getFrameRectOnImage()).to.deep.equal(expectedRect);
+        expect(canvas.getData()).to.deep.equal(expectedRect);
 
         image = new Image();
         image.getNode().width = 690;
@@ -241,6 +241,6 @@ describe("Canvas component", function () {
             size: { width: 690, height: 690 },
         };
 
-        expect(canvas.getFrameRectOnImage()).to.deep.equal(expectedRect);
+        expect(canvas.getData()).to.deep.equal(expectedRect);
     })
 });
