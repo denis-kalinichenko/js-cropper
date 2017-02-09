@@ -190,6 +190,17 @@ export class CanvasMock {
             size: { width: 500, height: 500 },
         };
     }
+
+    setData(...args) {
+        canvasCalls.push({
+            name: "setData",
+            arguments: args
+        });
+        return {
+            zoom: 0.7,
+            origin: new Point(26, 26),
+        }
+    }
 }
 
 /**

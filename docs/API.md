@@ -46,18 +46,18 @@ Let's look on list of all available methods:
 | setZoom(zoom)         | Set zoom value. From 0 to 1. zoom - Number. Required.                                         |
 | reset()               | Reset position and zoom values.                                                               |
 | getCroppedImage()     | Generates and returns a data URI containing a representation of the cropped image.            |
-| getFrameRectOnImage() | Read info below.                                                                              |
-| setFrameRectOnImage() | Read info below.                                                                              |
+| getData()             | Read info below.                                                                              |
+| setData()             | Read info below.                                                                              |
 
-### getFrameRectOnImage & setFrameRectOnImage
+### getData & setData
 
-Method `setFrameRectOnImage(obj)` sets & `getFrameRectOnImage()` returns a Frame origin and size relative to an Image.
+Method `setData(data)` sets & `getData()` returns a Frame origin and size relative to an Image.
 
 Example:
 
 ```javascript
 
-var obj = {
+var data = {
     origin: { x: 20, y: 40 }, 
     size: { width: 350, height: 350 }
 }
