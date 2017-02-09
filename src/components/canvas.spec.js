@@ -215,7 +215,7 @@ describe("Canvas component", function () {
         expect(myFuncSpy).to.not.have.been.called();
     });
 
-    it("has getFrameRectOnImage method, which returns current frame position on image in full size", () => {
+    it("has getData method, which returns current frame position on image in full size", () => {
         canvas = new Canvas();
         canvas.render(wrapper);
 
@@ -242,5 +242,55 @@ describe("Canvas component", function () {
         };
 
         expect(canvas.getData()).to.deep.equal(expectedRect);
-    })
+    });
+
+    it("has setData method, which sets a frame origin and size relative to an Image and returns zoom and new origin", () => {
+        canvas = new Canvas();
+        canvas.render(wrapper);
+
+        let image = new Image();
+        image.getNode().width = 1000;
+        image.getNode().height = 500;
+        canvas.setImage(image);
+
+        const data = {
+            origin: { x: 20, y: 44.117647058823536 },
+            size: { width: 350, height: 350 },
+        };
+        const { zoom, origin } = canvas.setData(data);
+        expect(zoom).to.equal(0.4285714285714287);
+        expect(origin).to.deep.equal(new Point(118.98571428571428, -10.928571428571438));
+
+        const expectedCalls = [
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'clearRect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'drawImage', arguments: [
+                image.getNode(),
+                -123.85714285714289,
+                -61.928571428571445,
+                825.7142857142858,
+                412.8571428571429 ]
+            },
+            { name: 'clearRect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'createPattern', arguments: [ getNodes().pattern, 'repeat' ] },
+            { name: 'rect', arguments: [ 0, 0, 300, 150 ] },
+            { name: 'fillStyle', arguments: [ {} ] },
+            { name: 'fill', arguments: [] },
+            { name: 'drawImage', arguments: [
+                image.getNode(),
+                118.98571428571428,
+                -10.928571428571438,
+                825.7142857142858,
+                412.8571428571429 ]
+            }
+        ];
+        expect(getContextCalls()).to.deep.equal(expectedCalls);
+    });
 });

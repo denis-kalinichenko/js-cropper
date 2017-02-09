@@ -179,6 +179,29 @@ export default class Canvas extends Element {
     }
 
     /**
+     * Set a Frame origin and size relative to an Image.
+     *
+     * @param {Object} data - A frame origin (top, left) point and frame size.
+     * @returns {Object} - A frame origin point and zoom value.
+     */
+    setData(data) {
+        const expectedScale = this._frame.getRect().size.width / data.size.width;
+        const zoom = (expectedScale - this._image.getOriginScale()) / this._image.getOriginScale();
+        this.setZoom(zoom);
+
+        const x = this._frame.getMinX() - (data.origin.x * this._image.getScale());
+        const y = this._frame.getMinY() - (data.origin.y * this._image.getScale());
+        const point = new Point(x, y);
+        this._resetPoints();
+        this._drawImage(point);
+
+        return {
+            origin: point,
+            zoom: zoom,
+        }
+    }
+
+    /**
      * Set points to zero
      *
      * @return {Canvas} A Canvas object.
