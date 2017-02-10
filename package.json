@@ -1,0 +1,69 @@
+{
+  "name": "g2a-image-crop",
+  "version": "0.1.0",
+  "description": "G2A UI framework image crop module",
+  "main": "lib/main/index.js",
+  "scripts": {
+    "test": "mocha src/**/*.spec.js",
+    "test:custom": "mocha",
+    "lib": "babel -d lib src",
+    "dist": "rollup ./src/main/index.js --config rollup.config.js && rollup ./src/main/index.js --config rollup.config.min.js",
+    "prepublish": "npm run lib && npm run dist"
+  },
+  "files": [
+    "dist/",
+    "lib/index.js"
+  ],
+  "publishConfig": {
+    "registry": "http://npm.code.g2a.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@code.g2a.com:7999/gnpm/g2a-image-crop.git"
+  },
+  "keywords": [
+    "css",
+    "image",
+    "crop",
+    "g2a",
+    "ui",
+    "component"
+  ],
+  "author": {
+    "name": "Denys Kalinichenko",
+    "email": "it51@g2a.com"
+  },
+  "bugs": {
+    "url" : "https://jira.code.g2a.com/projects/GN/issues",
+    "email" : "framework@g2a.com"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "npm": ">=2.0.0",
+    "node": ">=4.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-plugin-rewire": "^1.0.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
+    "jsdom": "^9.6.0",
+    "jsdom-global": "^2.1.0",
+    "mocha": "^3.2.0",
+    "rollup": "^0.41.1",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1"
+  },
+  "peerDependencies": {
+    "g2a-framework": "^1.3.0"
+  },
+  "dependencies": {
+    "es6-promise": "^4.0.5"
+  }
+}
