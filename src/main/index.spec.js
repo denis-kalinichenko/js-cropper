@@ -142,12 +142,12 @@ describe("Image Crop component", () => {
         imageCrop = new ImageCrop();
         imageCrop.setHeight(400);
         imageCrop.render(wrapper);
-        imageCrop.loadImage("http://i.imgur.com/PJPXonr.jpg");
         imageCrop.setZoom(0.5);
         expect(Number(wrapper.querySelector("input.slider").value)).to.equal(50);
 
-        imageCrop.loadImage("http://i.imgur.com/PJPXonr.jpg");
-        expect(Number(wrapper.querySelector("input.slider").value)).to.equal(0);
+        return imageCrop.loadImage("http://i.imgur.com/PJPXonr.jpg").then(() => {
+            expect(Number(wrapper.querySelector("input.slider").value)).to.equal(0);
+        });
     });
 
     it("has loadImage method, which throw Error if url or path is invalid or not passed", () => {
