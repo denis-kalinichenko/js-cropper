@@ -129,6 +129,7 @@ export default class ImageCrop {
         return this._image.load(url).then((image) => {
             this._canvas.setImage(image);
             this._canvas.draw();
+            this._slider.setValue(0);
             return this;
         });
     }
