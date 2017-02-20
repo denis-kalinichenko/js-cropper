@@ -2,7 +2,7 @@
 Image Crop is the quick and easy way to add image cropping functionality to your web application.
 
 ## Version
-`0.1.0` ([Changelog](CHANGELOG.md))
+`0.1.1` ([Changelog](CHANGELOG.md))
 
 ## Docs
 
