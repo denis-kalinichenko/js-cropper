@@ -1,9 +1,9 @@
 {
-  "name": "cropper-js",
+  "name": "js-cropper",
   "version": "1.0.0",
   "description": "Pure JavaScript image cropper",
   "main": "lib/main/index.js",
-  "style": "Cropper.css",
+  "style": "dist/Cropper.css",
   "scripts": {
     "test": "mocha src/**/*.spec.js",
     "test:custom": "mocha",
@@ -17,8 +17,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:denis-kalinichenko/cropper-js.git"
+    "url": "ssh://git@github.com:denis-kalinichenko/js-cropper.git"
   },
+  "homepage": "https://denis-kalinichenko.github.io/js-cropper/",
   "keywords": [
     "css",
     "image",

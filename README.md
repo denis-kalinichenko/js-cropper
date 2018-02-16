@@ -1,4 +1,4 @@
-# cropper-js
+# js-cropper
 
 > Quick and easy way to add image cropping functionality to your web application without dependencies
 
