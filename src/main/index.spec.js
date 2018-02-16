@@ -30,15 +30,15 @@ describe("Cropper component", () => {
 
         const renderedImageCrop = imageCrop.render(wrapper);
 
-        expect(wrapper.querySelectorAll(".image-crop")).to.have.length(1);
-        expect(wrapper.querySelectorAll(".image-crop-tools")).to.have.length(1);
-        expect(wrapper.querySelectorAll(".image-crop-zoom")).to.have.length(1);
+        expect(wrapper.querySelectorAll(".cropper")).to.have.length(1);
+        expect(wrapper.querySelectorAll(".cropper-tools")).to.have.length(1);
+        expect(wrapper.querySelectorAll(".cropper-zoom")).to.have.length(1);
         expect(wrapper.querySelectorAll("svg.icon.icon-frame-landscape")).to.have.length(2);
 
         const expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 560 ] },
             { name: 'setHeight', arguments: [ 340 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
         expect(renderedImageCrop).to.equal(imageCrop);
@@ -55,7 +55,7 @@ describe("Cropper component", () => {
         const expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 400 ] },
             { name: 'setHeight', arguments: [ 400 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
     });
@@ -80,7 +80,7 @@ describe("Cropper component", () => {
         let expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 400 ] },
             { name: 'setHeight', arguments: [ 340 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
 
@@ -88,7 +88,7 @@ describe("Cropper component", () => {
         expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 400 ] },
             { name: 'setHeight', arguments: [ 340 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] },
             { name: 'setWidth', arguments: [ 600 ]  }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
@@ -104,7 +104,7 @@ describe("Cropper component", () => {
         let expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 560 ] },
             { name: 'setHeight', arguments: [ 123 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] }
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
 
@@ -112,7 +112,7 @@ describe("Cropper component", () => {
         expectedCanvasCalls = [
             { name: 'setWidth', arguments: [ 560 ] },
             { name: 'setHeight', arguments: [ 123 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] },
             { name: 'setHeight', arguments: [ 321 ]  }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCanvasCalls);
@@ -193,7 +193,7 @@ describe("Cropper component", () => {
             { name: 'setHeight', arguments: [ 340 ] },
             { name: 'setHeight', arguments: [ 400 ] },
             { name: 'setWidth', arguments: [ 560 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] },
             { name: 'setZoom', arguments: [ 0.5 ] }
         ];
 
@@ -214,7 +214,7 @@ describe("Cropper component", () => {
             { name: 'setHeight', arguments: [ 340 ] },
             { name: 'setHeight', arguments: [ 400 ] },
             { name: 'setWidth', arguments: [ 560 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] },
             { name: 'setZoom', arguments: [ 0 ] }
         ];
         expect(getCanvasCalls()).to.deep.equal(expectedCalls);
@@ -241,7 +241,7 @@ describe("Cropper component", () => {
         const expectedCalls = [
             { name: 'setWidth', arguments: [ 560 ] },
             { name: 'setHeight', arguments: [ 340 ] },
-            { name: 'render', arguments: [ wrapper.querySelector(".image-crop") ] },
+            { name: 'render', arguments: [ wrapper.querySelector(".cropper") ] },
             { name: 'setData', arguments: [ data ] }
         ];
 
