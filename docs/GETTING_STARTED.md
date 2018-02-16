@@ -4,16 +4,16 @@
 ### Node
 **(recommended)**
 
-Run `npm install cropper-js --save`
+Run `npm install js-cropper --save`
 
 ```javascript
-var Cropper = require("cropper-js");
+var Cropper = require("js-cropper");
 ```
 
 #### ECMAScript 6
 
 ```javascript
-import Cropper from "cropper-js";
+import Cropper from "js-cropper";
 ```
 
 ## Usage
@@ -21,6 +21,12 @@ import Cropper from "cropper-js";
 
 ```html
 <div id="crop"></div>
+```
+
+### CSS (optional)
+
+```html
+<link rel="stylesheet" href="../js-cropper/dist/Cropper.css">
 ```
 
 ### Initialize Image Crop
