@@ -1,4 +1,4 @@
-var ImageCrop = (function () {
+var Cropper = (function () {
 'use strict';
 
 /**
@@ -393,7 +393,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
    * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
    * @license   Licensed under MIT license
    *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
-   * @version   4.0.5
+   * @version   v4.2.4+314e4831
    */
 
   (function (global, factory) {
@@ -402,27 +402,28 @@ var es6Promise = createCommonjsModule(function (module, exports) {
     'use strict';
 
     function objectOrFunction(x) {
-      return typeof x === 'function' || (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' && x !== null;
+      var type = typeof x === 'undefined' ? 'undefined' : _typeof(x);
+      return x !== null && (type === 'object' || type === 'function');
     }
 
     function isFunction(x) {
       return typeof x === 'function';
     }
 
-    var _isArray = undefined;
-    if (!Array.isArray) {
+    var _isArray = void 0;
+    if (Array.isArray) {
+      _isArray = Array.isArray;
+    } else {
       _isArray = function _isArray(x) {
         return Object.prototype.toString.call(x) === '[object Array]';
       };
-    } else {
-      _isArray = Array.isArray;
     }
 
     var isArray = _isArray;
 
     var len = 0;
-    var vertxNext = undefined;
-    var customSchedulerFn = undefined;
+    var vertxNext = void 0;
+    var customSchedulerFn = void 0;
 
     var asap = function asap(callback, arg) {
       queue[len] = callback;
@@ -522,8 +523,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
 
     function attemptVertx() {
       try {
-        var r = commonjsRequire;
-        var vertx = r('vertx');
+        var vertx = Function('return this')().require('vertx');
         vertxNext = vertx.runOnLoop || vertx.runOnContext;
         return useVertxTimer();
       } catch (e) {
@@ -531,7 +531,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       }
     }
 
-    var scheduleFlush = undefined;
+    var scheduleFlush = void 0;
     // Decide what async method to use to triggering processing of queued callbacks:
     if (isNode) {
       scheduleFlush = useNextTick();
@@ -546,8 +546,6 @@ var es6Promise = createCommonjsModule(function (module, exports) {
     }
 
     function then(onFulfillment, onRejection) {
-      var _arguments = arguments;
-
       var parent = this;
 
       var child = new this.constructor(noop);
@@ -559,12 +557,10 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       var _state = parent._state;
 
       if (_state) {
-        (function () {
-          var callback = _arguments[_state - 1];
-          asap(function () {
-            return invokeCallback(_state, child, callback, parent._result);
-          });
-        })();
+        var callback = arguments[_state - 1];
+        asap(function () {
+          return invokeCallback(_state, child, callback, parent._result);
+        });
       } else {
         subscribe(parent, child, onFulfillment, onRejection);
       }
@@ -603,7 +599,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       @return {Promise} a promise that will become fulfilled with the given
       `value`
     */
-    function resolve(object) {
+    function resolve$1(object) {
       /*jshint validthis:true */
       var Constructor = this;
 
@@ -612,11 +608,11 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       }
 
       var promise = new Constructor(noop);
-      _resolve(promise, object);
+      resolve(promise, object);
       return promise;
     }
 
-    var PROMISE_ID = Math.random().toString(36).substring(16);
+    var PROMISE_ID = Math.random().toString(36).substring(2);
 
     function noop() {}
 
@@ -624,7 +620,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
     var FULFILLED = 1;
     var REJECTED = 2;
 
-    var GET_THEN_ERROR = new ErrorObject();
+    var TRY_CATCH_ERROR = { error: null };
 
     function selfFulfillment() {
       return new TypeError("You cannot resolve a promise with itself");
@@ -638,29 +634,29 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       try {
         return promise.then;
       } catch (error) {
-        GET_THEN_ERROR.error = error;
-        return GET_THEN_ERROR;
+        TRY_CATCH_ERROR.error = error;
+        return TRY_CATCH_ERROR;
       }
     }
 
-    function tryThen(then, value, fulfillmentHandler, rejectionHandler) {
+    function tryThen(then$$1, value, fulfillmentHandler, rejectionHandler) {
       try {
-        then.call(value, fulfillmentHandler, rejectionHandler);
+        then$$1.call(value, fulfillmentHandler, rejectionHandler);
       } catch (e) {
         return e;
       }
     }
 
-    function handleForeignThenable(promise, thenable, then) {
+    function handleForeignThenable(promise, thenable, then$$1) {
       asap(function (promise) {
         var sealed = false;
-        var error = tryThen(then, thenable, function (value) {
+        var error = tryThen(then$$1, thenable, function (value) {
           if (sealed) {
             return;
           }
           sealed = true;
           if (thenable !== value) {
-            _resolve(promise, value);
+            resolve(promise, value);
           } else {
             fulfill(promise, value);
           }
@@ -670,12 +666,12 @@ var es6Promise = createCommonjsModule(function (module, exports) {
           }
           sealed = true;
 
-          _reject(promise, reason);
+          reject(promise, reason);
         }, 'Settle: ' + (promise._label || ' unknown promise'));
 
         if (!sealed && error) {
           sealed = true;
-          _reject(promise, error);
+          reject(promise, error);
         }
       }, promise);
     }
@@ -684,35 +680,36 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       if (thenable._state === FULFILLED) {
         fulfill(promise, thenable._result);
       } else if (thenable._state === REJECTED) {
-        _reject(promise, thenable._result);
+        reject(promise, thenable._result);
       } else {
         subscribe(thenable, undefined, function (value) {
-          return _resolve(promise, value);
+          return resolve(promise, value);
         }, function (reason) {
-          return _reject(promise, reason);
+          return reject(promise, reason);
         });
       }
     }
 
-    function handleMaybeThenable(promise, maybeThenable, then$$) {
-      if (maybeThenable.constructor === promise.constructor && then$$ === then && maybeThenable.constructor.resolve === resolve) {
+    function handleMaybeThenable(promise, maybeThenable, then$$1) {
+      if (maybeThenable.constructor === promise.constructor && then$$1 === then && maybeThenable.constructor.resolve === resolve$1) {
         handleOwnThenable(promise, maybeThenable);
       } else {
-        if (then$$ === GET_THEN_ERROR) {
-          _reject(promise, GET_THEN_ERROR.error);
-        } else if (then$$ === undefined) {
+        if (then$$1 === TRY_CATCH_ERROR) {
+          reject(promise, TRY_CATCH_ERROR.error);
+          TRY_CATCH_ERROR.error = null;
+        } else if (then$$1 === undefined) {
           fulfill(promise, maybeThenable);
-        } else if (isFunction(then$$)) {
-          handleForeignThenable(promise, maybeThenable, then$$);
+        } else if (isFunction(then$$1)) {
+          handleForeignThenable(promise, maybeThenable, then$$1);
         } else {
           fulfill(promise, maybeThenable);
         }
       }
     }
 
-    function _resolve(promise, value) {
+    function resolve(promise, value) {
       if (promise === value) {
-        _reject(promise, selfFulfillment());
+        reject(promise, selfFulfillment());
       } else if (objectOrFunction(value)) {
         handleMaybeThenable(promise, value, getThen(value));
       } else {
@@ -741,7 +738,7 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       }
     }
 
-    function _reject(promise, reason) {
+    function reject(promise, reason) {
       if (promise._state !== PENDING) {
         return;
       }
@@ -774,8 +771,8 @@ var es6Promise = createCommonjsModule(function (module, exports) {
         return;
       }
 
-      var child = undefined,
-          callback = undefined,
+      var child = void 0,
+          callback = void 0,
           detail = promise._result;
 
       for (var i = 0; i < subscribers.length; i += 3) {
@@ -792,12 +789,6 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       promise._subscribers.length = 0;
     }
 
-    function ErrorObject() {
-      this.error = null;
-    }
-
-    var TRY_CATCH_ERROR = new ErrorObject();
-
     function tryCatch(callback, detail) {
       try {
         return callback(detail);
@@ -809,10 +800,10 @@ var es6Promise = createCommonjsModule(function (module, exports) {
 
     function invokeCallback(settled, promise, callback, detail) {
       var hasCallback = isFunction(callback),
-          value = undefined,
-          error = undefined,
-          succeeded = undefined,
-          failed = undefined;
+          value = void 0,
+          error = void 0,
+          succeeded = void 0,
+          failed = void 0;
 
       if (hasCallback) {
         value = tryCatch(callback, detail);
@@ -820,13 +811,13 @@ var es6Promise = createCommonjsModule(function (module, exports) {
         if (value === TRY_CATCH_ERROR) {
           failed = true;
           error = value.error;
-          value = null;
+          value.error = null;
         } else {
           succeeded = true;
         }
 
         if (promise === value) {
-          _reject(promise, cannotReturnOwn());
+          reject(promise, cannotReturnOwn());
           return;
         }
       } else {
@@ -837,25 +828,25 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       if (promise._state !== PENDING) {
         // noop
       } else if (hasCallback && succeeded) {
-        _resolve(promise, value);
+        resolve(promise, value);
       } else if (failed) {
-        _reject(promise, error);
+        reject(promise, error);
       } else if (settled === FULFILLED) {
         fulfill(promise, value);
       } else if (settled === REJECTED) {
-        _reject(promise, value);
+        reject(promise, value);
       }
     }
 
     function initializePromise(promise, resolver) {
       try {
         resolver(function resolvePromise(value) {
-          _resolve(promise, value);
+          resolve(promise, value);
         }, function rejectPromise(reason) {
-          _reject(promise, reason);
+          reject(promise, reason);
         });
       } catch (e) {
-        _reject(promise, e);
+        reject(promise, e);
       }
     }
 
@@ -871,101 +862,101 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       promise._subscribers = [];
     }
 
-    function Enumerator(Constructor, input) {
-      this._instanceConstructor = Constructor;
-      this.promise = new Constructor(noop);
-
-      if (!this.promise[PROMISE_ID]) {
-        makePromise(this.promise);
-      }
-
-      if (isArray(input)) {
-        this._input = input;
-        this.length = input.length;
-        this._remaining = input.length;
-
-        this._result = new Array(this.length);
-
-        if (this.length === 0) {
-          fulfill(this.promise, this._result);
-        } else {
-          this.length = this.length || 0;
-          this._enumerate();
-          if (this._remaining === 0) {
-            fulfill(this.promise, this._result);
-          }
-        }
-      } else {
-        _reject(this.promise, validationError());
-      }
-    }
-
     function validationError() {
       return new Error('Array Methods must be provided an Array');
     }
 
-    Enumerator.prototype._enumerate = function () {
-      var length = this.length;
-      var _input = this._input;
+    var Enumerator = function () {
+      function Enumerator(Constructor, input) {
+        this._instanceConstructor = Constructor;
+        this.promise = new Constructor(noop);
 
-      for (var i = 0; this._state === PENDING && i < length; i++) {
-        this._eachEntry(_input[i], i);
+        if (!this.promise[PROMISE_ID]) {
+          makePromise(this.promise);
+        }
+
+        if (isArray(input)) {
+          this.length = input.length;
+          this._remaining = input.length;
+
+          this._result = new Array(this.length);
+
+          if (this.length === 0) {
+            fulfill(this.promise, this._result);
+          } else {
+            this.length = this.length || 0;
+            this._enumerate(input);
+            if (this._remaining === 0) {
+              fulfill(this.promise, this._result);
+            }
+          }
+        } else {
+          reject(this.promise, validationError());
+        }
       }
-    };
 
-    Enumerator.prototype._eachEntry = function (entry, i) {
-      var c = this._instanceConstructor;
-      var resolve$$ = c.resolve;
+      Enumerator.prototype._enumerate = function _enumerate(input) {
+        for (var i = 0; this._state === PENDING && i < input.length; i++) {
+          this._eachEntry(input[i], i);
+        }
+      };
 
-      if (resolve$$ === resolve) {
-        var _then = getThen(entry);
+      Enumerator.prototype._eachEntry = function _eachEntry(entry, i) {
+        var c = this._instanceConstructor;
+        var resolve$$1 = c.resolve;
 
-        if (_then === then && entry._state !== PENDING) {
-          this._settledAt(entry._state, i, entry._result);
-        } else if (typeof _then !== 'function') {
+        if (resolve$$1 === resolve$1) {
+          var _then = getThen(entry);
+
+          if (_then === then && entry._state !== PENDING) {
+            this._settledAt(entry._state, i, entry._result);
+          } else if (typeof _then !== 'function') {
+            this._remaining--;
+            this._result[i] = entry;
+          } else if (c === Promise$1) {
+            var promise = new c(noop);
+            handleMaybeThenable(promise, entry, _then);
+            this._willSettleAt(promise, i);
+          } else {
+            this._willSettleAt(new c(function (resolve$$1) {
+              return resolve$$1(entry);
+            }), i);
+          }
+        } else {
+          this._willSettleAt(resolve$$1(entry), i);
+        }
+      };
+
+      Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
+        var promise = this.promise;
+
+        if (promise._state === PENDING) {
           this._remaining--;
-          this._result[i] = entry;
-        } else if (c === Promise) {
-          var promise = new c(noop);
-          handleMaybeThenable(promise, entry, _then);
-          this._willSettleAt(promise, i);
-        } else {
-          this._willSettleAt(new c(function (resolve$$) {
-            return resolve$$(entry);
-          }), i);
+
+          if (state === REJECTED) {
+            reject(promise, value);
+          } else {
+            this._result[i] = value;
+          }
         }
-      } else {
-        this._willSettleAt(resolve$$(entry), i);
-      }
-    };
 
-    Enumerator.prototype._settledAt = function (state, i, value) {
-      var promise = this.promise;
-
-      if (promise._state === PENDING) {
-        this._remaining--;
-
-        if (state === REJECTED) {
-          _reject(promise, value);
-        } else {
-          this._result[i] = value;
+        if (this._remaining === 0) {
+          fulfill(promise, this._result);
         }
-      }
+      };
 
-      if (this._remaining === 0) {
-        fulfill(promise, this._result);
-      }
-    };
+      Enumerator.prototype._willSettleAt = function _willSettleAt(promise, i) {
+        var enumerator = this;
 
-    Enumerator.prototype._willSettleAt = function (promise, i) {
-      var enumerator = this;
+        subscribe(promise, undefined, function (value) {
+          return enumerator._settledAt(FULFILLED, i, value);
+        }, function (reason) {
+          return enumerator._settledAt(REJECTED, i, reason);
+        });
+      };
 
-      subscribe(promise, undefined, function (value) {
-        return enumerator._settledAt(FULFILLED, i, value);
-      }, function (reason) {
-        return enumerator._settledAt(REJECTED, i, reason);
-      });
-    };
+      return Enumerator;
+    }();
 
     /**
       `Promise.all` accepts an array of promises, and returns a new promise which
@@ -1135,11 +1126,11 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       Useful for tooling.
       @return {Promise} a promise rejected with the given `reason`.
     */
-    function reject(reason) {
+    function reject$1(reason) {
       /*jshint validthis:true */
       var Constructor = this;
       var promise = new Constructor(noop);
-      _reject(promise, reason);
+      reject(promise, reason);
       return promise;
     }
 
@@ -1250,261 +1241,281 @@ var es6Promise = createCommonjsModule(function (module, exports) {
       ```
     
       @class Promise
-      @param {function} resolver
+      @param {Function} resolver
       Useful for tooling.
       @constructor
     */
-    function Promise(resolver) {
-      this[PROMISE_ID] = nextId();
-      this._result = this._state = undefined;
-      this._subscribers = [];
 
-      if (noop !== resolver) {
-        typeof resolver !== 'function' && needsResolver();
-        this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+    var Promise$1 = function () {
+      function Promise(resolver) {
+        this[PROMISE_ID] = nextId();
+        this._result = this._state = undefined;
+        this._subscribers = [];
+
+        if (noop !== resolver) {
+          typeof resolver !== 'function' && needsResolver();
+          this instanceof Promise ? initializePromise(this, resolver) : needsNew();
+        }
       }
-    }
-
-    Promise.all = all;
-    Promise.race = race;
-    Promise.resolve = resolve;
-    Promise.reject = reject;
-    Promise._setScheduler = setScheduler;
-    Promise._setAsap = setAsap;
-    Promise._asap = asap;
-
-    Promise.prototype = {
-      constructor: Promise,
 
       /**
-        The primary way of interacting with a promise is through its `then` method,
-        which registers callbacks to receive either a promise's eventual value or the
-        reason why the promise cannot be fulfilled.
-      
-        ```js
-        findUser().then(function(user){
-          // user is available
-        }, function(reason){
-          // user is unavailable, and you are given the reason why
-        });
-        ```
-      
-        Chaining
-        --------
-      
-        The return value of `then` is itself a promise.  This second, 'downstream'
-        promise is resolved with the return value of the first promise's fulfillment
-        or rejection handler, or rejected if the handler throws an exception.
-      
-        ```js
-        findUser().then(function (user) {
-          return user.name;
-        }, function (reason) {
-          return 'default name';
-        }).then(function (userName) {
-          // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
-          // will be `'default name'`
-        });
-      
-        findUser().then(function (user) {
-          throw new Error('Found user, but still unhappy');
-        }, function (reason) {
-          throw new Error('`findUser` rejected and we're unhappy');
-        }).then(function (value) {
-          // never reached
-        }, function (reason) {
-          // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
-          // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
-        });
-        ```
-        If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-      
-        ```js
-        findUser().then(function (user) {
-          throw new PedagogicalException('Upstream error');
-        }).then(function (value) {
-          // never reached
-        }).then(function (value) {
-          // never reached
-        }, function (reason) {
-          // The `PedgagocialException` is propagated all the way down to here
-        });
-        ```
-      
-        Assimilation
-        ------------
-      
-        Sometimes the value you want to propagate to a downstream promise can only be
-        retrieved asynchronously. This can be achieved by returning a promise in the
-        fulfillment or rejection handler. The downstream promise will then be pending
-        until the returned promise is settled. This is called *assimilation*.
-      
-        ```js
-        findUser().then(function (user) {
-          return findCommentsByAuthor(user);
-        }).then(function (comments) {
-          // The user's comments are now available
-        });
-        ```
-      
-        If the assimliated promise rejects, then the downstream promise will also reject.
-      
-        ```js
-        findUser().then(function (user) {
-          return findCommentsByAuthor(user);
-        }).then(function (comments) {
-          // If `findCommentsByAuthor` fulfills, we'll have the value here
-        }, function (reason) {
-          // If `findCommentsByAuthor` rejects, we'll have the reason here
-        });
-        ```
-      
-        Simple Example
-        --------------
-      
-        Synchronous Example
-      
-        ```javascript
-        let result;
-      
-        try {
-          result = findResult();
-          // success
-        } catch(reason) {
+      The primary way of interacting with a promise is through its `then` method,
+      which registers callbacks to receive either a promise's eventual value or the
+      reason why the promise cannot be fulfilled.
+       ```js
+      findUser().then(function(user){
+        // user is available
+      }, function(reason){
+        // user is unavailable, and you are given the reason why
+      });
+      ```
+       Chaining
+      --------
+       The return value of `then` is itself a promise.  This second, 'downstream'
+      promise is resolved with the return value of the first promise's fulfillment
+      or rejection handler, or rejected if the handler throws an exception.
+       ```js
+      findUser().then(function (user) {
+        return user.name;
+      }, function (reason) {
+        return 'default name';
+      }).then(function (userName) {
+        // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
+        // will be `'default name'`
+      });
+       findUser().then(function (user) {
+        throw new Error('Found user, but still unhappy');
+      }, function (reason) {
+        throw new Error('`findUser` rejected and we're unhappy');
+      }).then(function (value) {
+        // never reached
+      }, function (reason) {
+        // if `findUser` fulfilled, `reason` will be 'Found user, but still unhappy'.
+        // If `findUser` rejected, `reason` will be '`findUser` rejected and we're unhappy'.
+      });
+      ```
+      If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
+       ```js
+      findUser().then(function (user) {
+        throw new PedagogicalException('Upstream error');
+      }).then(function (value) {
+        // never reached
+      }).then(function (value) {
+        // never reached
+      }, function (reason) {
+        // The `PedgagocialException` is propagated all the way down to here
+      });
+      ```
+       Assimilation
+      ------------
+       Sometimes the value you want to propagate to a downstream promise can only be
+      retrieved asynchronously. This can be achieved by returning a promise in the
+      fulfillment or rejection handler. The downstream promise will then be pending
+      until the returned promise is settled. This is called *assimilation*.
+       ```js
+      findUser().then(function (user) {
+        return findCommentsByAuthor(user);
+      }).then(function (comments) {
+        // The user's comments are now available
+      });
+      ```
+       If the assimliated promise rejects, then the downstream promise will also reject.
+       ```js
+      findUser().then(function (user) {
+        return findCommentsByAuthor(user);
+      }).then(function (comments) {
+        // If `findCommentsByAuthor` fulfills, we'll have the value here
+      }, function (reason) {
+        // If `findCommentsByAuthor` rejects, we'll have the reason here
+      });
+      ```
+       Simple Example
+      --------------
+       Synchronous Example
+       ```javascript
+      let result;
+       try {
+        result = findResult();
+        // success
+      } catch(reason) {
+        // failure
+      }
+      ```
+       Errback Example
+       ```js
+      findResult(function(result, err){
+        if (err) {
           // failure
-        }
-        ```
-      
-        Errback Example
-      
-        ```js
-        findResult(function(result, err){
-          if (err) {
-            // failure
-          } else {
-            // success
-          }
-        });
-        ```
-      
-        Promise Example;
-      
-        ```javascript
-        findResult().then(function(result){
+        } else {
           // success
-        }, function(reason){
+        }
+      });
+      ```
+       Promise Example;
+       ```javascript
+      findResult().then(function(result){
+        // success
+      }, function(reason){
+        // failure
+      });
+      ```
+       Advanced Example
+      --------------
+       Synchronous Example
+       ```javascript
+      let author, books;
+       try {
+        author = findAuthor();
+        books  = findBooksByAuthor(author);
+        // success
+      } catch(reason) {
+        // failure
+      }
+      ```
+       Errback Example
+       ```js
+       function foundBooks(books) {
+       }
+       function failure(reason) {
+       }
+       findAuthor(function(author, err){
+        if (err) {
+          failure(err);
           // failure
-        });
-        ```
-      
-        Advanced Example
-        --------------
-      
-        Synchronous Example
-      
-        ```javascript
-        let author, books;
-      
-        try {
-          author = findAuthor();
-          books  = findBooksByAuthor(author);
-          // success
-        } catch(reason) {
-          // failure
-        }
-        ```
-      
-        Errback Example
-      
-        ```js
-      
-        function foundBooks(books) {
-      
-        }
-      
-        function failure(reason) {
-      
-        }
-      
-        findAuthor(function(author, err){
-          if (err) {
-            failure(err);
-            // failure
-          } else {
-            try {
-              findBoooksByAuthor(author, function(books, err) {
-                if (err) {
-                  failure(err);
-                } else {
-                  try {
-                    foundBooks(books);
-                  } catch(reason) {
-                    failure(reason);
-                  }
+        } else {
+          try {
+            findBoooksByAuthor(author, function(books, err) {
+              if (err) {
+                failure(err);
+              } else {
+                try {
+                  foundBooks(books);
+                } catch(reason) {
+                  failure(reason);
                 }
-              });
-            } catch(error) {
-              failure(err);
-            }
-            // success
+              }
+            });
+          } catch(error) {
+            failure(err);
           }
-        });
-        ```
-      
-        Promise Example;
-      
-        ```javascript
-        findAuthor().
-          then(findBooksByAuthor).
-          then(function(books){
-            // found books
-        }).catch(function(reason){
-          // something went wrong
-        });
-        ```
-      
-        @method then
-        @param {Function} onFulfilled
-        @param {Function} onRejected
-        Useful for tooling.
-        @return {Promise}
+          // success
+        }
+      });
+      ```
+       Promise Example;
+       ```javascript
+      findAuthor().
+        then(findBooksByAuthor).
+        then(function(books){
+          // found books
+      }).catch(function(reason){
+        // something went wrong
+      });
+      ```
+       @method then
+      @param {Function} onFulfilled
+      @param {Function} onRejected
+      Useful for tooling.
+      @return {Promise}
       */
-      then: then,
 
       /**
-        `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
-        as the catch block of a try/catch statement.
+      `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
+      as the catch block of a try/catch statement.
+      ```js
+      function findAuthor(){
+      throw new Error('couldn't find that author');
+      }
+      // synchronous
+      try {
+      findAuthor();
+      } catch(reason) {
+      // something went wrong
+      }
+      // async with promises
+      findAuthor().catch(function(reason){
+      // something went wrong
+      });
+      ```
+      @method catch
+      @param {Function} onRejection
+      Useful for tooling.
+      @return {Promise}
+      */
+
+      Promise.prototype.catch = function _catch(onRejection) {
+        return this.then(null, onRejection);
+      };
+
+      /**
+        `finally` will be invoked regardless of the promise's fate just as native
+        try/catch/finally behaves
+      
+        Synchronous example:
       
         ```js
-        function findAuthor(){
-          throw new Error('couldn't find that author');
+        findAuthor() {
+          if (Math.random() > 0.5) {
+            throw new Error();
+          }
+          return new Author();
         }
       
-        // synchronous
         try {
-          findAuthor();
-        } catch(reason) {
-          // something went wrong
+          return findAuthor(); // succeed or fail
+        } catch(error) {
+          return findOtherAuther();
+        } finally {
+          // always runs
+          // doesn't affect the return value
         }
+        ```
       
-        // async with promises
+        Asynchronous example:
+      
+        ```js
         findAuthor().catch(function(reason){
-          // something went wrong
+          return findOtherAuther();
+        }).finally(function(){
+          // author was either found, or not
         });
         ```
       
-        @method catch
-        @param {Function} onRejection
-        Useful for tooling.
+        @method finally
+        @param {Function} callback
         @return {Promise}
       */
-      'catch': function _catch(onRejection) {
-        return this.then(null, onRejection);
-      }
-    };
 
+      Promise.prototype.finally = function _finally(callback) {
+        var promise = this;
+        var constructor = promise.constructor;
+
+        return promise.then(function (value) {
+          return constructor.resolve(callback()).then(function () {
+            return value;
+          });
+        }, function (reason) {
+          return constructor.resolve(callback()).then(function () {
+            throw reason;
+          });
+        });
+      };
+
+      return Promise;
+    }();
+
+    Promise$1.prototype.then = then;
+    Promise$1.all = all;
+    Promise$1.race = race;
+    Promise$1.resolve = resolve$1;
+    Promise$1.reject = reject$1;
+    Promise$1._setScheduler = setScheduler;
+    Promise$1._setAsap = setAsap;
+    Promise$1._asap = asap;
+
+    /*global self*/
     function polyfill() {
-      var local = undefined;
+      var local = void 0;
 
       if (typeof commonjsGlobal !== 'undefined') {
         local = commonjsGlobal;
@@ -1533,15 +1544,16 @@ var es6Promise = createCommonjsModule(function (module, exports) {
         }
       }
 
-      local.Promise = Promise;
+      local.Promise = Promise$1;
     }
 
     // Strange compat..
-    Promise.polyfill = polyfill;
-    Promise.Promise = Promise;
+    Promise$1.polyfill = polyfill;
+    Promise$1.Promise = Promise$1;
 
-    return Promise;
+    return Promise$1;
   });
+
   
 });
 
@@ -1735,18 +1747,62 @@ var Image = function (_Element) {
  * Class representing a drawing context on the canvas
  */
 var Context = function () {
-    /**
-     * Create a context
-     */
-    function Context(context) {
-        classCallCheck(this, Context);
+  /**
+   * Create a context
+   */
+  function Context(context) {
+    classCallCheck(this, Context);
 
-        this._context = context;
+    this._context = context;
+  }
+
+  /**
+   * Draws a filled rectangle at (x, y) position whose size is determined by width and height and whose style
+   * is determined by the fillStyle attribute.
+   *
+   * @param {Number} x - The x axis of the coordinate for the rectangle starting point.
+   * @param {Number} y - The y axis of the coordinate for the rectangle starting point.
+   * @param {Number} width - The rectangle's width.
+   * @param {Number} height - The rectangle's height.
+   */
+
+
+  createClass(Context, [{
+    key: "fillRect",
+    value: function fillRect(x, y, width, height) {
+      return this._context.fillRect(x, y, width, height);
     }
 
     /**
-     * Draws a filled rectangle at (x, y) position whose size is determined by width and height and whose style
-     * is determined by the fillStyle attribute.
+     * Sets a property of the Canvas 2D API, which specifies the color or style to use inside shapes.
+     *
+     * @param {String|Object} style - A CSS <color> value, Canvas gradient or Canvas pattern
+     */
+
+  }, {
+    key: "fillStyle",
+    value: function fillStyle(style) {
+      return this._context.fillStyle = style;
+    }
+
+    /**
+     * Creates a pattern using the specified image (a CanvasImageSource).
+     * It repeats the source in the directions specified by the repetition argument.
+     *
+     * @param {CanvasImageSource} image - A CanvasImageSource to be used as image to repeat.
+     * @param {String} repetition - A DOMString indicating how to repeat the image.
+     */
+
+  }, {
+    key: "createPattern",
+    value: function createPattern(image, repetition) {
+      return this._context.createPattern(image, repetition);
+    }
+
+    /**
+     * Creates a path for a rectangle at position (x, y) with a size that is determined by width and height.
+     * Those four points are connected by straight lines and the sub-path is marked as closed,
+     * so that you can fill or stroke this rectangle.
      *
      * @param {Number} x - The x axis of the coordinate for the rectangle starting point.
      * @param {Number} y - The y axis of the coordinate for the rectangle starting point.
@@ -1754,160 +1810,116 @@ var Context = function () {
      * @param {Number} height - The rectangle's height.
      */
 
+  }, {
+    key: "rect",
+    value: function rect(x, y, width, height) {
+      return this._context.rect(x, y, width, height);
+    }
 
-    createClass(Context, [{
-        key: "fillRect",
-        value: function fillRect(x, y, width, height) {
-            return this._context.fillRect(x, y, width, height);
-        }
+    /**
+     * Fills the current or given path with the current fill style using the non-zero or even-odd winding rule.
+     */
 
-        /**
-         * Sets a property of the Canvas 2D API, which specifies the color or style to use inside shapes.
-         *
-         * @param {String|Object} style - A CSS <color> value, Canvas gradient or Canvas pattern
-         */
+  }, {
+    key: "fill",
+    value: function fill() {
+      return this._context.fill();
+    }
 
-    }, {
-        key: "fillStyle",
-        value: function fillStyle(style) {
-            return this._context.fillStyle = style;
-        }
+    /**
+     * Starts a new path by emptying the list of sub-paths. Call this method when you want to create a new path.
+     */
 
-        /**
-         * Creates a pattern using the specified image (a CanvasImageSource).
-         * It repeats the source in the directions specified by the repetition argument.
-         *
-         * @param {CanvasImageSource} image - A CanvasImageSource to be used as image to repeat.
-         * @param {String} repetition - A DOMString indicating how to repeat the image.
-         */
+  }, {
+    key: "beginPath",
+    value: function beginPath() {
+      return this._context.beginPath();
+    }
 
-    }, {
-        key: "createPattern",
-        value: function createPattern(image, repetition) {
-            return this._context.createPattern(image, repetition);
-        }
+    /**
+     * Moves the starting point of a new sub-path to the (x, y) coordinates.
+     *
+     * @param {Number} x -The x axis of the point.
+     * @param {Number} y -The y axis of the point.
+     */
 
-        /**
-         * Creates a path for a rectangle at position (x, y) with a size that is determined by width and height.
-         * Those four points are connected by straight lines and the sub-path is marked as closed,
-         * so that you can fill or stroke this rectangle.
-         *
-         * @param {Number} x - The x axis of the coordinate for the rectangle starting point.
-         * @param {Number} y - The y axis of the coordinate for the rectangle starting point.
-         * @param {Number} width - The rectangle's width.
-         * @param {Number} height - The rectangle's height.
-         */
+  }, {
+    key: "moveTo",
+    value: function moveTo(x, y) {
+      return this._context.moveTo(x, y);
+    }
 
-    }, {
-        key: "rect",
-        value: function rect(x, y, width, height) {
-            return this._context.rect(x, y, width, height);
-        }
+    /**
+     * Connects the last point in the sub-path to the x, y coordinates with a straight line
+     * (but does not actually draw it).
+     *
+     * @param {Number} x - The x axis of the coordinate for the end of the line.
+     * @param {Number} y - The y axis of the coordinate for the end of the line.
+     */
 
-        /**
-         * Fills the current or given path with the current fill style using the non-zero or even-odd winding rule.
-         */
+  }, {
+    key: "lineTo",
+    value: function lineTo(x, y) {
+      return this._context.lineTo(x, y);
+    }
 
-    }, {
-        key: "fill",
-        value: function fill() {
-            return this._context.fill();
-        }
+    /**
+     * Causes the point of the pen to move back to the start of the current sub-path.
+     * It tries to add a straight line (but does not actually draw it) from the current point to the start.
+     * If the shape has already been closed or has only one point, this function does nothing.
+     */
 
-        /**
-         * Starts a new path by emptying the list of sub-paths. Call this method when you want to create a new path.
-         */
+  }, {
+    key: "closePath",
+    value: function closePath() {
+      return this._context.closePath();
+    }
 
-    }, {
-        key: "beginPath",
-        value: function beginPath() {
-            return this._context.beginPath();
-        }
+    /**
+     * Sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black,
+     * erasing any previously drawn content.
+     *
+     * @param {Number} x - The x axis of the coordinate for the rectangle starting point.
+     * @param {Number} y - The y axis of the coordinate for the rectangle starting point.
+     * @param {Number} width - The rectangle's width.
+     * @param {Number} height - The rectangle's height.
+     */
 
-        /**
-         * Moves the starting point of a new sub-path to the (x, y) coordinates.
-         *
-         * @param {Number} x -The x axis of the point.
-         * @param {Number} y -The y axis of the point.
-         */
+  }, {
+    key: "clearRect",
+    value: function clearRect(x, y, width, height) {
+      return this._context.clearRect(x, y, width, height);
+    }
 
-    }, {
-        key: "moveTo",
-        value: function moveTo(x, y) {
-            return this._context.moveTo(x, y);
-        }
+    /**
+     * Provides different ways to draw an image onto the canvas.
+     *
+     * @param {Number} image - An element to draw into the context.
+     * @param {Number} sx - The X coordinate of the top left corner of the sub-rectangle of the source image to draw
+     * into the destination context.
+     * @param {Number} sy - The Y coordinate of the top left corner of the sub-rectangle of the source image to draw
+     * into the destination context.
+     * @param {Number} sWidth - The width of the sub-rectangle of the source image to draw into the destination context.
+     * @param {Number} sHeight - The height of the sub-rectangle of the source image to draw into the destination context.
+     * @param {Number} dx - The X coordinate in the destination canvas at which to place the top-left corner
+     * of the source image.
+     * @param {Number} dy - The Y coordinate in the destination canvas at which to place the top-left corner
+     * of the source image.
+     * @param {Number} dWidth - The width to draw the image in the destination canvas.
+     * @param {Number} dHeight - The height to draw the image in the destination canvas.
+     */
 
-        /**
-         * Connects the last point in the sub-path to the x, y coordinates with a straight line
-         * (but does not actually draw it).
-         *
-         * @param {Number} x - The x axis of the coordinate for the end of the line.
-         * @param {Number} y - The y axis of the coordinate for the end of the line.
-         */
+  }, {
+    key: "drawImage",
+    value: function drawImage() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-    }, {
-        key: "lineTo",
-        value: function lineTo(x, y) {
-            return this._context.lineTo(x, y);
-        }
-
-        /**
-         * Causes the point of the pen to move back to the start of the current sub-path.
-         * It tries to add a straight line (but does not actually draw it) from the current point to the start.
-         * If the shape has already been closed or has only one point, this function does nothing.
-         */
-
-    }, {
-        key: "closePath",
-        value: function closePath() {
-            return this._context.closePath();
-        }
-
-        /**
-         * Sets all pixels in the rectangle defined by starting point (x, y) and size (width, height) to transparent black,
-         * erasing any previously drawn content.
-         *
-         * @param {Number} x - The x axis of the coordinate for the rectangle starting point.
-         * @param {Number} y - The y axis of the coordinate for the rectangle starting point.
-         * @param {Number} width - The rectangle's width.
-         * @param {Number} height - The rectangle's height.
-         */
-
-    }, {
-        key: "clearRect",
-        value: function clearRect(x, y, width, height) {
-            return this._context.clearRect(x, y, width, height);
-        }
-
-        /**
-         * Provides different ways to draw an image onto the canvas.
-         *
-         * @param {Number} image - An element to draw into the context.
-         * @param {Number} sx - The X coordinate of the top left corner of the sub-rectangle of the source image to draw
-         * into the destination context.
-         * @param {Number} sy - The Y coordinate of the top left corner of the sub-rectangle of the source image to draw
-         * into the destination context.
-         * @param {Number} sWidth - The width of the sub-rectangle of the source image to draw into the destination context.
-         * @param {Number} sHeight - The height of the sub-rectangle of the source image to draw into the destination context.
-         * @param {Number} dx - The X coordinate in the destination canvas at which to place the top-left corner
-         * of the source image.
-         * @param {Number} dy - The Y coordinate in the destination canvas at which to place the top-left corner
-         * of the source image.
-         * @param {Number} dWidth - The width to draw the image in the destination canvas.
-         * @param {Number} dHeight - The height to draw the image in the destination canvas.
-         */
-
-    }, {
-        key: "drawImage",
-        value: function drawImage() {
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            return this._context.drawImage.apply(this._context, args);
-        }
-    }]);
-    return Context;
+      return this._context.drawImage.apply(this._context, args);
+    }
+  }]);
+  return Context;
 }();
 
 /**
@@ -2683,69 +2695,69 @@ var Canvas = function (_Element) {
  */
 
 var Slider = function (_Element) {
-    inherits(Slider, _Element);
+  inherits(Slider, _Element);
 
-    /**
-     * Create a slider.
-     */
-    function Slider() {
-        classCallCheck(this, Slider);
+  /**
+   * Create a slider.
+   */
+  function Slider() {
+    classCallCheck(this, Slider);
 
-        var _this = possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, "input"));
+    var _this = possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, "input"));
 
-        _this.setType("range");
-        _this.addClass("slider");
-        _this.setAttribute("min", 0);
-        _this.setAttribute("max", 100);
-        _this.setAttribute("value", 0);
+    _this.setType("range");
+    _this.addClass("slider");
+    _this.setAttribute("min", 0);
+    _this.setAttribute("max", 100);
+    _this.setAttribute("value", 0);
 
-        _this._onChangeCallback = function () {};
-        _this._onChangeHandler = _this._onChange.bind(_this);
-        return _this;
+    _this._onChangeCallback = function () {};
+    _this._onChangeHandler = _this._onChange.bind(_this);
+    return _this;
+  }
+
+  /**
+   * Callback function, which be fired after changing the value
+   *
+   * @param {Function} callback - Callback.
+   * @returns {Slider} - A Slider object.
+   */
+
+
+  createClass(Slider, [{
+    key: "onChange",
+    value: function onChange(callback) {
+      this._onChangeCallback = callback;
+      this.getNode().addEventListener("change", this._onChangeHandler, false);
+      this.getNode().addEventListener("input", this._onChangeHandler, false);
+      return this;
     }
 
     /**
-     * Callback function, which be fired after changing the value
+     * Sets a value
      *
-     * @param {Function} callback - Callback.
+     * @param {Number} value - A value from 0 to 100
      * @returns {Slider} - A Slider object.
      */
 
+  }, {
+    key: "setValue",
+    value: function setValue(value) {
+      this.getNode().value = value;
+      return this;
+    }
 
-    createClass(Slider, [{
-        key: "onChange",
-        value: function onChange(callback) {
-            this._onChangeCallback = callback;
-            this.getNode().addEventListener("change", this._onChangeHandler, false);
-            this.getNode().addEventListener("input", this._onChangeHandler, false);
-            return this;
-        }
+    /**
+     * Fires custom callback.
+     */
 
-        /**
-         * Sets a value
-         *
-         * @param {Number} value - A value from 0 to 100
-         * @returns {Slider} - A Slider object.
-         */
-
-    }, {
-        key: "setValue",
-        value: function setValue(value) {
-            this.getNode().value = value;
-            return this;
-        }
-
-        /**
-         * Fires custom callback.
-         */
-
-    }, {
-        key: "_onChange",
-        value: function _onChange() {
-            this._onChangeCallback(Number(this.getNode().value));
-        }
-    }]);
-    return Slider;
+  }, {
+    key: "_onChange",
+    value: function _onChange() {
+      this._onChangeCallback(Number(this.getNode().value));
+    }
+  }]);
+  return Slider;
 }(Element);
 
 /**
@@ -2779,15 +2791,15 @@ var Icon = function (_Element) {
  * Class representing Image Crop
  */
 
-var ImageCrop = function () {
+var Cropper = function () {
     /**
-     * Create an ImageCrop.
-     * 
+     * Create an Cropper.
+     *
      * @param {Object} config - The config for Image Crop
      */
-    function ImageCrop() {
+    function Cropper() {
         var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        classCallCheck(this, ImageCrop);
+        classCallCheck(this, Cropper);
 
         validateConfig(config);
 
@@ -2806,11 +2818,11 @@ var ImageCrop = function () {
      * Create Image Crop container at the end of the list of children of a specified parent node
      *
      * @param {Object} node - The DOM Element object, parent node
-     * @return {ImageCrop} An ImageCrop object.
+     * @return {Cropper} An Cropper object.
      */
 
 
-    createClass(ImageCrop, [{
+    createClass(Cropper, [{
         key: "render",
         value: function render(node) {
             var _this = this;
@@ -2818,16 +2830,16 @@ var ImageCrop = function () {
             this._node = validateNode(node);
 
             var wrapper = new Element();
-            wrapper.addClass("image-crop");
+            wrapper.addClass("cropper");
             wrapper.render(this._node);
             this._canvas.render(wrapper.getNode());
 
             var tools = new Element();
-            tools.addClass("image-crop-tools");
+            tools.addClass("cropper-tools");
             tools.render(wrapper.getNode());
 
             var zoomSlider = new Element();
-            zoomSlider.addClass("image-crop-zoom");
+            zoomSlider.addClass("cropper-zoom");
             zoomSlider.render(tools.getNode());
 
             var leftIcon = new Icon("frame-landscape");
@@ -2852,10 +2864,10 @@ var ImageCrop = function () {
         }
 
         /**
-         * Change width of ImageCrop container
+         * Change width of Cropper container
          *
          * @param {Number} width - The number of pixels.
-         * @return {ImageCrop} An ImageCrop object.
+         * @return {Cropper} An Cropper object.
          */
 
     }, {
@@ -2872,10 +2884,10 @@ var ImageCrop = function () {
         }
 
         /**
-         * Change height of ImageCrop container
+         * Change height of Cropper container
          *
          * @param {Number} height - The number of pixels.
-         * @return {ImageCrop} An ImageCrop object.
+         * @return {Cropper} An Cropper object.
          */
 
     }, {
@@ -2936,7 +2948,7 @@ var ImageCrop = function () {
          * Sets zoom.
          *
          * @param {Number} zoom - Zoom value, from `0` = 0%, `1.0` = 100% of image size
-         * @return {ImageCrop} An ImageCrop object.
+         * @return {Cropper} An Cropper object.
          */
 
     }, {
@@ -2975,7 +2987,7 @@ var ImageCrop = function () {
          * Set a Frame origin and size relative to an Image.
          *
          * @param {Object} data - A frame origin (top, left) point and frame size.
-         * @returns {ImageCrop} - An ImageCrop instance.
+         * @returns {Cropper} - An Cropper instance.
          */
 
     }, {
@@ -2988,9 +3000,9 @@ var ImageCrop = function () {
             return this;
         }
     }]);
-    return ImageCrop;
+    return Cropper;
 }();
 
-return ImageCrop;
+return Cropper;
 
 }());

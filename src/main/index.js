@@ -12,10 +12,10 @@ import Icon from "./../components/icon";
 /**
  * Class representing Image Crop
  */
-export default class ImageCrop {
+export default class Cropper {
     /**
-     * Create an ImageCrop.
-     * 
+     * Create an Cropper.
+     *
      * @param {Object} config - The config for Image Crop
      */
     constructor(config = {}) {
@@ -36,22 +36,22 @@ export default class ImageCrop {
      * Create Image Crop container at the end of the list of children of a specified parent node
      *
      * @param {Object} node - The DOM Element object, parent node
-     * @return {ImageCrop} An ImageCrop object.
+     * @return {Cropper} An Cropper object.
      */
     render(node) {
         this._node = validateNode(node);
 
         const wrapper = new Element();
-        wrapper.addClass("image-crop");
+        wrapper.addClass("cropper");
         wrapper.render(this._node);
         this._canvas.render(wrapper.getNode());
 
         const tools = new Element();
-        tools.addClass("image-crop-tools");
+        tools.addClass("cropper-tools");
         tools.render(wrapper.getNode());
 
         const zoomSlider = new Element();
-        zoomSlider.addClass("image-crop-zoom");
+        zoomSlider.addClass("cropper-zoom");
         zoomSlider.render(tools.getNode());
 
         const leftIcon = new Icon("frame-landscape");
@@ -76,10 +76,10 @@ export default class ImageCrop {
     }
 
     /**
-     * Change width of ImageCrop container
+     * Change width of Cropper container
      *
      * @param {Number} width - The number of pixels.
-     * @return {ImageCrop} An ImageCrop object.
+     * @return {Cropper} An Cropper object.
      */
     setWidth(width) {
         try {
@@ -94,10 +94,10 @@ export default class ImageCrop {
     }
 
     /**
-     * Change height of ImageCrop container
+     * Change height of Cropper container
      *
      * @param {Number} height - The number of pixels.
-     * @return {ImageCrop} An ImageCrop object.
+     * @return {Cropper} An Cropper object.
      */
     setHeight(height) {
         try {
@@ -148,7 +148,7 @@ export default class ImageCrop {
      * Sets zoom.
      *
      * @param {Number} zoom - Zoom value, from `0` = 0%, `1.0` = 100% of image size
-     * @return {ImageCrop} An ImageCrop object.
+     * @return {Cropper} An Cropper object.
      */
     setZoom(zoom) {
         try {
@@ -181,7 +181,7 @@ export default class ImageCrop {
      * Set a Frame origin and size relative to an Image.
      *
      * @param {Object} data - A frame origin (top, left) point and frame size.
-     * @returns {ImageCrop} - An ImageCrop instance.
+     * @returns {Cropper} - An Cropper instance.
      */
     setData(data) {
         const { zoom } = this._canvas.setData(data);

@@ -22,6 +22,6 @@ export default {
             babelrc: false
         }),
     ],
-    dest: "dist/g2a-image-crop.js",
-    moduleName: "ImageCrop"
+    dest: "dist/cropper.js",
+    moduleName: "Cropper"
 };

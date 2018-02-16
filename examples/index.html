@@ -2,17 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Crop demo</title>
-    <script src="../dist/g2a-image-crop.js"></script>
-    <link rel="stylesheet" href="https://docs.code.g2a.com/g2a-ui-framework/1.3.0/css/g2a-framework.min.css">
+    <title>cropper-js demo</title>
+    <script src="../dist/cropper.js"></script>
+    <link rel="stylesheet" href="../Cropper.css">
     <style>
         html, body {
             height: 100%;
         }
         body {
-            margin-top: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, “Fira Sans”, “Droid Sans”, “Helvetica Neue”, Arial, sans-serif;
+        }
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        textarea {
+            width: 50%;
         }
     </style>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</head>
+<body>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0"
          style="position:absolute">
         <symbol viewBox="0 0 315.58 315.58" id="icon-frame-landscape">
@@ -20,53 +35,61 @@
             <path d="M210.059 135.555c13.538 0 24.529-10.982 24.529-24.531 0-13.545-10.991-24.533-24.529-24.533-13.549 0-24.528 10.988-24.528 24.533 0 13.548 10.98 24.531 24.528 24.531z"></path>
         </symbol>
     </svg>
-</head>
-<body>
+
     <div class="container">
+        <h1>cropper-js</h1>
+
+        <a class="github-button" href="https://github.com/denis-kalinichenko/cropper-js" data-size="large" aria-label="Star denis-kalinichenko/cropper-js on GitHub">Star</a>
+        <a class="github-button" href="https://github.com/denis-kalinichenko/cropper-js/issues" data-size="large" data-show-count="true" aria-label="Issue denis-kalinichenko/cropper-js on GitHub">Issue</a>
+        <a class="github-button" href="https://github.com/denis-kalinichenko" data-size="large" data-show-count="true" aria-label="Follow @denis-kalinichenko on GitHub">Follow @denis-kalinichenko</a>
+
+        <br>
+        <br>
         <div class="row">
-            <div class="col-d-5 col-l-4">
+            <div>
+                <h3>Demo</h3>
                 <div id="crop"></div>
             </div>
-            <div class="col-d-5 col-l-4">
-                <p>Preview:</p>
+            <div>
+                <h3>Preview (base64)</h3>
+                <button onclick="showResult()" title="Update preview">Click to crop!</button>
+                <br>
                 <img src="" alt="" id="result">
             </div>
         </div>
         <br>
-        <button class="btn btn-primary" onclick="showResult()" title="Update preview">Crop Me</button>
+        <h4>API Demo</h4>
+        <label for="data">Data (json):</label>
         <br>
+        <textarea name="data" id="data" rows="10"></textarea>
         <br>
-        <button class="btn btn-success" onclick="getData()">imageCrop.getData()</button>
-        <button class="btn btn-danger" onclick="setData()">imageCrop.setData(data)</button>
-        <br>
-        <br>
-        <label for="data">Data:</label>
-        <textarea name="data" id="data" class="form-control form-medium" rows="10"></textarea>
+        <button onclick="getData()">cropper.getData()</button>
+        <button onclick="setData()">cropper.setData(data)</button>
     </div>
     <script>
-        var imageCrop = new ImageCrop({
+        var cropper = new Cropper({
             onInit: function (crop) {
-                console.info("ImageCrop is ready");
+                console.info("Cropper is ready");
             },
             onChange: function (crop) {
                 console.log("onChange callback");
             }
         });
-        imageCrop.render("#crop");
-        imageCrop.loadImage("img/big.jpg").then(function (crop) {
+        cropper.render("#crop");
+        cropper.loadImage("img/big.jpg").then(function (crop) {
             console.info("Image is ready to crop.");
         });
 
         function showResult() {
-            document.getElementById("result").src = imageCrop.getCroppedImage();
+            document.getElementById("result").src = cropper.getCroppedImage();
         }
 
         function getData() {
-            document.getElementById("data").value = JSON.stringify(imageCrop.getData(), null, 2);
+            document.getElementById("data").value = JSON.stringify(cropper.getData(), null, 2);
         }
 
         function setData() {
-            imageCrop.setData(JSON.parse(document.getElementById("data").value));
+            cropper.setData(JSON.parse(document.getElementById("data").value));
         }
     </script>
 </body>

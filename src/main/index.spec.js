@@ -1,9 +1,9 @@
 import { expect, spy } from "chai";
 import jsdom from "jsdom-global";
-import ImageCrop from "./index";
+import Cropper from "./index";
 import { CanvasMock, getCanvasCalls } from "./../../test/mock";
 
-describe("Image Crop component", () => {
+describe("Cropper component", () => {
     let imageCrop, wrapper, cleanJsdom;
 
     beforeEach(function() {
@@ -11,20 +11,20 @@ describe("Image Crop component", () => {
         wrapper = document.createElement("div");
         wrapper.id = "image-crop";
         document.body.appendChild(wrapper);
-        ImageCrop.__Rewire__("Canvas", CanvasMock);
+        Cropper.__Rewire__("Canvas", CanvasMock);
     });
 
     afterEach(function() {
         cleanJsdom();
-        ImageCrop.__ResetDependency__("Canvas");
+        Cropper.__ResetDependency__("Canvas");
     });
 
     it("initialises", () => {
-        expect(() => { new ImageCrop() }).to.not.throw();
+        expect(() => { new Cropper() }).to.not.throw();
     });
 
     it("has render method, which renders Canvas element and returns this", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         const wrapper = document.querySelector("#image-crop");
         expect(imageCrop.render).to.be.a("function");
 
@@ -49,7 +49,7 @@ describe("Image Crop component", () => {
             width: 400,
             height: 400
         };
-        imageCrop = new ImageCrop(config);
+        imageCrop = new Cropper(config);
         imageCrop.render(wrapper);
 
         const expectedCanvasCalls = [
@@ -67,13 +67,13 @@ describe("Image Crop component", () => {
             height: 400,
             onChange: onChangeFunc
         };
-        imageCrop = new ImageCrop(config);
+        imageCrop = new Cropper(config);
         imageCrop.render(wrapper);
         expect(onChangeFunc).to.have.been.called.once.with.exactly(imageCrop);
     });
 
     it("has setWidth method, which changes width style property of Canvas container and returns this", () => {
-        imageCrop = new ImageCrop({ width: 400 });
+        imageCrop = new Cropper({ width: 400 });
         expect(imageCrop.setWidth).to.be.a("function");
         imageCrop.render(wrapper);
 
@@ -97,7 +97,7 @@ describe("Image Crop component", () => {
     });
 
     it("has setHeight method, which changes height attribute of Canvas container and returns this", () => {
-        imageCrop = new ImageCrop({ height: 123 });
+        imageCrop = new Cropper({ height: 123 });
         expect(imageCrop.setHeight).to.be.a("function");
         imageCrop.render(wrapper);
 
@@ -120,7 +120,7 @@ describe("Image Crop component", () => {
     });
 
     it("has loadImage method, which pass Image into Canvas and call draw() method", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.setHeight(400);
         imageCrop.render(wrapper);
 
@@ -139,7 +139,7 @@ describe("Image Crop component", () => {
     });
 
     it("resets zoom slider after passing new image", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.setHeight(400);
         imageCrop.render(wrapper);
         imageCrop.setZoom(0.5);
@@ -151,7 +151,7 @@ describe("Image Crop component", () => {
     });
 
     it("has loadImage method, which throw Error if url or path is invalid or not passed", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.render(wrapper);
 
         expect(() => {imageCrop.loadImage()}).to.throw("Image url or path is not passed.");
@@ -166,7 +166,7 @@ describe("Image Crop component", () => {
     });
 
     it("has getCroppedImage method, which return image as DataURL", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.setHeight(400);
         imageCrop.setWidth(560);
         imageCrop.render(wrapper);
@@ -179,7 +179,7 @@ describe("Image Crop component", () => {
     });
 
     it("has setZoom method, which set a zoom and return this", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.setHeight(400);
         imageCrop.setWidth(560);
         imageCrop.render(wrapper);
@@ -202,7 +202,7 @@ describe("Image Crop component", () => {
     });
 
     it("has reset method, which resets zoom and image position", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.setHeight(400);
         imageCrop.setWidth(560);
         imageCrop.render(wrapper);
@@ -222,7 +222,7 @@ describe("Image Crop component", () => {
     });
 
     it("has getData method, which returns current frame position on image in full size", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.render(wrapper);
         const expectedData = {
             origin: { x: 234.42906574394465, y: 44.117647058823536 },
@@ -232,7 +232,7 @@ describe("Image Crop component", () => {
     });
 
     it("has setData method, which sets a frame origin and size relative to an Image", () => {
-        imageCrop = new ImageCrop();
+        imageCrop = new Cropper();
         imageCrop.render(wrapper);
         const data = {
             origin: { x: 234.42906574394465, y: 44.117647058823536 },

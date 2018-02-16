@@ -1,21 +1,21 @@
 # API
 
-### Initialize Image Crop
+### Initialize Cropper
 
 Initialize image crop with options:
 
 ```javascript
-new ImageCrop(parameters)
+new Cropper(parameters)
 ```
 
-- **parameters** - `Object` - object with Image Crop parameters. Optional.
+- **parameters** - `Object` - object with Cropper parameters. Optional.
 
 Method returns initialized Image Crop instance.
 
 For example:
 
 ```javascript
-var imageCrop = new ImageCrop({
+var cropper = new Cropper({
     width: 560,
     height: 340,
     onInit: function (crop) {},
@@ -30,8 +30,8 @@ Let's look on list of all available parameters:
 |---------------------|----------|---------|----------------------------------------------------------------------------|
 | width               | Number   | 560     | Image Crop width (in px). Parameter allows to force Canvas width.          |
 | height              | Number   | 340     | Image Crop height (in px). Parameter allows to force Canvas height.        |
-| onInit(imageCrop)   | Function |         | Callback function, will be executed right after Image Crop initialization  |
-| onChange(imageCrop) | Function |         | Callback function, will be executed after image position moving or zooming |
+| onInit(cropper)     | Function |         | Callback function, will be executed right after Image Crop initialization  |
+| onChange(cropper)   | Function |         | Callback function, will be executed after image position moving or zooming |
 
 ## Methods
 

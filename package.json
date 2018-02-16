@@ -1,8 +1,9 @@
 {
-  "name": "g2a-image-crop",
-  "version": "0.1.1",
-  "description": "G2A UI framework image crop module",
+  "name": "cropper-js",
+  "version": "1.0.0",
+  "description": "Pure JavaScript image cropper",
   "main": "lib/main/index.js",
+  "style": "Cropper.css",
   "scripts": {
     "test": "mocha src/**/*.spec.js",
     "test:custom": "mocha",
@@ -14,30 +15,22 @@
     "dist/",
     "lib/"
   ],
-  "publishConfig": {
-    "registry": "http://npm.code.g2a.com"
-  },
   "repository": {
     "type": "git",
-    "url": "ssh://git@code.g2a.com:7999/gnpm/g2a-image-crop.git"
+    "url": "ssh://git@github.com:denis-kalinichenko/cropper-js.git"
   },
   "keywords": [
     "css",
     "image",
     "crop",
-    "g2a",
     "ui",
     "component"
   ],
   "author": {
-    "name": "Denys Kalinichenko",
-    "email": "it51@g2a.com"
+    "name": "Denis Kalinichenko",
+    "email": "denis@kalinichenko.me"
   },
-  "bugs": {
-    "url" : "https://jira.code.g2a.com/projects/GN/issues",
-    "email" : "framework@g2a.com"
-  },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": {
     "npm": ">=2.0.0",
     "node": ">=4.0.0"
@@ -59,9 +52,6 @@
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1"
-  },
-  "peerDependencies": {
-    "g2a-framework": "^1.3.0"
   },
   "dependencies": {
     "es6-promise": "^4.0.5"
